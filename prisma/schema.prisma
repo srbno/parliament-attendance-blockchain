@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  DEPUTY
+  AUDITOR
+}
+
+enum SessionStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+enum SessionType {
+  PLENARY
+  COMMITTEE
+  SUBCOMMITTEE
+  VOTING
+  WORKGROUP
+  OTHER
+}
+
+enum AttendanceStatus {
+  PENDING
+  VALIDATED
+  HASHED
+  SIGNED
+  READY_FOR_CHAIN
+  SUBMITTED
+  CONFIRMED
+  REJECTED
+  FAILED
+}
+
+model User {
+  id           BigInt   @id @default(autoincrement())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  deputyId     BigInt?
+  deputy       Deputy?  @relation(fields: [deputyId], references: [id])
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  auditLogs AuditLog[]
+}
+
+model Deputy {
+  id              BigInt   @id @default(autoincrement())
+  publicIdentifier String  @unique
+  name            String
+  party           String
+  electoralCircle String
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  users             User[]
+  attendanceRecords AttendanceRecord[]
+}
+
+model ParliamentarySession {
+  id                    BigInt        @id @default(autoincrement())
+  title                 String
+  sessionType           SessionType
+  locationId            BigInt
+  location              AuthorizedLocation @relation(fields: [locationId], references: [id])
+  scheduledStart        DateTime
+  scheduledEnd          DateTime
+  checkinStart          DateTime
+  checkinEnd            DateTime
+  status                SessionStatus @default(DRAFT)
+  allowMultipleCheckins Boolean       @default(false)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  attendanceRecords AttendanceRecord[]
+}
+
+model AuthorizedLocation {
+  id              BigInt   @id @default(autoincrement())
+  name            String
+  latitude        Float
+  longitude       Float
+  radiusMeters    Int
+  allowedIpRanges Json
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  sessions ParliamentarySession[]
+}
+
+model ValidationPolicy {
+  id        String   @id
+  name      String
+  version   Int
+  rulesJson Json
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  attendanceRecords AttendanceRecord[]
+}
+
+model AttendanceRecord {
+  id                    BigInt           @id @default(autoincrement())
+  deputyId              BigInt
+  deputy                Deputy           @relation(fields: [deputyId], references: [id])
+  sessionId             BigInt
+  session               ParliamentarySession @relation(fields: [sessionId], references: [id])
+  registeredAt          DateTime
+  clientRequestId       String           @unique
+  clientIp              String
+  gpsLatitude           Float?
+  gpsLongitude          Float?
+  gpsAccuracyMeters     Float?
+  validationPolicyId    String
+  validationPolicy      ValidationPolicy @relation(fields: [validationPolicyId], references: [id])
+  validationDetailsJson Json?
+  validationResultHash  String?
+  evidencePayloadJson   Json?
+  evidenceHash          String?
+  signature             String?
+  txHash                String?
+  blockNumber           BigInt?
+  contractAddress       String?
+  status                AttendanceStatus @default(PENDING)
+  failureReason         String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  auditLogs AuditLog[]
+
+  @@index([deputyId, sessionId])
+  @@index([sessionId])
+}
+
+model AuditLog {
+  id                 BigInt   @id @default(autoincrement())
+  eventType          String
+  actorUserId        BigInt?
+  actorUser          User?    @relation(fields: [actorUserId], references: [id])
+  attendanceRecordId BigInt?
+  attendanceRecord   AttendanceRecord? @relation(fields: [attendanceRecordId], references: [id])
+  detailsJson        Json?
+  createdAt          DateTime @default(now())
+}
