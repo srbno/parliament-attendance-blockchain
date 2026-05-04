@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build and test output
+dist/
+coverage/
+*.lcov
+
+# Logs and diagnostics
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+report.*.json
+
+# Tool caches
+*.tsbuildinfo
+.eslintcache
+.vite/
+
+# Local editor/OS files
+.DS_Store
+.vscode/
+
+#Docs
+docs

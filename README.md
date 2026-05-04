@@ -1,30 +1,33 @@
 # Sistema de Controlo de Assiduidade Parlamentar com Blockchain
 
-Monorepo desenvolvido no âmbito da cadeira de **Blockchain** do **Mestrado em Engenharia Informática do ISCTE**.
+Projeto desenvolvido no âmbito da cadeira de **Blockchain** do **Mestrado em Engenharia Informática do ISCTE**.
 
-O projeto implementa uma prova de conceito para controlo de assiduidade parlamentar com backend API, validação contextual, evidência criptográfica e preparação para integração blockchain.
+O repositório está organizado por componentes, mas sem workspace `pnpm` na raiz nesta fase. O backend é executado de forma autónoma a partir da pasta `backend/`; a pasta `blockchain/` fica reservada para a implementação da Fase 2.
 
 ## Estrutura
 
 ```text
 .
+├── README.md
+├── docs/
 ├── backend/
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── docker-compose.yml
 │   ├── src/
 │   ├── prisma/
 │   ├── tests/
 │   ├── bruno/
 │   └── README.md
-├── blockchain/
-│   └── README.md
-├── docker-compose.yml
-├── package.json
-└── pnpm-workspace.yaml
+└── blockchain/
+    └── README.md
 ```
 
 ## Componentes
 
 - `backend/`: API Fastify em TypeScript. Implementa a Fase 1: autenticação, gestão de deputados/sessões/localizações, validação de assiduidade, geração de hashes, assinatura interna e mock blockchain.
-- `blockchain/`: espaço reservado para a Fase 2. Deve conter o smart contract, scripts de deploy e testes Foundry quando a integração Ethereum local for implementada.
+- `blockchain/`: espaço reservado para a Fase 2. Deverá conter o smart contract, scripts de deploy e testes Foundry quando a integração Ethereum local for implementada.
+- `docs/`: documentação auxiliar do projeto.
 
 ## Fase Atual
 
@@ -38,51 +41,42 @@ Ainda não está implementado:
 - consulta on-chain;
 - `viem`.
 
-## Pré-Requisitos
+## Execução Do Backend
 
-- Node.js 24 LTS
-- pnpm 10
-- Docker com daemon ativo, para PostgreSQL local
+Entrar na pasta do backend:
 
-## Instalação
+```bash
+cd backend
+```
 
-Na raiz do monorepo:
+Instalar dependências:
 
 ```bash
 pnpm install
 ```
 
-Criar o ambiente do backend:
+Criar o ficheiro de ambiente:
 
 ```bash
-cp backend/.env.example backend/.env
+cp .env.example .env
 ```
 
-Editar `backend/.env` e substituir `JWT_SECRET` e `APP_PRIVATE_KEY` por valores reais gerados fora do Git.
+Editar `.env` e substituir `JWT_SECRET` e `APP_PRIVATE_KEY` por valores reais gerados fora do Git.
 
-## Base De Dados
-
-Subir PostgreSQL a partir da raiz do monorepo:
+Subir PostgreSQL:
 
 ```bash
 docker compose up -d postgres
 ```
 
-Aplicar migrações:
+Aplicar migrações e popular dados iniciais:
 
 ```bash
-pnpm --dir backend prisma migrate dev
-```
-
-Popular dados iniciais:
-
-```bash
+pnpm prisma migrate dev
 pnpm seed
 ```
 
-## Execução
-
-Executar o backend a partir da raiz:
+Executar a API:
 
 ```bash
 pnpm dev
@@ -96,14 +90,11 @@ http://127.0.0.1:3000
 
 ## Testes
 
+A partir de `backend/`:
+
 ```bash
 pnpm test
 pnpm test:coverage
-```
-
-Testes de integração:
-
-```bash
 pnpm test:integration
 ```
 

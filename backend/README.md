@@ -81,17 +81,16 @@ A lógica de assiduidade não depende de uma implementação concreta de blockch
 
 ## Configuração Inicial
 
-Instalar dependências a partir da raiz do monorepo:
+Instalar dependências:
 
 ```bash
-cd ..
 pnpm install
 ```
 
-Criar ficheiro de ambiente para o backend:
+Criar ficheiro de ambiente:
 
 ```bash
-cp backend/.env.example backend/.env
+cp .env.example .env
 ```
 
 Antes de correr a aplicação, substituir no `.env`:
@@ -112,13 +111,13 @@ docker compose up -d postgres
 Aplicar migrações:
 
 ```bash
-pnpm --dir backend prisma migrate dev
+pnpm prisma migrate dev
 ```
 
 Popular dados iniciais:
 
 ```bash
-pnpm --dir backend seed
+pnpm seed
 ```
 
 O seed cria:
@@ -144,7 +143,7 @@ Esta password é apenas para desenvolvimento local.
 Correr a API em modo de desenvolvimento:
 
 ```bash
-pnpm --dir backend dev
+pnpm dev
 ```
 
 URL local por omissão:
