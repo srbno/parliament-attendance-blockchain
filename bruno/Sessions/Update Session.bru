@@ -1,0 +1,26 @@
+meta {
+  name: Update Session
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/sessions/{{sessionId}}
+  body: json
+  auth: bearer
+}
+
+headers {
+  content-type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "title": "Sessao Bruno Atualizada",
+    "allowMultipleCheckins": false
+  }
+}

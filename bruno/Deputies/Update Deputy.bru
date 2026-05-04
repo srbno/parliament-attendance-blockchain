@@ -1,0 +1,26 @@
+meta {
+  name: Update Deputy
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/deputies/{{deputyId}}
+  body: json
+  auth: bearer
+}
+
+headers {
+  content-type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "party": "Demo Atualizado",
+    "active": true
+  }
+}

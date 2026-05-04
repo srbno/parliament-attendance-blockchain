@@ -1,0 +1,29 @@
+meta {
+  name: Login - Auditor
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  content-type: application/json
+}
+
+body:json {
+  {
+    "username": "{{auditorUsername}}",
+    "password": "{{demoPassword}}"
+  }
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body && body.accessToken) {
+    bru.setEnvVar("accessToken", body.accessToken);
+  }
+}

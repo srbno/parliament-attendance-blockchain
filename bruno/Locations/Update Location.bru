@@ -1,0 +1,26 @@
+meta {
+  name: Update Location
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/locations/{{locationId}}
+  body: json
+  auth: bearer
+}
+
+headers {
+  content-type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "radiusMeters": 120,
+    "active": true
+  }
+}

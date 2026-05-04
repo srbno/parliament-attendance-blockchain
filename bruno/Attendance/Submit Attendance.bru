@@ -1,0 +1,38 @@
+meta {
+  name: Submit Attendance
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/attendance/submit
+  body: json
+  auth: bearer
+}
+
+headers {
+  content-type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "sessionId": "{{sessionId}}",
+    "gps": {
+      "latitude": 38.714,
+      "longitude": -9.152,
+      "accuracyMeters": 20
+    },
+    "clientRequestId": "{{clientRequestId}}"
+  }
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body && body.recordId) {
+    bru.setEnvVar("attendanceRecordId", body.recordId);
+  }
+}

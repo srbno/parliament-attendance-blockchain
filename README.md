@@ -180,6 +180,33 @@ Cobertura:
 pnpm test:coverage
 ```
 
+## Testes Manuais Com Bruno
+
+O repositório inclui uma coleção para o HTTP Client Bruno em:
+
+```text
+bruno/
+```
+
+Para usar:
+
+1. Abrir o Bruno.
+2. Escolher `Open Collection`.
+3. Selecionar a pasta `bruno`.
+4. Escolher o ambiente `Local`.
+5. Garantir que a API está a correr em `http://127.0.0.1:3000`.
+
+Fluxo recomendado:
+
+1. Executar `Auth / Login - Deputy` para guardar `accessToken`.
+2. Executar `Auth / Me` para confirmar o token.
+3. Executar `Attendance / Submit Attendance`.
+4. Executar `Attendance / Verify Attendance`.
+
+Para endpoints administrativos, executar primeiro `Auth / Login - Admin`. Para consultas de auditoria, executar `Auth / Login - Auditor`.
+
+Nota: `clientRequestId` é usado para proteção contra replay. Para repetir `Attendance / Submit Attendance`, alterar `clientRequestId` no ambiente `Local`.
+
 ## Exemplos De API
 
 Login:

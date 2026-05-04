@@ -1,0 +1,15 @@
+meta {
+  name: List By Deputy
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/attendance/deputy/{{deputyId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

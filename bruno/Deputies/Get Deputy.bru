@@ -1,0 +1,15 @@
+meta {
+  name: Get Deputy
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/deputies/{{deputyId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

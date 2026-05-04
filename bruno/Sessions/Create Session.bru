@@ -1,0 +1,33 @@
+meta {
+  name: Create Session
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/sessions
+  body: json
+  auth: bearer
+}
+
+headers {
+  content-type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "title": "Sessao Bruno",
+    "sessionType": "PLENARY",
+    "locationId": "{{locationId}}",
+    "scheduledStart": "2026-05-04T09:00:00.000Z",
+    "scheduledEnd": "2026-05-04T18:00:00.000Z",
+    "checkinStart": "2026-05-04T08:00:00.000Z",
+    "checkinEnd": "2026-05-04T23:00:00.000Z",
+    "status": "OPEN",
+    "allowMultipleCheckins": false
+  }
+}

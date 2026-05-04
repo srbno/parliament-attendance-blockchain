@@ -1,0 +1,29 @@
+meta {
+  name: Create Deputy
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/deputies
+  body: json
+  auth: bearer
+}
+
+headers {
+  content-type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "publicIdentifier": "DEP-BRUNO-001",
+    "name": "Deputado Bruno",
+    "party": "Demo",
+    "electoralCircle": "Lisboa",
+    "active": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Assiduidade Parlamentar Backend",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Create Location
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/locations
+  body: json
+  auth: bearer
+}
+
+headers {
+  content-type: application/json
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "name": "Palacio de Sao Bento - Bruno",
+    "latitude": 38.7139,
+    "longitude": -9.1521,
+    "radiusMeters": 100,
+    "allowedIpRanges": [
+      "127.0.0.1/32",
+      "10.0.0.0/8"
+    ],
+    "active": true
+  }
+}
