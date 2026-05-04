@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  backend:
     dependencies:
       '@fastify/jwt':
         specifier: 10.0.0
