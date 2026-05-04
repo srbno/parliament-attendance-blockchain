@@ -1,4 +1,10 @@
+import { existsSync } from 'node:fs';
+import { loadEnvFile } from 'node:process';
 import { z } from 'zod';
+
+if (existsSync('.env')) {
+  loadEnvFile('.env');
+}
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
