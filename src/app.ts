@@ -13,8 +13,8 @@ export async function buildApp() {
     trustProxy: false
   });
 
-  await app.register(errorHandlerPlugin);
-  await app.register(authPlugin);
+  await errorHandlerPlugin(app);
+  await authPlugin(app);
   await app.register(authRoutes);
   await app.register(deputiesRoutes);
   await app.register(sessionsRoutes);
