@@ -12,21 +12,22 @@ CREATE TYPE "AttendanceStatus" AS ENUM ('PENDING', 'VALIDATED', 'HASHED', 'SIGNE
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "username" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
     "role" "UserRole" NOT NULL,
-    "deputyId" BIGINT,
+    "deputyId" INTEGER,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Deputy" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "publicIdentifier" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "party" TEXT NOT NULL,
@@ -34,15 +35,16 @@ CREATE TABLE "Deputy" (
     "active" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "Deputy_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ParliamentarySession" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "sessionType" "SessionType" NOT NULL,
-    "locationId" BIGINT NOT NULL,
+    "locationId" INTEGER NOT NULL,
     "scheduledStart" TIMESTAMP(3) NOT NULL,
     "scheduledEnd" TIMESTAMP(3) NOT NULL,
     "checkinStart" TIMESTAMP(3) NOT NULL,
@@ -51,12 +53,13 @@ CREATE TABLE "ParliamentarySession" (
     "allowMultipleCheckins" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "ParliamentarySession_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "AuthorizedLocation" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "latitude" DOUBLE PRECISION NOT NULL,
     "longitude" DOUBLE PRECISION NOT NULL,
@@ -65,6 +68,7 @@ CREATE TABLE "AuthorizedLocation" (
     "active" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "AuthorizedLocation_pkey" PRIMARY KEY ("id")
 );
 
@@ -77,14 +81,15 @@ CREATE TABLE "ValidationPolicy" (
     "active" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "ValidationPolicy_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "AttendanceRecord" (
-    "id" BIGSERIAL NOT NULL,
-    "deputyId" BIGINT NOT NULL,
-    "sessionId" BIGINT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "deputyId" INTEGER NOT NULL,
+    "sessionId" INTEGER NOT NULL,
     "registeredAt" TIMESTAMP(3) NOT NULL,
     "clientRequestId" TEXT NOT NULL,
     "clientIp" TEXT NOT NULL,
@@ -93,7 +98,6 @@ CREATE TABLE "AttendanceRecord" (
     "gpsAccuracyMeters" DOUBLE PRECISION,
     "validationPolicyId" TEXT NOT NULL,
     "validationDetailsJson" JSONB,
-    "validationResultHash" TEXT,
     "evidencePayloadJson" JSONB,
     "evidenceHash" TEXT,
     "signature" TEXT,
@@ -104,17 +108,19 @@ CREATE TABLE "AttendanceRecord" (
     "failureReason" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "AttendanceRecord_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "AuditLog" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "eventType" TEXT NOT NULL,
-    "actorUserId" BIGINT,
-    "attendanceRecordId" BIGINT,
+    "actorUserId" INTEGER,
+    "attendanceRecordId" INTEGER,
     "detailsJson" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "AuditLog_pkey" PRIMARY KEY ("id")
 );
 
