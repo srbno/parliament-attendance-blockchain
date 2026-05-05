@@ -1,15 +1,19 @@
 import type { BlockchainService, RegisterAttendanceProofInput } from './blockchain.service.js';
 import { logger } from '../../shared/logger/logger.js';
+import { HashService } from '../evidence/hash.service.js';
 
 export class MockBlockchainService implements BlockchainService {
-  async registerAttendanceProof(_input: RegisterAttendanceProofInput) {
+  constructor(private readonly hashService = new HashService()) {}
+
+  async registerAttendanceProof(input: RegisterAttendanceProofInput) {
     logger.info('blockchain_mock_called');
-    // Phase 2 will replace this class with an Ethereum adapter without changing attendance logic.
     return {
-      submitted: false,
-      txHash: null,
-      blockNumber: null,
-      reason: 'Blockchain integration not implemented yet'
+      submitted: true,
+      txHash: this.hashService.hashCanonical({
+        type: 'mock_blockchain_transaction',
+        proof: input
+      }),
+      blockNumber: null
     };
   }
 }

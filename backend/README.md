@@ -26,9 +26,9 @@ Esta fase inclui:
 - Assinatura de `evidenceHash` com chave privada interna da aplicação.
 - Verificação local de hashes e assinatura.
 - Auditoria de eventos relevantes.
-- `MockBlockchainService`, que indica explicitamente que a blockchain ainda não está implementada.
+- `MockBlockchainService`, que simula a submissão da prova à blockchain através da interface da aplicação.
 
-O fluxo de assiduidade aceite termina com estado `READY_FOR_CHAIN`, não `CONFIRMED`.
+O fluxo de assiduidade aceite termina com estado `SUBMITTED`, não `CONFIRMED`.
 
 ## Fora Do Âmbito Da Fase 1
 
@@ -249,14 +249,13 @@ O serviço `MockBlockchainService` devolve sempre:
 
 ```json
 {
-  "submitted": false,
-  "txHash": null,
-  "blockNumber": null,
-  "reason": "Blockchain integration not implemented yet"
+  "submitted": true,
+  "txHash": "0x...",
+  "blockNumber": null
 }
 ```
 
-Isto é intencional. A Fase 1 prepara os dados que serão submetidos na Fase 2, mas não envia transações reais.
+Isto é intencional. A Fase 1 exercita o mesmo contrato que será usado por um adaptador Ethereum real, mas ainda não envia transações reais.
 
 ## Notas Para A Fase 2
 
@@ -264,9 +263,9 @@ Na Fase 2, o mock deverá ser substituído por um adaptador Ethereum que impleme
 
 O fluxo previsto é:
 
-1. Submeter a prova ao smart contract `AttendanceRegistry`.
-2. Guardar `txHash`.
-3. Mudar o estado do registo para `SUBMITTED`.
+1. Substituir o mock por um adaptador Ethereum.
+2. Submeter a prova ao smart contract `AttendanceRegistry`.
+3. Guardar `txHash` e manter o estado `SUBMITTED`.
 4. Aguardar o recibo da transação.
 5. Mudar o estado para `CONFIRMED` em caso de sucesso.
 6. Guardar `blockNumber`.

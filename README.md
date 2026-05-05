@@ -31,7 +31,7 @@ O repositório está organizado por componentes, mas sem workspace `pnpm` na rai
 
 ## Fase Atual
 
-A Fase 1 está implementada no backend. Nesta fase, a aplicação termina registos aceites em `READY_FOR_CHAIN` e usa `MockBlockchainService`.
+A Fase 1 está implementada no backend. Nesta fase, a aplicação termina registos aceites em `SUBMITTED` usando `MockBlockchainService` para simular a submissão da prova à blockchain.
 
 Ainda não está implementado:
 

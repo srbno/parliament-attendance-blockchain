@@ -168,7 +168,7 @@ describe('auth API', () => {
 });
 
 describe('attendance API', () => {
-  it('submits valid attendance and returns READY_FOR_CHAIN', async () => {
+  it('submits valid attendance proof and returns SUBMITTED', async () => {
     const { deputyUser, session } = await createFixture();
     const { accessToken } = await login(deputyUser.username);
 
@@ -176,17 +176,16 @@ describe('attendance API', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.json()).toMatchObject({
-      status: 'READY_FOR_CHAIN',
+      status: 'SUBMITTED',
       deputyId: deputyUser.deputyId!.toString(),
       sessionId: session.id.toString(),
       validationPolicyId: 'POLICY_V1',
       blockchain: {
-        submitted: false,
-        txHash: null,
-        blockNumber: null,
-        reason: 'Blockchain integration not implemented yet'
+        submitted: true,
+        blockNumber: null
       }
     });
+    expect(response.json().blockchain.txHash).toMatch(/^0x[0-9a-f]{64}$/);
     expect(response.json()).not.toHaveProperty('validationResultHash');
     expect(response.json().evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
   });
@@ -247,7 +246,7 @@ describe('attendance API', () => {
       signatureValid: true,
       blockchainRecordFound: false,
       blockchainCheckAvailable: false,
-      overallResult: 'LOCALLY_VALID_READY_FOR_CHAIN'
+      overallResult: 'LOCALLY_VALID_SUBMITTED'
     });
     expect(verifyResponse.json()).not.toHaveProperty('validationResultHashMatches');
 

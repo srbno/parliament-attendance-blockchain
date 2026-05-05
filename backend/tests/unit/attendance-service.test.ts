@@ -82,7 +82,7 @@ function setupValidPrisma() {
     validationPolicyId: 'POLICY_V1',
     evidenceHash: data.evidenceHash,
     signature: data.signature,
-    txHash: null,
+    txHash: data.txHash,
     blockNumber: null,
     contractAddress: null,
     status: data.status,
@@ -101,13 +101,19 @@ beforeEach(() => {
 });
 
 describe('AttendanceService', () => {
-  it('validates, hashes, signs, calls blockchain mock through the interface, and returns READY_FOR_CHAIN', async () => {
-    const blockchain = { registerAttendanceProof: vi.fn().mockResolvedValue({ submitted: false, txHash: null, blockNumber: null, reason: 'Blockchain integration not implemented yet' }) };
+  it('validates, signs, submits the proof to blockchain, and returns SUBMITTED', async () => {
+    const blockchain = {
+      registerAttendanceProof: vi.fn().mockResolvedValue({
+        submitted: true,
+        txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        blockNumber: null
+      })
+    };
     const service = new AttendanceService(blockchain);
 
     const response = await service.submit(submitInput, tokenUser, '127.0.0.1');
 
-    expect(response.status).toBe('READY_FOR_CHAIN');
+    expect(response.status).toBe('SUBMITTED');
     expect(response).not.toHaveProperty('validationResultHash');
     expect(response.evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
     expect(response.signature).toMatch(/^0x[0-9a-f]{128}$/);
@@ -117,7 +123,15 @@ describe('AttendanceService', () => {
     );
     expect(mocks.prisma.attendanceRecord.update).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({ status: 'READY_FOR_CHAIN' })
+        data: expect.objectContaining({
+          status: 'SUBMITTED',
+          txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+        })
+      })
+    );
+    expect(mocks.prisma.auditLog.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ eventType: 'attendance_proof_submitted' })
       })
     );
     expect(mocks.prisma.attendanceRecord.create).toHaveBeenCalledWith(
@@ -173,7 +187,7 @@ describe('AttendanceService', () => {
     const signature = evidence.signEvidenceHash(evidenceHash);
     mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
       id: 1001n,
-      status: 'READY_FOR_CHAIN',
+      status: 'SUBMITTED',
       validationDetailsJson: validationDetails,
       evidencePayloadJson: { tampered: true },
       evidenceHash,

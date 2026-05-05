@@ -27,7 +27,7 @@ describe('evidence primitives', () => {
 
   it('signs an evidence hash and verifies it with the configured application key', () => {
     const signer = new SignerService(privateKey);
-    const hash = new HashService().hashCanonical({ recordId: '1001', status: 'READY_FOR_CHAIN' });
+    const hash = new HashService().hashCanonical({ recordId: '1001', status: 'SUBMITTED' });
 
     const signature = signer.signHash(hash);
 
