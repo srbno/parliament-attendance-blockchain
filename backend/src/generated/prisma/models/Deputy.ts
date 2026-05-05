@@ -31,11 +31,11 @@ export type DeputyAvgAggregateOutputType = {
 }
 
 export type DeputySumAggregateOutputType = {
-  id: bigint | null
+  id: number | null
 }
 
 export type DeputyMinAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   publicIdentifier: string | null
   name: string | null
   party: string | null
@@ -46,7 +46,7 @@ export type DeputyMinAggregateOutputType = {
 }
 
 export type DeputyMaxAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   publicIdentifier: string | null
   name: string | null
   party: string | null
@@ -198,7 +198,7 @@ export type DeputyGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 export type DeputyGroupByOutputType = {
-  id: bigint
+  id: number
   publicIdentifier: string
   name: string
   party: string
@@ -232,7 +232,7 @@ export type DeputyWhereInput = {
   AND?: Prisma.DeputyWhereInput | Prisma.DeputyWhereInput[]
   OR?: Prisma.DeputyWhereInput[]
   NOT?: Prisma.DeputyWhereInput | Prisma.DeputyWhereInput[]
-  id?: Prisma.BigIntFilter<"Deputy"> | bigint | number
+  id?: Prisma.IntFilter<"Deputy"> | number
   publicIdentifier?: Prisma.StringFilter<"Deputy"> | string
   name?: Prisma.StringFilter<"Deputy"> | string
   party?: Prisma.StringFilter<"Deputy"> | string
@@ -258,7 +258,7 @@ export type DeputyOrderByWithRelationInput = {
 }
 
 export type DeputyWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: number
   publicIdentifier?: string
   AND?: Prisma.DeputyWhereInput | Prisma.DeputyWhereInput[]
   OR?: Prisma.DeputyWhereInput[]
@@ -293,7 +293,7 @@ export type DeputyScalarWhereWithAggregatesInput = {
   AND?: Prisma.DeputyScalarWhereWithAggregatesInput | Prisma.DeputyScalarWhereWithAggregatesInput[]
   OR?: Prisma.DeputyScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DeputyScalarWhereWithAggregatesInput | Prisma.DeputyScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"Deputy"> | bigint | number
+  id?: Prisma.IntWithAggregatesFilter<"Deputy"> | number
   publicIdentifier?: Prisma.StringWithAggregatesFilter<"Deputy"> | string
   name?: Prisma.StringWithAggregatesFilter<"Deputy"> | string
   party?: Prisma.StringWithAggregatesFilter<"Deputy"> | string
@@ -304,7 +304,6 @@ export type DeputyScalarWhereWithAggregatesInput = {
 }
 
 export type DeputyCreateInput = {
-  id?: bigint | number
   publicIdentifier: string
   name: string
   party: string
@@ -317,7 +316,7 @@ export type DeputyCreateInput = {
 }
 
 export type DeputyUncheckedCreateInput = {
-  id?: bigint | number
+  id?: number
   publicIdentifier: string
   name: string
   party: string
@@ -330,7 +329,6 @@ export type DeputyUncheckedCreateInput = {
 }
 
 export type DeputyUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -343,7 +341,7 @@ export type DeputyUpdateInput = {
 }
 
 export type DeputyUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -356,7 +354,7 @@ export type DeputyUncheckedUpdateInput = {
 }
 
 export type DeputyCreateManyInput = {
-  id?: bigint | number
+  id?: number
   publicIdentifier: string
   name: string
   party: string
@@ -367,7 +365,6 @@ export type DeputyCreateManyInput = {
 }
 
 export type DeputyUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -378,7 +375,7 @@ export type DeputyUpdateManyMutationInput = {
 }
 
 export type DeputyUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -470,7 +467,6 @@ export type DeputyUpdateOneRequiredWithoutAttendanceRecordsNestedInput = {
 }
 
 export type DeputyCreateWithoutUsersInput = {
-  id?: bigint | number
   publicIdentifier: string
   name: string
   party: string
@@ -482,7 +478,7 @@ export type DeputyCreateWithoutUsersInput = {
 }
 
 export type DeputyUncheckedCreateWithoutUsersInput = {
-  id?: bigint | number
+  id?: number
   publicIdentifier: string
   name: string
   party: string
@@ -510,7 +506,6 @@ export type DeputyUpdateToOneWithWhereWithoutUsersInput = {
 }
 
 export type DeputyUpdateWithoutUsersInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -522,7 +517,7 @@ export type DeputyUpdateWithoutUsersInput = {
 }
 
 export type DeputyUncheckedUpdateWithoutUsersInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -534,7 +529,6 @@ export type DeputyUncheckedUpdateWithoutUsersInput = {
 }
 
 export type DeputyCreateWithoutAttendanceRecordsInput = {
-  id?: bigint | number
   publicIdentifier: string
   name: string
   party: string
@@ -546,7 +540,7 @@ export type DeputyCreateWithoutAttendanceRecordsInput = {
 }
 
 export type DeputyUncheckedCreateWithoutAttendanceRecordsInput = {
-  id?: bigint | number
+  id?: number
   publicIdentifier: string
   name: string
   party: string
@@ -574,7 +568,6 @@ export type DeputyUpdateToOneWithWhereWithoutAttendanceRecordsInput = {
 }
 
 export type DeputyUpdateWithoutAttendanceRecordsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -586,7 +579,7 @@ export type DeputyUpdateWithoutAttendanceRecordsInput = {
 }
 
 export type DeputyUncheckedUpdateWithoutAttendanceRecordsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   publicIdentifier?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   party?: Prisma.StringFieldUpdateOperationsInput | string
@@ -700,7 +693,7 @@ export type $DeputyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     attendanceRecords: Prisma.$AttendanceRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
+    id: number
     publicIdentifier: string
     name: string
     party: string
@@ -1133,7 +1126,7 @@ export interface Prisma__DeputyClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Deputy model
  */
 export interface DeputyFieldRefs {
-  readonly id: Prisma.FieldRef<"Deputy", 'BigInt'>
+  readonly id: Prisma.FieldRef<"Deputy", 'Int'>
   readonly publicIdentifier: Prisma.FieldRef<"Deputy", 'String'>
   readonly name: Prisma.FieldRef<"Deputy", 'String'>
   readonly party: Prisma.FieldRef<"Deputy", 'String'>

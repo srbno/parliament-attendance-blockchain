@@ -33,24 +33,24 @@ export type AuditLogAvgAggregateOutputType = {
 }
 
 export type AuditLogSumAggregateOutputType = {
-  id: bigint | null
-  actorUserId: bigint | null
-  attendanceRecordId: bigint | null
+  id: number | null
+  actorUserId: number | null
+  attendanceRecordId: number | null
 }
 
 export type AuditLogMinAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   eventType: string | null
-  actorUserId: bigint | null
-  attendanceRecordId: bigint | null
+  actorUserId: number | null
+  attendanceRecordId: number | null
   createdAt: Date | null
 }
 
 export type AuditLogMaxAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   eventType: string | null
-  actorUserId: bigint | null
-  attendanceRecordId: bigint | null
+  actorUserId: number | null
+  attendanceRecordId: number | null
   createdAt: Date | null
 }
 
@@ -190,10 +190,10 @@ export type AuditLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 export type AuditLogGroupByOutputType = {
-  id: bigint
+  id: number
   eventType: string
-  actorUserId: bigint | null
-  attendanceRecordId: bigint | null
+  actorUserId: number | null
+  attendanceRecordId: number | null
   detailsJson: runtime.JsonValue | null
   createdAt: Date
   _count: AuditLogCountAggregateOutputType | null
@@ -222,10 +222,10 @@ export type AuditLogWhereInput = {
   AND?: Prisma.AuditLogWhereInput | Prisma.AuditLogWhereInput[]
   OR?: Prisma.AuditLogWhereInput[]
   NOT?: Prisma.AuditLogWhereInput | Prisma.AuditLogWhereInput[]
-  id?: Prisma.BigIntFilter<"AuditLog"> | bigint | number
+  id?: Prisma.IntFilter<"AuditLog"> | number
   eventType?: Prisma.StringFilter<"AuditLog"> | string
-  actorUserId?: Prisma.BigIntNullableFilter<"AuditLog"> | bigint | number | null
-  attendanceRecordId?: Prisma.BigIntNullableFilter<"AuditLog"> | bigint | number | null
+  actorUserId?: Prisma.IntNullableFilter<"AuditLog"> | number | null
+  attendanceRecordId?: Prisma.IntNullableFilter<"AuditLog"> | number | null
   detailsJson?: Prisma.JsonNullableFilter<"AuditLog">
   createdAt?: Prisma.DateTimeFilter<"AuditLog"> | Date | string
   actorUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -244,13 +244,13 @@ export type AuditLogOrderByWithRelationInput = {
 }
 
 export type AuditLogWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: number
   AND?: Prisma.AuditLogWhereInput | Prisma.AuditLogWhereInput[]
   OR?: Prisma.AuditLogWhereInput[]
   NOT?: Prisma.AuditLogWhereInput | Prisma.AuditLogWhereInput[]
   eventType?: Prisma.StringFilter<"AuditLog"> | string
-  actorUserId?: Prisma.BigIntNullableFilter<"AuditLog"> | bigint | number | null
-  attendanceRecordId?: Prisma.BigIntNullableFilter<"AuditLog"> | bigint | number | null
+  actorUserId?: Prisma.IntNullableFilter<"AuditLog"> | number | null
+  attendanceRecordId?: Prisma.IntNullableFilter<"AuditLog"> | number | null
   detailsJson?: Prisma.JsonNullableFilter<"AuditLog">
   createdAt?: Prisma.DateTimeFilter<"AuditLog"> | Date | string
   actorUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -275,16 +275,15 @@ export type AuditLogScalarWhereWithAggregatesInput = {
   AND?: Prisma.AuditLogScalarWhereWithAggregatesInput | Prisma.AuditLogScalarWhereWithAggregatesInput[]
   OR?: Prisma.AuditLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AuditLogScalarWhereWithAggregatesInput | Prisma.AuditLogScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"AuditLog"> | bigint | number
+  id?: Prisma.IntWithAggregatesFilter<"AuditLog"> | number
   eventType?: Prisma.StringWithAggregatesFilter<"AuditLog"> | string
-  actorUserId?: Prisma.BigIntNullableWithAggregatesFilter<"AuditLog"> | bigint | number | null
-  attendanceRecordId?: Prisma.BigIntNullableWithAggregatesFilter<"AuditLog"> | bigint | number | null
+  actorUserId?: Prisma.IntNullableWithAggregatesFilter<"AuditLog"> | number | null
+  attendanceRecordId?: Prisma.IntNullableWithAggregatesFilter<"AuditLog"> | number | null
   detailsJson?: Prisma.JsonNullableWithAggregatesFilter<"AuditLog">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
 }
 
 export type AuditLogCreateInput = {
-  id?: bigint | number
   eventType: string
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -293,16 +292,15 @@ export type AuditLogCreateInput = {
 }
 
 export type AuditLogUncheckedCreateInput = {
-  id?: bigint | number
+  id?: number
   eventType: string
-  actorUserId?: bigint | number | null
-  attendanceRecordId?: bigint | number | null
+  actorUserId?: number | null
+  attendanceRecordId?: number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
 export type AuditLogUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -311,35 +309,34 @@ export type AuditLogUpdateInput = {
 }
 
 export type AuditLogUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  actorUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  attendanceRecordId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  actorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attendanceRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AuditLogCreateManyInput = {
-  id?: bigint | number
+  id?: number
   eventType: string
-  actorUserId?: bigint | number | null
-  attendanceRecordId?: bigint | number | null
+  actorUserId?: number | null
+  attendanceRecordId?: number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
 export type AuditLogUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AuditLogUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  actorUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  attendanceRecordId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  actorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attendanceRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -476,7 +473,6 @@ export type AuditLogUncheckedUpdateManyWithoutAttendanceRecordNestedInput = {
 }
 
 export type AuditLogCreateWithoutActorUserInput = {
-  id?: bigint | number
   eventType: string
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -484,9 +480,9 @@ export type AuditLogCreateWithoutActorUserInput = {
 }
 
 export type AuditLogUncheckedCreateWithoutActorUserInput = {
-  id?: bigint | number
+  id?: number
   eventType: string
-  attendanceRecordId?: bigint | number | null
+  attendanceRecordId?: number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
@@ -521,16 +517,15 @@ export type AuditLogScalarWhereInput = {
   AND?: Prisma.AuditLogScalarWhereInput | Prisma.AuditLogScalarWhereInput[]
   OR?: Prisma.AuditLogScalarWhereInput[]
   NOT?: Prisma.AuditLogScalarWhereInput | Prisma.AuditLogScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"AuditLog"> | bigint | number
+  id?: Prisma.IntFilter<"AuditLog"> | number
   eventType?: Prisma.StringFilter<"AuditLog"> | string
-  actorUserId?: Prisma.BigIntNullableFilter<"AuditLog"> | bigint | number | null
-  attendanceRecordId?: Prisma.BigIntNullableFilter<"AuditLog"> | bigint | number | null
+  actorUserId?: Prisma.IntNullableFilter<"AuditLog"> | number | null
+  attendanceRecordId?: Prisma.IntNullableFilter<"AuditLog"> | number | null
   detailsJson?: Prisma.JsonNullableFilter<"AuditLog">
   createdAt?: Prisma.DateTimeFilter<"AuditLog"> | Date | string
 }
 
 export type AuditLogCreateWithoutAttendanceRecordInput = {
-  id?: bigint | number
   eventType: string
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -538,9 +533,9 @@ export type AuditLogCreateWithoutAttendanceRecordInput = {
 }
 
 export type AuditLogUncheckedCreateWithoutAttendanceRecordInput = {
-  id?: bigint | number
+  id?: number
   eventType: string
-  actorUserId?: bigint | number | null
+  actorUserId?: number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
@@ -572,15 +567,14 @@ export type AuditLogUpdateManyWithWhereWithoutAttendanceRecordInput = {
 }
 
 export type AuditLogCreateManyActorUserInput = {
-  id?: bigint | number
+  id?: number
   eventType: string
-  attendanceRecordId?: bigint | number | null
+  attendanceRecordId?: number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
 export type AuditLogUpdateWithoutActorUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -588,31 +582,30 @@ export type AuditLogUpdateWithoutActorUserInput = {
 }
 
 export type AuditLogUncheckedUpdateWithoutActorUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceRecordId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  attendanceRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AuditLogUncheckedUpdateManyWithoutActorUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceRecordId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  attendanceRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AuditLogCreateManyAttendanceRecordInput = {
-  id?: bigint | number
+  id?: number
   eventType: string
-  actorUserId?: bigint | number | null
+  actorUserId?: number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
 export type AuditLogUpdateWithoutAttendanceRecordInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -620,17 +613,17 @@ export type AuditLogUpdateWithoutAttendanceRecordInput = {
 }
 
 export type AuditLogUncheckedUpdateWithoutAttendanceRecordInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  actorUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  actorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AuditLogUncheckedUpdateManyWithoutAttendanceRecordInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  actorUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  actorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   detailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -700,10 +693,10 @@ export type $AuditLogPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     attendanceRecord: Prisma.$AttendanceRecordPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
+    id: number
     eventType: string
-    actorUserId: bigint | null
-    attendanceRecordId: bigint | null
+    actorUserId: number | null
+    attendanceRecordId: number | null
     detailsJson: runtime.JsonValue | null
     createdAt: Date
   }, ExtArgs["result"]["auditLog"]>
@@ -1131,10 +1124,10 @@ export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends runtime
  * Fields of the AuditLog model
  */
 export interface AuditLogFieldRefs {
-  readonly id: Prisma.FieldRef<"AuditLog", 'BigInt'>
+  readonly id: Prisma.FieldRef<"AuditLog", 'Int'>
   readonly eventType: Prisma.FieldRef<"AuditLog", 'String'>
-  readonly actorUserId: Prisma.FieldRef<"AuditLog", 'BigInt'>
-  readonly attendanceRecordId: Prisma.FieldRef<"AuditLog", 'BigInt'>
+  readonly actorUserId: Prisma.FieldRef<"AuditLog", 'Int'>
+  readonly attendanceRecordId: Prisma.FieldRef<"AuditLog", 'Int'>
   readonly detailsJson: Prisma.FieldRef<"AuditLog", 'Json'>
   readonly createdAt: Prisma.FieldRef<"AuditLog", 'DateTime'>
 }

@@ -42,12 +42,12 @@ enum AttendanceStatus {
 }
 
 model User {
-  id           BigInt   @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   username     String   @unique
   email        String   @unique
   passwordHash String
   role         UserRole
-  deputyId     BigInt?
+  deputyId     Int?
   deputy       Deputy?  @relation(fields: [deputyId], references: [id])
   isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
@@ -57,7 +57,7 @@ model User {
 }
 
 model Deputy {
-  id              BigInt   @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   publicIdentifier String  @unique
   name            String
   party           String
@@ -71,10 +71,10 @@ model Deputy {
 }
 
 model ParliamentarySession {
-  id                    BigInt        @id @default(autoincrement())
+  id                    Int           @id @default(autoincrement())
   title                 String
   sessionType           SessionType
-  locationId            BigInt
+  locationId            Int
   location              AuthorizedLocation @relation(fields: [locationId], references: [id])
   scheduledStart        DateTime
   scheduledEnd          DateTime
@@ -89,7 +89,7 @@ model ParliamentarySession {
 }
 
 model AuthorizedLocation {
-  id              BigInt   @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   name            String
   latitude        Float
   longitude       Float
@@ -115,10 +115,10 @@ model ValidationPolicy {
 }
 
 model AttendanceRecord {
-  id                    BigInt           @id @default(autoincrement())
-  deputyId              BigInt
+  id                    Int              @id @default(autoincrement())
+  deputyId              Int
   deputy                Deputy           @relation(fields: [deputyId], references: [id])
-  sessionId             BigInt
+  sessionId             Int
   session               ParliamentarySession @relation(fields: [sessionId], references: [id])
   registeredAt          DateTime
   clientRequestId       String           @unique
@@ -147,11 +147,11 @@ model AttendanceRecord {
 }
 
 model AuditLog {
-  id                 BigInt   @id @default(autoincrement())
+  id                 Int      @id @default(autoincrement())
   eventType          String
-  actorUserId        BigInt?
+  actorUserId        Int?
   actorUser          User?    @relation(fields: [actorUserId], references: [id])
-  attendanceRecordId BigInt?
+  attendanceRecordId Int?
   attendanceRecord   AttendanceRecord? @relation(fields: [attendanceRecordId], references: [id])
   detailsJson        Json?
   createdAt          DateTime @default(now())

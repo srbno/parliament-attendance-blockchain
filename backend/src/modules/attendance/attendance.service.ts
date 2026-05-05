@@ -7,7 +7,7 @@ import type { BlockchainService } from '../blockchain/blockchain.service.js';
 import { runPolicyV1 } from '../validation/policies/policy-v1.js';
 import type { PolicyV1Result } from '../validation/validation-engine.js';
 import { AppError } from '../../shared/errors/app-error.js';
-import { idToString, parseBigIntId } from '../../shared/id.js';
+import { idToString, parseIntId } from '../../shared/id.js';
 import { normalizeIpAddress } from '../../shared/network/ip.js';
 import { logger } from '../../shared/logger/logger.js';
 import type { JwtUser } from '../auth/auth.types.js';
@@ -32,7 +32,7 @@ type SignedAttendanceEvidence = {
 type DataRequiredToValidateAttendance = {
   now: Date;
   clientIp: string;
-  sessionId: bigint;
+  sessionId: number;
   user: AttendanceUserWithDeputy | null;
   session: ParliamentarySessionWithLocation | null;
   validationPolicy: ValidationPolicyRecord;
@@ -64,9 +64,9 @@ function validationDetailsForError(result: PolicyV1Result): Record<string, unkno
 }
 
 function serializeAttendance(record: {
-  id: bigint;
-  deputyId: bigint;
-  sessionId: bigint;
+  id: number;
+  deputyId: number;
+  sessionId: number;
   registeredAt: Date;
   validationPolicyId: string;
   validationDetailsJson: unknown;
@@ -145,23 +145,23 @@ export class AttendanceService {
   }
 
   async get(id: string) {
-    return serializeAttendance(await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseBigIntId(id) } }));
+    return serializeAttendance(await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseIntId(id) } }));
   }
 
   async listBySession(sessionId: string) {
     return (
-      await prisma.attendanceRecord.findMany({ where: { sessionId: parseBigIntId(sessionId) }, orderBy: { id: 'asc' } })
+      await prisma.attendanceRecord.findMany({ where: { sessionId: parseIntId(sessionId) }, orderBy: { id: 'asc' } })
     ).map(serializeAttendance);
   }
 
   async listByDeputy(deputyId: string) {
     return (
-      await prisma.attendanceRecord.findMany({ where: { deputyId: parseBigIntId(deputyId) }, orderBy: { id: 'asc' } })
+      await prisma.attendanceRecord.findMany({ where: { deputyId: parseIntId(deputyId) }, orderBy: { id: 'asc' } })
     ).map(serializeAttendance);
   }
 
   async verify(id: string) {
-    const record = await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseBigIntId(id) } });
+    const record = await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseIntId(id) } });
     logger.info('attendance_verify_requested', { recordId: record.id.toString() });
 
     const recalculatedEvidenceHash = record.evidencePayloadJson
@@ -193,11 +193,11 @@ export class AttendanceService {
   ): Promise<DataRequiredToValidateAttendance> {
     const now = new Date();
     const clientIp = normalizeIpAddress(requestIp);
-    const sessionId = parseBigIntId(input.sessionId);
+    const sessionId = parseIntId(input.sessionId);
     logger.info('attendance_validation_started', { userId: tokenUser.sub, sessionId: input.sessionId, clientRequestId: input.clientRequestId });
 
     const [user, session, validationPolicy, requestIdRecord] = await Promise.all([
-      prisma.user.findUnique({ where: { id: BigInt(tokenUser.sub) }, include: { deputy: true } }),
+      prisma.user.findUnique({ where: { id: parseIntId(tokenUser.sub) }, include: { deputy: true } }),
       prisma.parliamentarySession.findUnique({ where: { id: sessionId }, include: { location: true } }),
       prisma.validationPolicy.findUnique({ where: { id: 'POLICY_V1' } }),
       prisma.attendanceRecord.findUnique({ where: { clientRequestId: input.clientRequestId } })
@@ -283,7 +283,7 @@ export class AttendanceService {
       await prisma.auditLog.create({
         data: {
           eventType: 'attendance_validation_rejected',
-          actorUserId: BigInt(tokenUser.sub),
+          actorUserId: parseIntId(tokenUser.sub),
           detailsJson: { clientRequestId: input.clientRequestId, sessionId: input.sessionId, validationResult }
         }
       });
@@ -359,7 +359,7 @@ export class AttendanceService {
   }
 
   private async markAttendanceProofSubmitted(
-    recordId: bigint,
+    recordId: number,
     signedEvidence: SignedAttendanceEvidence,
     blockchainSubmission: BlockchainSubmissionResult
   ): Promise<SubmittedAttendanceRecord> {

@@ -76,7 +76,7 @@ await prisma.user.upsert({
 });
 
 const location = await prisma.authorizedLocation.upsert({
-  where: { id: 1n },
+  where: { id: 1 },
   update: {
     name: 'Palacio de Sao Bento - Demo',
     latitude: 38.7139,
@@ -96,7 +96,7 @@ const location = await prisma.authorizedLocation.upsert({
 });
 
 await prisma.parliamentarySession.upsert({
-  where: { id: 1n },
+  where: { id: 1 },
   update: {
     title: 'Sessao Demo Aberta',
     sessionType: 'PLENARY',

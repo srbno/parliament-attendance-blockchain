@@ -34,14 +34,14 @@ export type AuthorizedLocationAvgAggregateOutputType = {
 }
 
 export type AuthorizedLocationSumAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   latitude: number | null
   longitude: number | null
   radiusMeters: number | null
 }
 
 export type AuthorizedLocationMinAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   name: string | null
   latitude: number | null
   longitude: number | null
@@ -52,7 +52,7 @@ export type AuthorizedLocationMinAggregateOutputType = {
 }
 
 export type AuthorizedLocationMaxAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   name: string | null
   latitude: number | null
   longitude: number | null
@@ -212,7 +212,7 @@ export type AuthorizedLocationGroupByArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 export type AuthorizedLocationGroupByOutputType = {
-  id: bigint
+  id: number
   name: string
   latitude: number
   longitude: number
@@ -247,7 +247,7 @@ export type AuthorizedLocationWhereInput = {
   AND?: Prisma.AuthorizedLocationWhereInput | Prisma.AuthorizedLocationWhereInput[]
   OR?: Prisma.AuthorizedLocationWhereInput[]
   NOT?: Prisma.AuthorizedLocationWhereInput | Prisma.AuthorizedLocationWhereInput[]
-  id?: Prisma.BigIntFilter<"AuthorizedLocation"> | bigint | number
+  id?: Prisma.IntFilter<"AuthorizedLocation"> | number
   name?: Prisma.StringFilter<"AuthorizedLocation"> | string
   latitude?: Prisma.FloatFilter<"AuthorizedLocation"> | number
   longitude?: Prisma.FloatFilter<"AuthorizedLocation"> | number
@@ -273,7 +273,7 @@ export type AuthorizedLocationOrderByWithRelationInput = {
 }
 
 export type AuthorizedLocationWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: number
   AND?: Prisma.AuthorizedLocationWhereInput | Prisma.AuthorizedLocationWhereInput[]
   OR?: Prisma.AuthorizedLocationWhereInput[]
   NOT?: Prisma.AuthorizedLocationWhereInput | Prisma.AuthorizedLocationWhereInput[]
@@ -309,7 +309,7 @@ export type AuthorizedLocationScalarWhereWithAggregatesInput = {
   AND?: Prisma.AuthorizedLocationScalarWhereWithAggregatesInput | Prisma.AuthorizedLocationScalarWhereWithAggregatesInput[]
   OR?: Prisma.AuthorizedLocationScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AuthorizedLocationScalarWhereWithAggregatesInput | Prisma.AuthorizedLocationScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"AuthorizedLocation"> | bigint | number
+  id?: Prisma.IntWithAggregatesFilter<"AuthorizedLocation"> | number
   name?: Prisma.StringWithAggregatesFilter<"AuthorizedLocation"> | string
   latitude?: Prisma.FloatWithAggregatesFilter<"AuthorizedLocation"> | number
   longitude?: Prisma.FloatWithAggregatesFilter<"AuthorizedLocation"> | number
@@ -321,7 +321,6 @@ export type AuthorizedLocationScalarWhereWithAggregatesInput = {
 }
 
 export type AuthorizedLocationCreateInput = {
-  id?: bigint | number
   name: string
   latitude: number
   longitude: number
@@ -334,7 +333,7 @@ export type AuthorizedLocationCreateInput = {
 }
 
 export type AuthorizedLocationUncheckedCreateInput = {
-  id?: bigint | number
+  id?: number
   name: string
   latitude: number
   longitude: number
@@ -347,7 +346,6 @@ export type AuthorizedLocationUncheckedCreateInput = {
 }
 
 export type AuthorizedLocationUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -360,7 +358,7 @@ export type AuthorizedLocationUpdateInput = {
 }
 
 export type AuthorizedLocationUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -373,7 +371,7 @@ export type AuthorizedLocationUncheckedUpdateInput = {
 }
 
 export type AuthorizedLocationCreateManyInput = {
-  id?: bigint | number
+  id?: number
   name: string
   latitude: number
   longitude: number
@@ -385,7 +383,6 @@ export type AuthorizedLocationCreateManyInput = {
 }
 
 export type AuthorizedLocationUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -397,7 +394,7 @@ export type AuthorizedLocationUpdateManyMutationInput = {
 }
 
 export type AuthorizedLocationUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -483,16 +480,7 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type AuthorizedLocationCreateWithoutSessionsInput = {
-  id?: bigint | number
   name: string
   latitude: number
   longitude: number
@@ -504,7 +492,7 @@ export type AuthorizedLocationCreateWithoutSessionsInput = {
 }
 
 export type AuthorizedLocationUncheckedCreateWithoutSessionsInput = {
-  id?: bigint | number
+  id?: number
   name: string
   latitude: number
   longitude: number
@@ -532,7 +520,6 @@ export type AuthorizedLocationUpdateToOneWithWhereWithoutSessionsInput = {
 }
 
 export type AuthorizedLocationUpdateWithoutSessionsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -544,7 +531,7 @@ export type AuthorizedLocationUpdateWithoutSessionsInput = {
 }
 
 export type AuthorizedLocationUncheckedUpdateWithoutSessionsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -650,7 +637,7 @@ export type $AuthorizedLocationPayload<ExtArgs extends runtime.Types.Extensions.
     sessions: Prisma.$ParliamentarySessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
+    id: number
     name: string
     latitude: number
     longitude: number
@@ -1083,7 +1070,7 @@ export interface Prisma__AuthorizedLocationClient<T, Null = never, ExtArgs exten
  * Fields of the AuthorizedLocation model
  */
 export interface AuthorizedLocationFieldRefs {
-  readonly id: Prisma.FieldRef<"AuthorizedLocation", 'BigInt'>
+  readonly id: Prisma.FieldRef<"AuthorizedLocation", 'Int'>
   readonly name: Prisma.FieldRef<"AuthorizedLocation", 'String'>
   readonly latitude: Prisma.FieldRef<"AuthorizedLocation", 'Float'>
   readonly longitude: Prisma.FieldRef<"AuthorizedLocation", 'Float'>

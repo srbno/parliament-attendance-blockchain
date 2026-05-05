@@ -1,9 +1,9 @@
 import { prisma } from '../../db/prisma.js';
-import { parseBigIntId } from '../../shared/id.js';
+import { parseIntId } from '../../shared/id.js';
 import type { CreateDeputyInput, UpdateDeputyInput } from './deputies.schemas.js';
 
 function serializeDeputy(deputy: {
-  id: bigint;
+  id: number;
   publicIdentifier: string;
   name: string;
   party: string;
@@ -34,10 +34,10 @@ export class DeputiesService {
   }
 
   async get(id: string) {
-    return serializeDeputy(await prisma.deputy.findUniqueOrThrow({ where: { id: parseBigIntId(id) } }));
+    return serializeDeputy(await prisma.deputy.findUniqueOrThrow({ where: { id: parseIntId(id) } }));
   }
 
   async update(id: string, input: UpdateDeputyInput) {
-    return serializeDeputy(await prisma.deputy.update({ where: { id: parseBigIntId(id) }, data: input }));
+    return serializeDeputy(await prisma.deputy.update({ where: { id: parseIntId(id) }, data: input }));
   }
 }

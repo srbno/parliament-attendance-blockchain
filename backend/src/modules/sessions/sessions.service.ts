@@ -1,10 +1,10 @@
 import { prisma } from '../../db/prisma.js';
-import { parseBigIntId } from '../../shared/id.js';
+import { parseIntId } from '../../shared/id.js';
 import type { CreateSessionInput, UpdateSessionInput } from './sessions.schemas.js';
 
 function sessionData(input: CreateSessionInput | UpdateSessionInput) {
   const data: Record<string, unknown> = { ...input };
-  if (input.locationId) data.locationId = parseBigIntId(input.locationId);
+  if (input.locationId) data.locationId = parseIntId(input.locationId);
   if (input.scheduledStart) data.scheduledStart = new Date(input.scheduledStart);
   if (input.scheduledEnd) data.scheduledEnd = new Date(input.scheduledEnd);
   if (input.checkinStart) data.checkinStart = new Date(input.checkinStart);
@@ -13,10 +13,10 @@ function sessionData(input: CreateSessionInput | UpdateSessionInput) {
 }
 
 function serializeSession(session: {
-  id: bigint;
+  id: number;
   title: string;
   sessionType: string;
-  locationId: bigint;
+  locationId: number;
   scheduledStart: Date;
   scheduledEnd: Date;
   checkinStart: Date;
@@ -52,24 +52,24 @@ export class SessionsService {
   }
 
   async get(id: string) {
-    return serializeSession(await prisma.parliamentarySession.findUniqueOrThrow({ where: { id: parseBigIntId(id) } }));
+    return serializeSession(await prisma.parliamentarySession.findUniqueOrThrow({ where: { id: parseIntId(id) } }));
   }
 
   async update(id: string, input: UpdateSessionInput) {
     return serializeSession(
-      await prisma.parliamentarySession.update({ where: { id: parseBigIntId(id) }, data: sessionData(input) as never })
+      await prisma.parliamentarySession.update({ where: { id: parseIntId(id) }, data: sessionData(input) as never })
     );
   }
 
   async open(id: string) {
     return serializeSession(
-      await prisma.parliamentarySession.update({ where: { id: parseBigIntId(id) }, data: { status: 'OPEN' } })
+      await prisma.parliamentarySession.update({ where: { id: parseIntId(id) }, data: { status: 'OPEN' } })
     );
   }
 
   async close(id: string) {
     return serializeSession(
-      await prisma.parliamentarySession.update({ where: { id: parseBigIntId(id) }, data: { status: 'CLOSED' } })
+      await prisma.parliamentarySession.update({ where: { id: parseIntId(id) }, data: { status: 'CLOSED' } })
     );
   }
 }

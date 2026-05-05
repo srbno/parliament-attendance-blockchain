@@ -1,9 +1,9 @@
 import { prisma } from '../../db/prisma.js';
-import { parseBigIntId } from '../../shared/id.js';
+import { parseIntId } from '../../shared/id.js';
 import type { CreateLocationInput, UpdateLocationInput } from './locations.schemas.js';
 
 function serializeLocation(location: {
-  id: bigint;
+  id: number;
   name: string;
   latitude: number;
   longitude: number;
@@ -37,7 +37,7 @@ export class LocationsService {
 
   async update(id: string, input: UpdateLocationInput) {
     return serializeLocation(
-      await prisma.authorizedLocation.update({ where: { id: parseBigIntId(id) }, data: input })
+      await prisma.authorizedLocation.update({ where: { id: parseIntId(id) }, data: input })
     );
   }
 }

@@ -32,15 +32,15 @@ export type ParliamentarySessionAvgAggregateOutputType = {
 }
 
 export type ParliamentarySessionSumAggregateOutputType = {
-  id: bigint | null
-  locationId: bigint | null
+  id: number | null
+  locationId: number | null
 }
 
 export type ParliamentarySessionMinAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   title: string | null
   sessionType: $Enums.SessionType | null
-  locationId: bigint | null
+  locationId: number | null
   scheduledStart: Date | null
   scheduledEnd: Date | null
   checkinStart: Date | null
@@ -52,10 +52,10 @@ export type ParliamentarySessionMinAggregateOutputType = {
 }
 
 export type ParliamentarySessionMaxAggregateOutputType = {
-  id: bigint | null
+  id: number | null
   title: string | null
   sessionType: $Enums.SessionType | null
-  locationId: bigint | null
+  locationId: number | null
   scheduledStart: Date | null
   scheduledEnd: Date | null
   checkinStart: Date | null
@@ -226,10 +226,10 @@ export type ParliamentarySessionGroupByArgs<ExtArgs extends runtime.Types.Extens
 }
 
 export type ParliamentarySessionGroupByOutputType = {
-  id: bigint
+  id: number
   title: string
   sessionType: $Enums.SessionType
-  locationId: bigint
+  locationId: number
   scheduledStart: Date
   scheduledEnd: Date
   checkinStart: Date
@@ -264,10 +264,10 @@ export type ParliamentarySessionWhereInput = {
   AND?: Prisma.ParliamentarySessionWhereInput | Prisma.ParliamentarySessionWhereInput[]
   OR?: Prisma.ParliamentarySessionWhereInput[]
   NOT?: Prisma.ParliamentarySessionWhereInput | Prisma.ParliamentarySessionWhereInput[]
-  id?: Prisma.BigIntFilter<"ParliamentarySession"> | bigint | number
+  id?: Prisma.IntFilter<"ParliamentarySession"> | number
   title?: Prisma.StringFilter<"ParliamentarySession"> | string
   sessionType?: Prisma.EnumSessionTypeFilter<"ParliamentarySession"> | $Enums.SessionType
-  locationId?: Prisma.BigIntFilter<"ParliamentarySession"> | bigint | number
+  locationId?: Prisma.IntFilter<"ParliamentarySession"> | number
   scheduledStart?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
   scheduledEnd?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
   checkinStart?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
@@ -298,13 +298,13 @@ export type ParliamentarySessionOrderByWithRelationInput = {
 }
 
 export type ParliamentarySessionWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: number
   AND?: Prisma.ParliamentarySessionWhereInput | Prisma.ParliamentarySessionWhereInput[]
   OR?: Prisma.ParliamentarySessionWhereInput[]
   NOT?: Prisma.ParliamentarySessionWhereInput | Prisma.ParliamentarySessionWhereInput[]
   title?: Prisma.StringFilter<"ParliamentarySession"> | string
   sessionType?: Prisma.EnumSessionTypeFilter<"ParliamentarySession"> | $Enums.SessionType
-  locationId?: Prisma.BigIntFilter<"ParliamentarySession"> | bigint | number
+  locationId?: Prisma.IntFilter<"ParliamentarySession"> | number
   scheduledStart?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
   scheduledEnd?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
   checkinStart?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
@@ -341,10 +341,10 @@ export type ParliamentarySessionScalarWhereWithAggregatesInput = {
   AND?: Prisma.ParliamentarySessionScalarWhereWithAggregatesInput | Prisma.ParliamentarySessionScalarWhereWithAggregatesInput[]
   OR?: Prisma.ParliamentarySessionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ParliamentarySessionScalarWhereWithAggregatesInput | Prisma.ParliamentarySessionScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"ParliamentarySession"> | bigint | number
+  id?: Prisma.IntWithAggregatesFilter<"ParliamentarySession"> | number
   title?: Prisma.StringWithAggregatesFilter<"ParliamentarySession"> | string
   sessionType?: Prisma.EnumSessionTypeWithAggregatesFilter<"ParliamentarySession"> | $Enums.SessionType
-  locationId?: Prisma.BigIntWithAggregatesFilter<"ParliamentarySession"> | bigint | number
+  locationId?: Prisma.IntWithAggregatesFilter<"ParliamentarySession"> | number
   scheduledStart?: Prisma.DateTimeWithAggregatesFilter<"ParliamentarySession"> | Date | string
   scheduledEnd?: Prisma.DateTimeWithAggregatesFilter<"ParliamentarySession"> | Date | string
   checkinStart?: Prisma.DateTimeWithAggregatesFilter<"ParliamentarySession"> | Date | string
@@ -356,7 +356,6 @@ export type ParliamentarySessionScalarWhereWithAggregatesInput = {
 }
 
 export type ParliamentarySessionCreateInput = {
-  id?: bigint | number
   title: string
   sessionType: $Enums.SessionType
   scheduledStart: Date | string
@@ -372,10 +371,10 @@ export type ParliamentarySessionCreateInput = {
 }
 
 export type ParliamentarySessionUncheckedCreateInput = {
-  id?: bigint | number
+  id?: number
   title: string
   sessionType: $Enums.SessionType
-  locationId: bigint | number
+  locationId: number
   scheduledStart: Date | string
   scheduledEnd: Date | string
   checkinStart: Date | string
@@ -388,7 +387,6 @@ export type ParliamentarySessionUncheckedCreateInput = {
 }
 
 export type ParliamentarySessionUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -404,10 +402,10 @@ export type ParliamentarySessionUpdateInput = {
 }
 
 export type ParliamentarySessionUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
-  locationId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  locationId?: Prisma.IntFieldUpdateOperationsInput | number
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkinStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -420,10 +418,10 @@ export type ParliamentarySessionUncheckedUpdateInput = {
 }
 
 export type ParliamentarySessionCreateManyInput = {
-  id?: bigint | number
+  id?: number
   title: string
   sessionType: $Enums.SessionType
-  locationId: bigint | number
+  locationId: number
   scheduledStart: Date | string
   scheduledEnd: Date | string
   checkinStart: Date | string
@@ -435,7 +433,6 @@ export type ParliamentarySessionCreateManyInput = {
 }
 
 export type ParliamentarySessionUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -449,10 +446,10 @@ export type ParliamentarySessionUpdateManyMutationInput = {
 }
 
 export type ParliamentarySessionUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
-  locationId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  locationId?: Prisma.IntFieldUpdateOperationsInput | number
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkinStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -598,7 +595,6 @@ export type ParliamentarySessionUpdateOneRequiredWithoutAttendanceRecordsNestedI
 }
 
 export type ParliamentarySessionCreateWithoutLocationInput = {
-  id?: bigint | number
   title: string
   sessionType: $Enums.SessionType
   scheduledStart: Date | string
@@ -613,7 +609,7 @@ export type ParliamentarySessionCreateWithoutLocationInput = {
 }
 
 export type ParliamentarySessionUncheckedCreateWithoutLocationInput = {
-  id?: bigint | number
+  id?: number
   title: string
   sessionType: $Enums.SessionType
   scheduledStart: Date | string
@@ -657,10 +653,10 @@ export type ParliamentarySessionScalarWhereInput = {
   AND?: Prisma.ParliamentarySessionScalarWhereInput | Prisma.ParliamentarySessionScalarWhereInput[]
   OR?: Prisma.ParliamentarySessionScalarWhereInput[]
   NOT?: Prisma.ParliamentarySessionScalarWhereInput | Prisma.ParliamentarySessionScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"ParliamentarySession"> | bigint | number
+  id?: Prisma.IntFilter<"ParliamentarySession"> | number
   title?: Prisma.StringFilter<"ParliamentarySession"> | string
   sessionType?: Prisma.EnumSessionTypeFilter<"ParliamentarySession"> | $Enums.SessionType
-  locationId?: Prisma.BigIntFilter<"ParliamentarySession"> | bigint | number
+  locationId?: Prisma.IntFilter<"ParliamentarySession"> | number
   scheduledStart?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
   scheduledEnd?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
   checkinStart?: Prisma.DateTimeFilter<"ParliamentarySession"> | Date | string
@@ -672,7 +668,6 @@ export type ParliamentarySessionScalarWhereInput = {
 }
 
 export type ParliamentarySessionCreateWithoutAttendanceRecordsInput = {
-  id?: bigint | number
   title: string
   sessionType: $Enums.SessionType
   scheduledStart: Date | string
@@ -687,10 +682,10 @@ export type ParliamentarySessionCreateWithoutAttendanceRecordsInput = {
 }
 
 export type ParliamentarySessionUncheckedCreateWithoutAttendanceRecordsInput = {
-  id?: bigint | number
+  id?: number
   title: string
   sessionType: $Enums.SessionType
-  locationId: bigint | number
+  locationId: number
   scheduledStart: Date | string
   scheduledEnd: Date | string
   checkinStart: Date | string
@@ -718,7 +713,6 @@ export type ParliamentarySessionUpdateToOneWithWhereWithoutAttendanceRecordsInpu
 }
 
 export type ParliamentarySessionUpdateWithoutAttendanceRecordsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -733,10 +727,10 @@ export type ParliamentarySessionUpdateWithoutAttendanceRecordsInput = {
 }
 
 export type ParliamentarySessionUncheckedUpdateWithoutAttendanceRecordsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
-  locationId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  locationId?: Prisma.IntFieldUpdateOperationsInput | number
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkinStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -748,7 +742,7 @@ export type ParliamentarySessionUncheckedUpdateWithoutAttendanceRecordsInput = {
 }
 
 export type ParliamentarySessionCreateManyLocationInput = {
-  id?: bigint | number
+  id?: number
   title: string
   sessionType: $Enums.SessionType
   scheduledStart: Date | string
@@ -762,7 +756,6 @@ export type ParliamentarySessionCreateManyLocationInput = {
 }
 
 export type ParliamentarySessionUpdateWithoutLocationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -777,7 +770,7 @@ export type ParliamentarySessionUpdateWithoutLocationInput = {
 }
 
 export type ParliamentarySessionUncheckedUpdateWithoutLocationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -792,7 +785,7 @@ export type ParliamentarySessionUncheckedUpdateWithoutLocationInput = {
 }
 
 export type ParliamentarySessionUncheckedUpdateManyWithoutLocationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   sessionType?: Prisma.EnumSessionTypeFieldUpdateOperationsInput | $Enums.SessionType
   scheduledStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -921,10 +914,10 @@ export type $ParliamentarySessionPayload<ExtArgs extends runtime.Types.Extension
     attendanceRecords: Prisma.$AttendanceRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
+    id: number
     title: string
     sessionType: $Enums.SessionType
-    locationId: bigint
+    locationId: number
     scheduledStart: Date
     scheduledEnd: Date
     checkinStart: Date
@@ -1358,10 +1351,10 @@ export interface Prisma__ParliamentarySessionClient<T, Null = never, ExtArgs ext
  * Fields of the ParliamentarySession model
  */
 export interface ParliamentarySessionFieldRefs {
-  readonly id: Prisma.FieldRef<"ParliamentarySession", 'BigInt'>
+  readonly id: Prisma.FieldRef<"ParliamentarySession", 'Int'>
   readonly title: Prisma.FieldRef<"ParliamentarySession", 'String'>
   readonly sessionType: Prisma.FieldRef<"ParliamentarySession", 'SessionType'>
-  readonly locationId: Prisma.FieldRef<"ParliamentarySession", 'BigInt'>
+  readonly locationId: Prisma.FieldRef<"ParliamentarySession", 'Int'>
   readonly scheduledStart: Prisma.FieldRef<"ParliamentarySession", 'DateTime'>
   readonly scheduledEnd: Prisma.FieldRef<"ParliamentarySession", 'DateTime'>
   readonly checkinStart: Prisma.FieldRef<"ParliamentarySession", 'DateTime'>

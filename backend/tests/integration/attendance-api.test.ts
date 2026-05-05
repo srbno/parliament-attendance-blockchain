@@ -115,7 +115,7 @@ async function login(username: string, password = 'ChangeMe123!') {
   return response.json() as { accessToken: string };
 }
 
-async function submit(token: string, sessionId: bigint, payload: Record<string, unknown> = {}, remoteAddress = '127.0.0.1') {
+async function submit(token: string, sessionId: number, payload: Record<string, unknown> = {}, remoteAddress = '127.0.0.1') {
   return app.inject({
     method: 'POST',
     url: '/attendance/submit',
@@ -251,7 +251,7 @@ describe('attendance API', () => {
     expect(verifyResponse.json()).not.toHaveProperty('validationResultHashMatches');
 
     await prisma.attendanceRecord.update({
-      where: { id: BigInt(recordId) },
+      where: { id: Number(recordId) },
       data: { evidencePayloadJson: { tampered: true } }
     });
 

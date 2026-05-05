@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { requireAuth } from '../../shared/auth/guards.js';
-import { idToString } from '../../shared/id.js';
+import { idToString, parseIntId } from '../../shared/id.js';
 import { prisma } from '../../db/prisma.js';
 import { loginSchema } from './auth.schemas.js';
 import { AuthService } from './auth.service.js';
@@ -12,7 +12,7 @@ export async function authRoutes(app: FastifyInstance) {
 
   app.get('/auth/me', async (request) => {
     const tokenUser = await requireAuth(request);
-    const user = await prisma.user.findUniqueOrThrow({ where: { id: BigInt(tokenUser.sub) } });
+    const user = await prisma.user.findUniqueOrThrow({ where: { id: parseIntId(tokenUser.sub) } });
     return {
       id: user.id.toString(),
       username: user.username,

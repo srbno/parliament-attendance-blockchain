@@ -37,9 +37,9 @@ export type AttendanceRecordAvgAggregateOutputType = {
 }
 
 export type AttendanceRecordSumAggregateOutputType = {
-  id: bigint | null
-  deputyId: bigint | null
-  sessionId: bigint | null
+  id: number | null
+  deputyId: number | null
+  sessionId: number | null
   gpsLatitude: number | null
   gpsLongitude: number | null
   gpsAccuracyMeters: number | null
@@ -47,9 +47,9 @@ export type AttendanceRecordSumAggregateOutputType = {
 }
 
 export type AttendanceRecordMinAggregateOutputType = {
-  id: bigint | null
-  deputyId: bigint | null
-  sessionId: bigint | null
+  id: number | null
+  deputyId: number | null
+  sessionId: number | null
   registeredAt: Date | null
   clientRequestId: string | null
   clientIp: string | null
@@ -69,9 +69,9 @@ export type AttendanceRecordMinAggregateOutputType = {
 }
 
 export type AttendanceRecordMaxAggregateOutputType = {
-  id: bigint | null
-  deputyId: bigint | null
-  sessionId: bigint | null
+  id: number | null
+  deputyId: number | null
+  sessionId: number | null
   registeredAt: Date | null
   clientRequestId: string | null
   clientIp: string | null
@@ -292,9 +292,9 @@ export type AttendanceRecordGroupByArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 export type AttendanceRecordGroupByOutputType = {
-  id: bigint
-  deputyId: bigint
-  sessionId: bigint
+  id: number
+  deputyId: number
+  sessionId: number
   registeredAt: Date
   clientRequestId: string
   clientIp: string
@@ -339,9 +339,9 @@ export type AttendanceRecordWhereInput = {
   AND?: Prisma.AttendanceRecordWhereInput | Prisma.AttendanceRecordWhereInput[]
   OR?: Prisma.AttendanceRecordWhereInput[]
   NOT?: Prisma.AttendanceRecordWhereInput | Prisma.AttendanceRecordWhereInput[]
-  id?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
-  deputyId?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
-  sessionId?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
+  id?: Prisma.IntFilter<"AttendanceRecord"> | number
+  deputyId?: Prisma.IntFilter<"AttendanceRecord"> | number
+  sessionId?: Prisma.IntFilter<"AttendanceRecord"> | number
   registeredAt?: Prisma.DateTimeFilter<"AttendanceRecord"> | Date | string
   clientRequestId?: Prisma.StringFilter<"AttendanceRecord"> | string
   clientIp?: Prisma.StringFilter<"AttendanceRecord"> | string
@@ -395,13 +395,13 @@ export type AttendanceRecordOrderByWithRelationInput = {
 }
 
 export type AttendanceRecordWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: number
   clientRequestId?: string
   AND?: Prisma.AttendanceRecordWhereInput | Prisma.AttendanceRecordWhereInput[]
   OR?: Prisma.AttendanceRecordWhereInput[]
   NOT?: Prisma.AttendanceRecordWhereInput | Prisma.AttendanceRecordWhereInput[]
-  deputyId?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
-  sessionId?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
+  deputyId?: Prisma.IntFilter<"AttendanceRecord"> | number
+  sessionId?: Prisma.IntFilter<"AttendanceRecord"> | number
   registeredAt?: Prisma.DateTimeFilter<"AttendanceRecord"> | Date | string
   clientIp?: Prisma.StringFilter<"AttendanceRecord"> | string
   gpsLatitude?: Prisma.FloatNullableFilter<"AttendanceRecord"> | number | null
@@ -458,9 +458,9 @@ export type AttendanceRecordScalarWhereWithAggregatesInput = {
   AND?: Prisma.AttendanceRecordScalarWhereWithAggregatesInput | Prisma.AttendanceRecordScalarWhereWithAggregatesInput[]
   OR?: Prisma.AttendanceRecordScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AttendanceRecordScalarWhereWithAggregatesInput | Prisma.AttendanceRecordScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"AttendanceRecord"> | bigint | number
-  deputyId?: Prisma.BigIntWithAggregatesFilter<"AttendanceRecord"> | bigint | number
-  sessionId?: Prisma.BigIntWithAggregatesFilter<"AttendanceRecord"> | bigint | number
+  id?: Prisma.IntWithAggregatesFilter<"AttendanceRecord"> | number
+  deputyId?: Prisma.IntWithAggregatesFilter<"AttendanceRecord"> | number
+  sessionId?: Prisma.IntWithAggregatesFilter<"AttendanceRecord"> | number
   registeredAt?: Prisma.DateTimeWithAggregatesFilter<"AttendanceRecord"> | Date | string
   clientRequestId?: Prisma.StringWithAggregatesFilter<"AttendanceRecord"> | string
   clientIp?: Prisma.StringWithAggregatesFilter<"AttendanceRecord"> | string
@@ -482,7 +482,6 @@ export type AttendanceRecordScalarWhereWithAggregatesInput = {
 }
 
 export type AttendanceRecordCreateInput = {
-  id?: bigint | number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -507,9 +506,9 @@ export type AttendanceRecordCreateInput = {
 }
 
 export type AttendanceRecordUncheckedCreateInput = {
-  id?: bigint | number
-  deputyId: bigint | number
-  sessionId: bigint | number
+  id?: number
+  deputyId: number
+  sessionId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -532,7 +531,6 @@ export type AttendanceRecordUncheckedCreateInput = {
 }
 
 export type AttendanceRecordUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -557,9 +555,9 @@ export type AttendanceRecordUpdateInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deputyId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  sessionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -582,9 +580,9 @@ export type AttendanceRecordUncheckedUpdateInput = {
 }
 
 export type AttendanceRecordCreateManyInput = {
-  id?: bigint | number
-  deputyId: bigint | number
-  sessionId: bigint | number
+  id?: number
+  deputyId: number
+  sessionId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -606,7 +604,6 @@ export type AttendanceRecordCreateManyInput = {
 }
 
 export type AttendanceRecordUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -627,9 +624,9 @@ export type AttendanceRecordUpdateManyMutationInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deputyId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  sessionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -891,6 +888,14 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type NullableBigIntFieldUpdateOperationsInput = {
+  set?: bigint | number | null
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
+}
+
 export type EnumAttendanceStatusFieldUpdateOperationsInput = {
   set?: $Enums.AttendanceStatus
 }
@@ -912,7 +917,6 @@ export type AttendanceRecordUpdateOneWithoutAuditLogsNestedInput = {
 }
 
 export type AttendanceRecordCreateWithoutDeputyInput = {
-  id?: bigint | number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -936,8 +940,8 @@ export type AttendanceRecordCreateWithoutDeputyInput = {
 }
 
 export type AttendanceRecordUncheckedCreateWithoutDeputyInput = {
-  id?: bigint | number
-  sessionId: bigint | number
+  id?: number
+  sessionId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -989,9 +993,9 @@ export type AttendanceRecordScalarWhereInput = {
   AND?: Prisma.AttendanceRecordScalarWhereInput | Prisma.AttendanceRecordScalarWhereInput[]
   OR?: Prisma.AttendanceRecordScalarWhereInput[]
   NOT?: Prisma.AttendanceRecordScalarWhereInput | Prisma.AttendanceRecordScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
-  deputyId?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
-  sessionId?: Prisma.BigIntFilter<"AttendanceRecord"> | bigint | number
+  id?: Prisma.IntFilter<"AttendanceRecord"> | number
+  deputyId?: Prisma.IntFilter<"AttendanceRecord"> | number
+  sessionId?: Prisma.IntFilter<"AttendanceRecord"> | number
   registeredAt?: Prisma.DateTimeFilter<"AttendanceRecord"> | Date | string
   clientRequestId?: Prisma.StringFilter<"AttendanceRecord"> | string
   clientIp?: Prisma.StringFilter<"AttendanceRecord"> | string
@@ -1013,7 +1017,6 @@ export type AttendanceRecordScalarWhereInput = {
 }
 
 export type AttendanceRecordCreateWithoutSessionInput = {
-  id?: bigint | number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1037,8 +1040,8 @@ export type AttendanceRecordCreateWithoutSessionInput = {
 }
 
 export type AttendanceRecordUncheckedCreateWithoutSessionInput = {
-  id?: bigint | number
-  deputyId: bigint | number
+  id?: number
+  deputyId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1087,7 +1090,6 @@ export type AttendanceRecordUpdateManyWithWhereWithoutSessionInput = {
 }
 
 export type AttendanceRecordCreateWithoutValidationPolicyInput = {
-  id?: bigint | number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1111,9 +1113,9 @@ export type AttendanceRecordCreateWithoutValidationPolicyInput = {
 }
 
 export type AttendanceRecordUncheckedCreateWithoutValidationPolicyInput = {
-  id?: bigint | number
-  deputyId: bigint | number
-  sessionId: bigint | number
+  id?: number
+  deputyId: number
+  sessionId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1161,7 +1163,6 @@ export type AttendanceRecordUpdateManyWithWhereWithoutValidationPolicyInput = {
 }
 
 export type AttendanceRecordCreateWithoutAuditLogsInput = {
-  id?: bigint | number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1185,9 +1186,9 @@ export type AttendanceRecordCreateWithoutAuditLogsInput = {
 }
 
 export type AttendanceRecordUncheckedCreateWithoutAuditLogsInput = {
-  id?: bigint | number
-  deputyId: bigint | number
-  sessionId: bigint | number
+  id?: number
+  deputyId: number
+  sessionId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1225,7 +1226,6 @@ export type AttendanceRecordUpdateToOneWithWhereWithoutAuditLogsInput = {
 }
 
 export type AttendanceRecordUpdateWithoutAuditLogsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1249,9 +1249,9 @@ export type AttendanceRecordUpdateWithoutAuditLogsInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateWithoutAuditLogsInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deputyId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  sessionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1273,8 +1273,8 @@ export type AttendanceRecordUncheckedUpdateWithoutAuditLogsInput = {
 }
 
 export type AttendanceRecordCreateManyDeputyInput = {
-  id?: bigint | number
-  sessionId: bigint | number
+  id?: number
+  sessionId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1296,7 +1296,6 @@ export type AttendanceRecordCreateManyDeputyInput = {
 }
 
 export type AttendanceRecordUpdateWithoutDeputyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1320,8 +1319,8 @@ export type AttendanceRecordUpdateWithoutDeputyInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateWithoutDeputyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  sessionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1344,8 +1343,8 @@ export type AttendanceRecordUncheckedUpdateWithoutDeputyInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateManyWithoutDeputyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  sessionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1367,8 +1366,8 @@ export type AttendanceRecordUncheckedUpdateManyWithoutDeputyInput = {
 }
 
 export type AttendanceRecordCreateManySessionInput = {
-  id?: bigint | number
-  deputyId: bigint | number
+  id?: number
+  deputyId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1390,7 +1389,6 @@ export type AttendanceRecordCreateManySessionInput = {
 }
 
 export type AttendanceRecordUpdateWithoutSessionInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1414,8 +1412,8 @@ export type AttendanceRecordUpdateWithoutSessionInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateWithoutSessionInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deputyId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1438,8 +1436,8 @@ export type AttendanceRecordUncheckedUpdateWithoutSessionInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateManyWithoutSessionInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deputyId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1461,9 +1459,9 @@ export type AttendanceRecordUncheckedUpdateManyWithoutSessionInput = {
 }
 
 export type AttendanceRecordCreateManyValidationPolicyInput = {
-  id?: bigint | number
-  deputyId: bigint | number
-  sessionId: bigint | number
+  id?: number
+  deputyId: number
+  sessionId: number
   registeredAt: Date | string
   clientRequestId: string
   clientIp: string
@@ -1484,7 +1482,6 @@ export type AttendanceRecordCreateManyValidationPolicyInput = {
 }
 
 export type AttendanceRecordUpdateWithoutValidationPolicyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1508,9 +1505,9 @@ export type AttendanceRecordUpdateWithoutValidationPolicyInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateWithoutValidationPolicyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deputyId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  sessionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1532,9 +1529,9 @@ export type AttendanceRecordUncheckedUpdateWithoutValidationPolicyInput = {
 }
 
 export type AttendanceRecordUncheckedUpdateManyWithoutValidationPolicyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deputyId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  sessionId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionId?: Prisma.IntFieldUpdateOperationsInput | number
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientRequestId?: Prisma.StringFieldUpdateOperationsInput | string
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1720,9 +1717,9 @@ export type $AttendanceRecordPayload<ExtArgs extends runtime.Types.Extensions.In
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
-    deputyId: bigint
-    sessionId: bigint
+    id: number
+    deputyId: number
+    sessionId: number
     registeredAt: Date
     clientRequestId: string
     clientIp: string
@@ -2168,9 +2165,9 @@ export interface Prisma__AttendanceRecordClient<T, Null = never, ExtArgs extends
  * Fields of the AttendanceRecord model
  */
 export interface AttendanceRecordFieldRefs {
-  readonly id: Prisma.FieldRef<"AttendanceRecord", 'BigInt'>
-  readonly deputyId: Prisma.FieldRef<"AttendanceRecord", 'BigInt'>
-  readonly sessionId: Prisma.FieldRef<"AttendanceRecord", 'BigInt'>
+  readonly id: Prisma.FieldRef<"AttendanceRecord", 'Int'>
+  readonly deputyId: Prisma.FieldRef<"AttendanceRecord", 'Int'>
+  readonly sessionId: Prisma.FieldRef<"AttendanceRecord", 'Int'>
   readonly registeredAt: Prisma.FieldRef<"AttendanceRecord", 'DateTime'>
   readonly clientRequestId: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly clientIp: Prisma.FieldRef<"AttendanceRecord", 'String'>

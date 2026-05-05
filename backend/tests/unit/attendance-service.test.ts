@@ -41,14 +41,14 @@ const submitInput = {
 
 function setupValidPrisma() {
   mocks.prisma.user.findUnique.mockResolvedValue({
-    id: 10n,
+    id: 10,
     isActive: true,
     role: 'DEPUTY',
-    deputyId: 25n,
-    deputy: { id: 25n, active: true }
+    deputyId: 25,
+    deputy: { id: 25, active: true }
   });
   mocks.prisma.parliamentarySession.findUnique.mockResolvedValue({
-    id: 431n,
+    id: 431,
     status: 'OPEN',
     checkinStart: new Date('2026-05-03T13:00:00.000Z'),
     checkinEnd: new Date('2026-05-03T14:00:00.000Z'),
@@ -69,15 +69,15 @@ function setupValidPrisma() {
   mocks.prisma.attendanceRecord.findUnique.mockResolvedValue(null);
   mocks.prisma.attendanceRecord.count.mockResolvedValue(0);
   mocks.prisma.attendanceRecord.create.mockResolvedValue({
-    id: 1001n,
-    deputyId: 25n,
-    sessionId: 431n,
+    id: 1001,
+    deputyId: 25,
+    sessionId: 431,
     registeredAt: now
   });
   mocks.prisma.attendanceRecord.update.mockImplementation(async ({ data }: { data: Record<string, unknown> }) => ({
-    id: 1001n,
-    deputyId: 25n,
-    sessionId: 431n,
+    id: 1001,
+    deputyId: 25,
+    sessionId: 431,
     registeredAt: now,
     validationPolicyId: 'POLICY_V1',
     evidenceHash: data.evidenceHash,
@@ -114,6 +114,11 @@ describe('AttendanceService', () => {
     const response = await service.submit(submitInput, tokenUser, '127.0.0.1');
 
     expect(response.status).toBe('SUBMITTED');
+    expect(mocks.prisma.user.findUnique).toHaveBeenCalledWith({ where: { id: 10 }, include: { deputy: true } });
+    expect(mocks.prisma.parliamentarySession.findUnique).toHaveBeenCalledWith({
+      where: { id: 431 },
+      include: { location: true }
+    });
     expect(response).not.toHaveProperty('validationResultHash');
     expect(response.evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
     expect(response.signature).toMatch(/^0x[0-9a-f]{128}$/);
@@ -131,7 +136,7 @@ describe('AttendanceService', () => {
     );
     expect(mocks.prisma.auditLog.create).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({ eventType: 'attendance_proof_submitted' })
+        data: expect.objectContaining({ actorUserId: 10, eventType: 'attendance_proof_submitted' })
       })
     );
     expect(mocks.prisma.attendanceRecord.create).toHaveBeenCalledWith(
@@ -143,7 +148,7 @@ describe('AttendanceService', () => {
 
   it('rejects invalid policy results before evidence generation or blockchain submission', async () => {
     mocks.prisma.parliamentarySession.findUnique.mockResolvedValueOnce({
-      id: 431n,
+      id: 431,
       status: 'OPEN',
       checkinStart: new Date('2026-05-03T13:00:00.000Z'),
       checkinEnd: new Date('2026-05-03T14:00:00.000Z'),
@@ -165,7 +170,7 @@ describe('AttendanceService', () => {
     expect(mocks.prisma.attendanceRecord.create).not.toHaveBeenCalled();
     expect(blockchain.registerAttendanceProof).not.toHaveBeenCalled();
     expect(mocks.prisma.auditLog.create).toHaveBeenCalledWith(
-      expect.objectContaining({ data: expect.objectContaining({ eventType: 'attendance_validation_rejected' }) })
+      expect.objectContaining({ data: expect.objectContaining({ actorUserId: 10, eventType: 'attendance_validation_rejected' }) })
     );
   });
 
@@ -186,7 +191,7 @@ describe('AttendanceService', () => {
     const evidenceHash = evidence.hashEvidencePayload(evidencePayload);
     const signature = evidence.signEvidenceHash(evidenceHash);
     mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
-      id: 1001n,
+      id: 1001,
       status: 'SUBMITTED',
       validationDetailsJson: validationDetails,
       evidencePayloadJson: { tampered: true },
