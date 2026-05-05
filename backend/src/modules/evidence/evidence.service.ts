@@ -3,15 +3,19 @@ import { HashService } from './hash.service.js';
 import { SignerService } from './signer.service.js';
 import type { CanonicalJsonValue } from './canonical-json.js';
 
+export type EvidenceJsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | EvidenceJsonValue[]
+  | { [key: string]: EvidenceJsonValue | undefined };
+
 export class EvidenceService {
   constructor(
     private readonly hashService = new HashService(),
     private readonly signerService = new SignerService(env.APP_PRIVATE_KEY)
   ) {}
-
-  hashValidationResult(validationResult: CanonicalJsonValue): string {
-    return this.hashService.hashCanonical(validationResult);
-  }
 
   buildEvidencePayload(input: {
     recordId: string;
@@ -19,7 +23,7 @@ export class EvidenceService {
     sessionId: string;
     registeredAt: string;
     validationPolicyId: string;
-    validationResultHash: string;
+    validationResult: EvidenceJsonValue;
   }) {
     return {
       recordId: input.recordId,
@@ -27,7 +31,7 @@ export class EvidenceService {
       sessionId: input.sessionId,
       registeredAt: input.registeredAt,
       validationPolicyId: input.validationPolicyId,
-      validationResultHash: input.validationResultHash,
+      validationResult: input.validationResult,
       applicationId: env.APPLICATION_ID,
       applicationVersion: env.APPLICATION_VERSION,
       hashAlgorithm: this.hashService.algorithm

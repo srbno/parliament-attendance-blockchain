@@ -129,7 +129,6 @@ model AttendanceRecord {
   validationPolicyId    String
   validationPolicy      ValidationPolicy @relation(fields: [validationPolicyId], references: [id])
   validationDetailsJson Json?
-  validationResultHash  String?
   evidencePayloadJson   Json?
   evidenceHash          String?
   signature             String?

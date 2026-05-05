@@ -57,7 +57,6 @@ export type AttendanceRecordMinAggregateOutputType = {
   gpsLongitude: number | null
   gpsAccuracyMeters: number | null
   validationPolicyId: string | null
-  validationResultHash: string | null
   evidenceHash: string | null
   signature: string | null
   txHash: string | null
@@ -80,7 +79,6 @@ export type AttendanceRecordMaxAggregateOutputType = {
   gpsLongitude: number | null
   gpsAccuracyMeters: number | null
   validationPolicyId: string | null
-  validationResultHash: string | null
   evidenceHash: string | null
   signature: string | null
   txHash: string | null
@@ -104,7 +102,6 @@ export type AttendanceRecordCountAggregateOutputType = {
   gpsAccuracyMeters: number
   validationPolicyId: number
   validationDetailsJson: number
-  validationResultHash: number
   evidencePayloadJson: number
   evidenceHash: number
   signature: number
@@ -150,7 +147,6 @@ export type AttendanceRecordMinAggregateInputType = {
   gpsLongitude?: true
   gpsAccuracyMeters?: true
   validationPolicyId?: true
-  validationResultHash?: true
   evidenceHash?: true
   signature?: true
   txHash?: true
@@ -173,7 +169,6 @@ export type AttendanceRecordMaxAggregateInputType = {
   gpsLongitude?: true
   gpsAccuracyMeters?: true
   validationPolicyId?: true
-  validationResultHash?: true
   evidenceHash?: true
   signature?: true
   txHash?: true
@@ -197,7 +192,6 @@ export type AttendanceRecordCountAggregateInputType = {
   gpsAccuracyMeters?: true
   validationPolicyId?: true
   validationDetailsJson?: true
-  validationResultHash?: true
   evidencePayloadJson?: true
   evidenceHash?: true
   signature?: true
@@ -309,7 +303,6 @@ export type AttendanceRecordGroupByOutputType = {
   gpsAccuracyMeters: number | null
   validationPolicyId: string
   validationDetailsJson: runtime.JsonValue | null
-  validationResultHash: string | null
   evidencePayloadJson: runtime.JsonValue | null
   evidenceHash: string | null
   signature: string | null
@@ -357,7 +350,6 @@ export type AttendanceRecordWhereInput = {
   gpsAccuracyMeters?: Prisma.FloatNullableFilter<"AttendanceRecord"> | number | null
   validationPolicyId?: Prisma.StringFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
-  validationResultHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   signature?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -386,7 +378,6 @@ export type AttendanceRecordOrderByWithRelationInput = {
   gpsAccuracyMeters?: Prisma.SortOrderInput | Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
   validationDetailsJson?: Prisma.SortOrderInput | Prisma.SortOrder
-  validationResultHash?: Prisma.SortOrderInput | Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidenceHash?: Prisma.SortOrderInput | Prisma.SortOrder
   signature?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -418,7 +409,6 @@ export type AttendanceRecordWhereUniqueInput = Prisma.AtLeast<{
   gpsAccuracyMeters?: Prisma.FloatNullableFilter<"AttendanceRecord"> | number | null
   validationPolicyId?: Prisma.StringFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
-  validationResultHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   signature?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -447,7 +437,6 @@ export type AttendanceRecordOrderByWithAggregationInput = {
   gpsAccuracyMeters?: Prisma.SortOrderInput | Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
   validationDetailsJson?: Prisma.SortOrderInput | Prisma.SortOrder
-  validationResultHash?: Prisma.SortOrderInput | Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidenceHash?: Prisma.SortOrderInput | Prisma.SortOrder
   signature?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -480,7 +469,6 @@ export type AttendanceRecordScalarWhereWithAggregatesInput = {
   gpsAccuracyMeters?: Prisma.FloatNullableWithAggregatesFilter<"AttendanceRecord"> | number | null
   validationPolicyId?: Prisma.StringWithAggregatesFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableWithAggregatesFilter<"AttendanceRecord">
-  validationResultHash?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
   evidencePayloadJson?: Prisma.JsonNullableWithAggregatesFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
   signature?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
@@ -502,7 +490,6 @@ export type AttendanceRecordCreateInput = {
   gpsLongitude?: number | null
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -531,7 +518,6 @@ export type AttendanceRecordUncheckedCreateInput = {
   gpsAccuracyMeters?: number | null
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -554,7 +540,6 @@ export type AttendanceRecordUpdateInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -583,7 +568,6 @@ export type AttendanceRecordUncheckedUpdateInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -609,7 +593,6 @@ export type AttendanceRecordCreateManyInput = {
   gpsAccuracyMeters?: number | null
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -631,7 +614,6 @@ export type AttendanceRecordUpdateManyMutationInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -656,7 +638,6 @@ export type AttendanceRecordUncheckedUpdateManyInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -691,7 +672,6 @@ export type AttendanceRecordCountOrderByAggregateInput = {
   gpsAccuracyMeters?: Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
   validationDetailsJson?: Prisma.SortOrder
-  validationResultHash?: Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrder
   evidenceHash?: Prisma.SortOrder
   signature?: Prisma.SortOrder
@@ -725,7 +705,6 @@ export type AttendanceRecordMaxOrderByAggregateInput = {
   gpsLongitude?: Prisma.SortOrder
   gpsAccuracyMeters?: Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
-  validationResultHash?: Prisma.SortOrder
   evidenceHash?: Prisma.SortOrder
   signature?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
@@ -748,7 +727,6 @@ export type AttendanceRecordMinOrderByAggregateInput = {
   gpsLongitude?: Prisma.SortOrder
   gpsAccuracyMeters?: Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
-  validationResultHash?: Prisma.SortOrder
   evidenceHash?: Prisma.SortOrder
   signature?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
@@ -942,7 +920,6 @@ export type AttendanceRecordCreateWithoutDeputyInput = {
   gpsLongitude?: number | null
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -969,7 +946,6 @@ export type AttendanceRecordUncheckedCreateWithoutDeputyInput = {
   gpsAccuracyMeters?: number | null
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1024,7 +1000,6 @@ export type AttendanceRecordScalarWhereInput = {
   gpsAccuracyMeters?: Prisma.FloatNullableFilter<"AttendanceRecord"> | number | null
   validationPolicyId?: Prisma.StringFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
-  validationResultHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   signature?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -1046,7 +1021,6 @@ export type AttendanceRecordCreateWithoutSessionInput = {
   gpsLongitude?: number | null
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1073,7 +1047,6 @@ export type AttendanceRecordUncheckedCreateWithoutSessionInput = {
   gpsAccuracyMeters?: number | null
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1122,7 +1095,6 @@ export type AttendanceRecordCreateWithoutValidationPolicyInput = {
   gpsLongitude?: number | null
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1149,7 +1121,6 @@ export type AttendanceRecordUncheckedCreateWithoutValidationPolicyInput = {
   gpsLongitude?: number | null
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1198,7 +1169,6 @@ export type AttendanceRecordCreateWithoutAuditLogsInput = {
   gpsLongitude?: number | null
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1226,7 +1196,6 @@ export type AttendanceRecordUncheckedCreateWithoutAuditLogsInput = {
   gpsAccuracyMeters?: number | null
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1264,7 +1233,6 @@ export type AttendanceRecordUpdateWithoutAuditLogsInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1292,7 +1260,6 @@ export type AttendanceRecordUncheckedUpdateWithoutAuditLogsInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1316,7 +1283,6 @@ export type AttendanceRecordCreateManyDeputyInput = {
   gpsAccuracyMeters?: number | null
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1338,7 +1304,6 @@ export type AttendanceRecordUpdateWithoutDeputyInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1365,7 +1330,6 @@ export type AttendanceRecordUncheckedUpdateWithoutDeputyInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1390,7 +1354,6 @@ export type AttendanceRecordUncheckedUpdateManyWithoutDeputyInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1414,7 +1377,6 @@ export type AttendanceRecordCreateManySessionInput = {
   gpsAccuracyMeters?: number | null
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1436,7 +1398,6 @@ export type AttendanceRecordUpdateWithoutSessionInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1463,7 +1424,6 @@ export type AttendanceRecordUncheckedUpdateWithoutSessionInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1488,7 +1448,6 @@ export type AttendanceRecordUncheckedUpdateManyWithoutSessionInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1512,7 +1471,6 @@ export type AttendanceRecordCreateManyValidationPolicyInput = {
   gpsLongitude?: number | null
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
   signature?: string | null
@@ -1534,7 +1492,6 @@ export type AttendanceRecordUpdateWithoutValidationPolicyInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1561,7 +1518,6 @@ export type AttendanceRecordUncheckedUpdateWithoutValidationPolicyInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1586,7 +1542,6 @@ export type AttendanceRecordUncheckedUpdateManyWithoutValidationPolicyInput = {
   gpsLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  validationResultHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1642,7 +1597,6 @@ export type AttendanceRecordSelect<ExtArgs extends runtime.Types.Extensions.Inte
   gpsAccuracyMeters?: boolean
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
-  validationResultHash?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
   signature?: boolean
@@ -1672,7 +1626,6 @@ export type AttendanceRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   gpsAccuracyMeters?: boolean
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
-  validationResultHash?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
   signature?: boolean
@@ -1700,7 +1653,6 @@ export type AttendanceRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   gpsAccuracyMeters?: boolean
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
-  validationResultHash?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
   signature?: boolean
@@ -1728,7 +1680,6 @@ export type AttendanceRecordSelectScalar = {
   gpsAccuracyMeters?: boolean
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
-  validationResultHash?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
   signature?: boolean
@@ -1741,7 +1692,7 @@ export type AttendanceRecordSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AttendanceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deputyId" | "sessionId" | "registeredAt" | "clientRequestId" | "clientIp" | "gpsLatitude" | "gpsLongitude" | "gpsAccuracyMeters" | "validationPolicyId" | "validationDetailsJson" | "validationResultHash" | "evidencePayloadJson" | "evidenceHash" | "signature" | "txHash" | "blockNumber" | "contractAddress" | "status" | "failureReason" | "createdAt" | "updatedAt", ExtArgs["result"]["attendanceRecord"]>
+export type AttendanceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deputyId" | "sessionId" | "registeredAt" | "clientRequestId" | "clientIp" | "gpsLatitude" | "gpsLongitude" | "gpsAccuracyMeters" | "validationPolicyId" | "validationDetailsJson" | "evidencePayloadJson" | "evidenceHash" | "signature" | "txHash" | "blockNumber" | "contractAddress" | "status" | "failureReason" | "createdAt" | "updatedAt", ExtArgs["result"]["attendanceRecord"]>
 export type AttendanceRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
   session?: boolean | Prisma.ParliamentarySessionDefaultArgs<ExtArgs>
@@ -1780,7 +1731,6 @@ export type $AttendanceRecordPayload<ExtArgs extends runtime.Types.Extensions.In
     gpsAccuracyMeters: number | null
     validationPolicyId: string
     validationDetailsJson: runtime.JsonValue | null
-    validationResultHash: string | null
     evidencePayloadJson: runtime.JsonValue | null
     evidenceHash: string | null
     signature: string | null
@@ -2229,7 +2179,6 @@ export interface AttendanceRecordFieldRefs {
   readonly gpsAccuracyMeters: Prisma.FieldRef<"AttendanceRecord", 'Float'>
   readonly validationPolicyId: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly validationDetailsJson: Prisma.FieldRef<"AttendanceRecord", 'Json'>
-  readonly validationResultHash: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly evidencePayloadJson: Prisma.FieldRef<"AttendanceRecord", 'Json'>
   readonly evidenceHash: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly signature: Prisma.FieldRef<"AttendanceRecord", 'String'>

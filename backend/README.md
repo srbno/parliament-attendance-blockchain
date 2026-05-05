@@ -22,7 +22,7 @@ Esta fase inclui:
 - Validação da janela temporal de check-in.
 - Prevenção de duplicados e replay através de `clientRequestId`.
 - Geração de JSON canónico determinístico.
-- Geração de `validationResultHash` e `evidenceHash` com Keccak-256.
+- Geração de `evidenceHash` com Keccak-256 sobre a evidência completa.
 - Assinatura de `evidenceHash` com chave privada interna da aplicação.
 - Verificação local de hashes e assinatura.
 - Auditoria de eventos relevantes.

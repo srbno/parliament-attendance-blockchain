@@ -4,7 +4,6 @@ export type RegisterAttendanceProofInput = {
   sessionId: string;
   registeredAt: string;
   validationPolicyId: string;
-  validationResultHash: string;
   evidenceHash: string;
   signature: string;
 };

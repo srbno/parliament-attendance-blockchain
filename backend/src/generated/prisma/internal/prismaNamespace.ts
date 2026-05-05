@@ -1054,7 +1054,6 @@ export const AttendanceRecordScalarFieldEnum = {
   gpsAccuracyMeters: 'gpsAccuracyMeters',
   validationPolicyId: 'validationPolicyId',
   validationDetailsJson: 'validationDetailsJson',
-  validationResultHash: 'validationResultHash',
   evidencePayloadJson: 'evidencePayloadJson',
   evidenceHash: 'evidenceHash',
   signature: 'signature',

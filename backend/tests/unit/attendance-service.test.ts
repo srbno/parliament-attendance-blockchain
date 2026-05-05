@@ -80,7 +80,6 @@ function setupValidPrisma() {
     sessionId: 431n,
     registeredAt: now,
     validationPolicyId: 'POLICY_V1',
-    validationResultHash: mocks.prisma.attendanceRecord.create.mock.calls[0][0].data.validationResultHash,
     evidenceHash: data.evidenceHash,
     signature: data.signature,
     txHash: null,
@@ -109,13 +108,21 @@ describe('AttendanceService', () => {
     const response = await service.submit(submitInput, tokenUser, '127.0.0.1');
 
     expect(response.status).toBe('READY_FOR_CHAIN');
-    expect(response.validationResultHash).toMatch(/^0x[0-9a-f]{64}$/);
+    expect(response).not.toHaveProperty('validationResultHash');
     expect(response.evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
     expect(response.signature).toMatch(/^0x[0-9a-f]{128}$/);
     expect(blockchain.registerAttendanceProof).toHaveBeenCalledOnce();
+    expect(blockchain.registerAttendanceProof).toHaveBeenCalledWith(
+      expect.not.objectContaining({ validationResultHash: expect.anything() })
+    );
     expect(mocks.prisma.attendanceRecord.update).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({ status: 'READY_FOR_CHAIN' })
+      })
+    );
+    expect(mocks.prisma.attendanceRecord.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.not.objectContaining({ validationResultHash: expect.anything() })
       })
     );
   });
@@ -154,14 +161,13 @@ describe('AttendanceService', () => {
       new SignerService('0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef')
     );
     const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
-    const validationResultHash = evidence.hashValidationResult(validationDetails);
     const evidencePayload = evidence.buildEvidencePayload({
       recordId: '1001',
       deputyId: '25',
       sessionId: '431',
       registeredAt: now.toISOString(),
       validationPolicyId: 'POLICY_V1',
-      validationResultHash
+      validationResult: validationDetails
     });
     const evidenceHash = evidence.hashEvidencePayload(evidencePayload);
     const signature = evidence.signEvidenceHash(evidenceHash);
@@ -169,7 +175,6 @@ describe('AttendanceService', () => {
       id: 1001n,
       status: 'READY_FOR_CHAIN',
       validationDetailsJson: validationDetails,
-      validationResultHash,
       evidencePayloadJson: { tampered: true },
       evidenceHash,
       signature
@@ -177,7 +182,7 @@ describe('AttendanceService', () => {
 
     const result = await new AttendanceService().verify('1001');
 
-    expect(result.validationResultHashMatches).toBe(true);
+    expect(result).not.toHaveProperty('validationResultHashMatches');
     expect(result.evidenceHashMatches).toBe(false);
     expect(result.signatureValid).toBe(true);
     expect(result.overallResult).toBe('LOCAL_VERIFICATION_FAILED');

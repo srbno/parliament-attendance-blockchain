@@ -187,7 +187,7 @@ describe('attendance API', () => {
         reason: 'Blockchain integration not implemented yet'
       }
     });
-    expect(response.json().validationResultHash).toMatch(/^0x[0-9a-f]{64}$/);
+    expect(response.json()).not.toHaveProperty('validationResultHash');
     expect(response.json().evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
   });
 
@@ -243,13 +243,13 @@ describe('attendance API', () => {
     expect(verifyResponse.statusCode).toBe(200);
     expect(verifyResponse.json()).toMatchObject({
       databaseHashMatches: true,
-      validationResultHashMatches: true,
       evidenceHashMatches: true,
       signatureValid: true,
       blockchainRecordFound: false,
       blockchainCheckAvailable: false,
       overallResult: 'LOCALLY_VALID_READY_FOR_CHAIN'
     });
+    expect(verifyResponse.json()).not.toHaveProperty('validationResultHashMatches');
 
     await prisma.attendanceRecord.update({
       where: { id: BigInt(recordId) },

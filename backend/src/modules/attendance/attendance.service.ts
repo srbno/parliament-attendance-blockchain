@@ -44,7 +44,6 @@ function serializeAttendance(record: {
   registeredAt: Date;
   validationPolicyId: string;
   validationDetailsJson: unknown;
-  validationResultHash: string | null;
   evidencePayloadJson: unknown;
   evidenceHash: string | null;
   signature: string | null;
@@ -63,7 +62,6 @@ function serializeAttendance(record: {
     registeredAt: record.registeredAt.toISOString(),
     validationPolicyId: record.validationPolicyId,
     validationDetails: record.validationDetailsJson,
-    validationResultHash: record.validationResultHash,
     evidencePayload: record.evidencePayloadJson,
     evidenceHash: record.evidenceHash,
     signature: record.signature,
@@ -157,8 +155,6 @@ export class AttendanceService {
       throw new AppError(errorCode, validationMessages[errorCode] ?? 'Attendance validation failed.', errorCode === 'UNAUTHORIZED' ? 401 : 400, validationDetailsForError(validationResult));
     }
 
-    const validationResultHash = this.evidenceService.hashValidationResult(validationResult);
-
     const record = await prisma.attendanceRecord.create({
       data: {
         deputyId: user!.deputyId!,
@@ -171,7 +167,6 @@ export class AttendanceService {
         gpsAccuracyMeters: input.gps.accuracyMeters,
         validationPolicyId: validationPolicy.id,
         validationDetailsJson: validationResult,
-        validationResultHash,
         status: 'PENDING'
       }
     });
@@ -182,7 +177,7 @@ export class AttendanceService {
       sessionId: record.sessionId.toString(),
       registeredAt: record.registeredAt.toISOString(),
       validationPolicyId: validationPolicy.id,
-      validationResultHash
+      validationResult
     });
     const evidenceHash = this.evidenceService.hashEvidencePayload(evidencePayload);
     const signature = this.evidenceService.signEvidenceHash(evidenceHash);
@@ -195,7 +190,6 @@ export class AttendanceService {
       sessionId: record.sessionId.toString(),
       registeredAt: record.registeredAt.toISOString(),
       validationPolicyId: validationPolicy.id,
-      validationResultHash,
       evidenceHash,
       signature
     });
@@ -229,7 +223,6 @@ export class AttendanceService {
       sessionId: updated.sessionId.toString(),
       registeredAt: updated.registeredAt.toISOString(),
       validationPolicyId: updated.validationPolicyId,
-      validationResultHash: updated.validationResultHash,
       evidenceHash: updated.evidenceHash,
       signature: updated.signature,
       blockchain
@@ -256,26 +249,20 @@ export class AttendanceService {
     const record = await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseBigIntId(id) } });
     logger.info('attendance_verify_requested', { recordId: record.id.toString() });
 
-    const recalculatedValidationResultHash = record.validationDetailsJson
-      ? this.evidenceService.hashValidationResult(record.validationDetailsJson as never)
-      : null;
     const recalculatedEvidenceHash = record.evidencePayloadJson
       ? this.evidenceService.hashEvidencePayload(record.evidencePayloadJson as never)
       : null;
-    const validationResultHashMatches =
-      Boolean(record.validationResultHash) && recalculatedValidationResultHash === record.validationResultHash;
     const evidenceHashMatches = Boolean(record.evidenceHash) && recalculatedEvidenceHash === record.evidenceHash;
     const signatureValid =
       Boolean(record.evidenceHash && record.signature) &&
       this.evidenceService.verifySignature(record.evidenceHash!, record.signature!);
-    const databaseHashMatches = validationResultHashMatches && evidenceHashMatches;
+    const databaseHashMatches = evidenceHashMatches;
     const locallyValid = databaseHashMatches && signatureValid && record.status === 'READY_FOR_CHAIN';
 
     return {
       recordId: record.id.toString(),
       databaseStatus: record.status,
       databaseHashMatches,
-      validationResultHashMatches,
       evidenceHashMatches,
       signatureValid,
       blockchainRecordFound: false,
