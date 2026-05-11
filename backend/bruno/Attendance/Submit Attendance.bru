@@ -15,7 +15,7 @@ headers {
 }
 
 auth:bearer {
-  token: {{accessToken}}
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwicm9sZSI6IkRFUFVUWSIsImRlcHV0eUlkIjoiMSIsImlhdCI6MTc3ODQ0Njc0NywiZXhwIjoxNzc4NDUwMzQ3fQ.pl4bUcW0T08aE5bXY1ZXJewXq2SK9utvHbb21jmS648
 }
 
 body:json {
@@ -28,6 +28,12 @@ body:json {
     },
     "clientRequestId": "{{clientRequestId}}"
   }
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+  sessionId: 1
+  clientRequestId: D6B9054C-A8CF-4916-A86C-3C9FF50BA6E1
 }
 
 script:post-response {

@@ -1,26 +1,40 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
 contract AttendanceRegistry {
     struct Record {
-        bytes32 nameHash;
-        bytes32 locationHash;
-        address submittedBy;
-        uint256 timestamp;
+        uint256 id;
+        bytes32 hash;
     }
 
-    Record[] public records;
+    Record[] private records;
 
-    function addRecord(bytes32 _nameHash, bytes32 _locationHash) public {
-        records.push(Record({
-            nameHash: _nameHash,
-            locationHash: _locationHash,
-            submittedBy: msg.sender,
-            timestamp: block.timestamp
-        }));
+    function addRecord(
+        uint256 _id,
+        bytes32 _hash
+    ) external {
+        records.push(
+            Record({
+                id: _id,
+                hash: _hash
+            })
+        );
     }
 
-    function getRecord(uint256 index) public view returns (Record memory) {
+    function getRecord(uint256 index)
+    external
+    view
+    returns (Record memory)
+    {
+        require(index < records.length, "Invalid index");
         return records[index];
+    }
+
+    function getTotalRecords()
+    external
+    view
+    returns (uint256)
+    {
+        return records.length;
     }
 }

@@ -11,6 +11,18 @@ export class HashService {
   }
 
   hashString(value: string): string {
+    /**
+     * keccak_256
+     * This computes the cryptographic hash.
+     *
+     * Keccak-256 is:
+     *
+     * Ethereum’s native hash algorithm
+     * close to SHA-3
+     * deterministic
+     * one-way
+     * collision-resistant
+     */
     return bytesToHex(keccak_256(utf8ToBytes(value)));
   }
 }
