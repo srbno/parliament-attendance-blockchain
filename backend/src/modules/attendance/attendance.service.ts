@@ -2,7 +2,7 @@ import { env } from '../../config/env.js';
 import { prisma } from '../../db/prisma.js';
 import type { AttendanceRecord, Prisma } from '../../generated/prisma/client.js';
 import { EvidenceService } from '../evidence/evidence.service.js';
-import { MockBlockchainService } from '../blockchain/mock-blockchain.service.js';
+import { HardhatBlockchainService } from '../blockchain/hardhat-blockchain.service';
 import type { BlockchainService } from '../blockchain/blockchain.service.js';
 import { runPolicyV1 } from '../validation/policies/policy-v1.js';
 import type { PolicyV1Result } from '../validation/validation-engine.js';
@@ -103,7 +103,7 @@ function serializeAttendance(record: {
 
 export class AttendanceService {
   constructor(
-    private readonly blockchainService: BlockchainService = new MockBlockchainService(),
+    private readonly blockchainService: BlockchainService = new HardhatBlockchainService(),
     private readonly evidenceService = new EvidenceService()
   ) {}
 

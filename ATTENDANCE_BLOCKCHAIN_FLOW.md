@@ -34,7 +34,7 @@ signEvidenceHash(evidenceHash)
 
 que delega para `SignerService.signHash`, em `backend/src/modules/evidence/signer.service.ts`.
 
-Por fim, `submitAttendanceProofToBlockchain` chama `BlockchainService.registerAttendanceProof`. Hoje a implementação é `MockBlockchainService`, mas a interface é a mesma que será usada por um adaptador blockchain real.
+Por fim, `submitAttendanceProofToBlockchain` chama `BlockchainService.registerAttendanceProof`. Hoje a implementação é `HardhatBlockchainService`, mas a interface é a mesma que será usada por um adaptador blockchain real.
 
 ## 2. Quais dados salvamos no banco? Porquê?
 
@@ -99,7 +99,7 @@ O campo mais importante é `evidenceHash`, porque ele representa o conteúdo com
 
 Os IDs e metadados (`recordId`, `deputyId`, `sessionId`, `registeredAt`, `validationPolicyId`) ajudam a indexar e consultar a prova on-chain sem armazenar dados sensíveis ou volumosos.
 
-Hoje, `MockBlockchainService` em `backend/src/modules/blockchain/mock-blockchain.service.ts` simula a submissão e devolve:
+Hoje, `HardhatBlockchainService` em `backend/src/modules/blockchain/hardhat-blockchain.service.ts` simula a submissão e devolve:
 
 ```ts
 {

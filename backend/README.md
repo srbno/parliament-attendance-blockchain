@@ -26,7 +26,7 @@ Esta fase inclui:
 - Assinatura de `evidenceHash` com chave privada interna da aplicação.
 - Verificação local de hashes e assinatura.
 - Auditoria de eventos relevantes.
-- `MockBlockchainService`, que simula a submissão da prova à blockchain através da interface da aplicação.
+- `HardhatBlockchainService`, que simula a submissão da prova à blockchain através da interface da aplicação.
 
 O fluxo de assiduidade aceite termina com estado `SUBMITTED`, não `CONFIRMED`.
 
@@ -245,7 +245,7 @@ Na Fase 1, a verificação confirma apenas a consistência local entre base de d
 
 ## Mock Blockchain
 
-O serviço `MockBlockchainService` devolve sempre:
+O serviço `HardhatBlockchainService` devolve sempre:
 
 ```json
 {

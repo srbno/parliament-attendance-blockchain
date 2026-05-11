@@ -9,7 +9,7 @@ const attendanceRegistryAbi = [
   'function getTotalRecords() external view returns (uint256)'
 ] as const;
 
-export class MockBlockchainService implements BlockchainService {
+export class HardhatBlockchainService implements BlockchainService {
   constructor(
     private readonly provider = new JsonRpcProvider(env.BLOCKCHAIN_RPC_URL),
     private readonly signer = new Wallet(env.BLOCKCHAIN_PRIVATE_KEY, provider),
