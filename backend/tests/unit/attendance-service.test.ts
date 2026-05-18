@@ -5,6 +5,7 @@ process.env.JWT_SECRET = '12345678901234567890123456789012';
 process.env.MAX_GPS_ACCURACY_METERS = '100';
 process.env.HASH_ALGORITHM = 'keccak256';
 process.env.BLOCKCHAIN_MODE = 'mock';
+process.env.EVIDENCE_HASH_SEED = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 
 const mocks = vi.hoisted(() => ({
   prisma: {

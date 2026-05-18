@@ -11,7 +11,10 @@ export type EvidenceJsonValue =
   | { [key: string]: EvidenceJsonValue | undefined };
 
 export class EvidenceService {
-  constructor(private readonly hashService = new HashService()) {}
+  constructor(
+    private readonly hashService = new HashService(),
+    private readonly seed: string = env.EVIDENCE_HASH_SEED
+  ) {}
 
   buildEvidencePayload(input: {
     recordId: string;
@@ -30,7 +33,8 @@ export class EvidenceService {
       validationResult: input.validationResult,
       applicationId: env.APPLICATION_ID,
       applicationVersion: env.APPLICATION_VERSION,
-      hashAlgorithm: this.hashService.algorithm
+      hashAlgorithm: this.hashService.algorithm,
+      seed: this.seed
     };
   }
 

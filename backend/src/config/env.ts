@@ -27,7 +27,11 @@ const envSchema = z.object({
     .regex(/^0x[0-9a-fA-F]{40}$/)
     .default('0x5FbDB2315678afecb367f032d93F642f64180aa3'),
   APPLICATION_ID: z.string().default('attendance-backend'),
-  APPLICATION_VERSION: z.string().default('1.0.0')
+  APPLICATION_VERSION: z.string().default('1.0.0'),
+  EVIDENCE_HASH_SEED: z
+    .string()
+    .regex(/^[0-9a-fA-F]+$/, 'EVIDENCE_HASH_SEED must be a hex string')
+    .min(32, 'EVIDENCE_HASH_SEED must be at least 16 bytes (32 hex chars)')
 });
 
 export type Env = z.infer<typeof envSchema>;
