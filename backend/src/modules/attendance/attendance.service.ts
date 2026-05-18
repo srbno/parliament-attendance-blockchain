@@ -13,7 +13,7 @@ import { logger } from '../../shared/logger/logger.js';
 import type { JwtUser } from '../auth/auth.types.js';
 import type { SubmitAttendanceInput } from './attendance.schemas.js';
 
-const activeAttendanceStatuses = ['PENDING', 'VALIDATED', 'HASHED', 'SIGNED', 'READY_FOR_CHAIN', 'SUBMITTED', 'CONFIRMED'];
+const activeAttendanceStatuses = ['PENDING', 'VALIDATED', 'SUBMITTED', 'CONFIRMED'];
 
 type AttendanceUserWithDeputy = Prisma.UserGetPayload<{ include: { deputy: true } }>;
 type ParliamentarySessionWithLocation = Prisma.ParliamentarySessionGetPayload<{ include: { location: true } }>;

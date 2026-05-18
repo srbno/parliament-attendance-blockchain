@@ -58,7 +58,6 @@ export type AttendanceRecordMinAggregateOutputType = {
   gpsAccuracyMeters: number | null
   validationPolicyId: string | null
   evidenceHash: string | null
-  signature: string | null
   txHash: string | null
   blockNumber: bigint | null
   contractAddress: string | null
@@ -80,7 +79,6 @@ export type AttendanceRecordMaxAggregateOutputType = {
   gpsAccuracyMeters: number | null
   validationPolicyId: string | null
   evidenceHash: string | null
-  signature: string | null
   txHash: string | null
   blockNumber: bigint | null
   contractAddress: string | null
@@ -104,7 +102,6 @@ export type AttendanceRecordCountAggregateOutputType = {
   validationDetailsJson: number
   evidencePayloadJson: number
   evidenceHash: number
-  signature: number
   txHash: number
   blockNumber: number
   contractAddress: number
@@ -148,7 +145,6 @@ export type AttendanceRecordMinAggregateInputType = {
   gpsAccuracyMeters?: true
   validationPolicyId?: true
   evidenceHash?: true
-  signature?: true
   txHash?: true
   blockNumber?: true
   contractAddress?: true
@@ -170,7 +166,6 @@ export type AttendanceRecordMaxAggregateInputType = {
   gpsAccuracyMeters?: true
   validationPolicyId?: true
   evidenceHash?: true
-  signature?: true
   txHash?: true
   blockNumber?: true
   contractAddress?: true
@@ -194,7 +189,6 @@ export type AttendanceRecordCountAggregateInputType = {
   validationDetailsJson?: true
   evidencePayloadJson?: true
   evidenceHash?: true
-  signature?: true
   txHash?: true
   blockNumber?: true
   contractAddress?: true
@@ -305,7 +299,6 @@ export type AttendanceRecordGroupByOutputType = {
   validationDetailsJson: runtime.JsonValue | null
   evidencePayloadJson: runtime.JsonValue | null
   evidenceHash: string | null
-  signature: string | null
   txHash: string | null
   blockNumber: bigint | null
   contractAddress: string | null
@@ -352,7 +345,6 @@ export type AttendanceRecordWhereInput = {
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
-  signature?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -380,7 +372,6 @@ export type AttendanceRecordOrderByWithRelationInput = {
   validationDetailsJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidenceHash?: Prisma.SortOrderInput | Prisma.SortOrder
-  signature?: Prisma.SortOrderInput | Prisma.SortOrder
   txHash?: Prisma.SortOrderInput | Prisma.SortOrder
   blockNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   contractAddress?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -411,7 +402,6 @@ export type AttendanceRecordWhereUniqueInput = Prisma.AtLeast<{
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
-  signature?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -439,7 +429,6 @@ export type AttendanceRecordOrderByWithAggregationInput = {
   validationDetailsJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidenceHash?: Prisma.SortOrderInput | Prisma.SortOrder
-  signature?: Prisma.SortOrderInput | Prisma.SortOrder
   txHash?: Prisma.SortOrderInput | Prisma.SortOrder
   blockNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   contractAddress?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -471,7 +460,6 @@ export type AttendanceRecordScalarWhereWithAggregatesInput = {
   validationDetailsJson?: Prisma.JsonNullableWithAggregatesFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableWithAggregatesFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
-  signature?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableWithAggregatesFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
@@ -491,7 +479,6 @@ export type AttendanceRecordCreateInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -519,7 +506,6 @@ export type AttendanceRecordUncheckedCreateInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -540,7 +526,6 @@ export type AttendanceRecordUpdateInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -568,7 +553,6 @@ export type AttendanceRecordUncheckedUpdateInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -593,7 +577,6 @@ export type AttendanceRecordCreateManyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -613,7 +596,6 @@ export type AttendanceRecordUpdateManyMutationInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -637,7 +619,6 @@ export type AttendanceRecordUncheckedUpdateManyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -671,7 +652,6 @@ export type AttendanceRecordCountOrderByAggregateInput = {
   validationDetailsJson?: Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrder
   evidenceHash?: Prisma.SortOrder
-  signature?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
   blockNumber?: Prisma.SortOrder
   contractAddress?: Prisma.SortOrder
@@ -703,7 +683,6 @@ export type AttendanceRecordMaxOrderByAggregateInput = {
   gpsAccuracyMeters?: Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
   evidenceHash?: Prisma.SortOrder
-  signature?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
   blockNumber?: Prisma.SortOrder
   contractAddress?: Prisma.SortOrder
@@ -725,7 +704,6 @@ export type AttendanceRecordMinOrderByAggregateInput = {
   gpsAccuracyMeters?: Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
   evidenceHash?: Prisma.SortOrder
-  signature?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
   blockNumber?: Prisma.SortOrder
   contractAddress?: Prisma.SortOrder
@@ -926,7 +904,6 @@ export type AttendanceRecordCreateWithoutDeputyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -952,7 +929,6 @@ export type AttendanceRecordUncheckedCreateWithoutDeputyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1006,7 +982,6 @@ export type AttendanceRecordScalarWhereInput = {
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidenceHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
-  signature?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -1026,7 +1001,6 @@ export type AttendanceRecordCreateWithoutSessionInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1052,7 +1026,6 @@ export type AttendanceRecordUncheckedCreateWithoutSessionInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1099,7 +1072,6 @@ export type AttendanceRecordCreateWithoutValidationPolicyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1125,7 +1097,6 @@ export type AttendanceRecordUncheckedCreateWithoutValidationPolicyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1172,7 +1143,6 @@ export type AttendanceRecordCreateWithoutAuditLogsInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1199,7 +1169,6 @@ export type AttendanceRecordUncheckedCreateWithoutAuditLogsInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1235,7 +1204,6 @@ export type AttendanceRecordUpdateWithoutAuditLogsInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1262,7 +1230,6 @@ export type AttendanceRecordUncheckedUpdateWithoutAuditLogsInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1285,7 +1252,6 @@ export type AttendanceRecordCreateManyDeputyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1305,7 +1271,6 @@ export type AttendanceRecordUpdateWithoutDeputyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1331,7 +1296,6 @@ export type AttendanceRecordUncheckedUpdateWithoutDeputyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1355,7 +1319,6 @@ export type AttendanceRecordUncheckedUpdateManyWithoutDeputyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1378,7 +1341,6 @@ export type AttendanceRecordCreateManySessionInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1398,7 +1360,6 @@ export type AttendanceRecordUpdateWithoutSessionInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1424,7 +1385,6 @@ export type AttendanceRecordUncheckedUpdateWithoutSessionInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1448,7 +1408,6 @@ export type AttendanceRecordUncheckedUpdateManyWithoutSessionInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1471,7 +1430,6 @@ export type AttendanceRecordCreateManyValidationPolicyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: string | null
-  signature?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1491,7 +1449,6 @@ export type AttendanceRecordUpdateWithoutValidationPolicyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1517,7 +1474,6 @@ export type AttendanceRecordUncheckedUpdateWithoutValidationPolicyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1541,7 +1497,6 @@ export type AttendanceRecordUncheckedUpdateManyWithoutValidationPolicyInput = {
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidenceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1596,7 +1551,6 @@ export type AttendanceRecordSelect<ExtArgs extends runtime.Types.Extensions.Inte
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
-  signature?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1625,7 +1579,6 @@ export type AttendanceRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
-  signature?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1652,7 +1605,6 @@ export type AttendanceRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
-  signature?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1679,7 +1631,6 @@ export type AttendanceRecordSelectScalar = {
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
   evidenceHash?: boolean
-  signature?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1689,7 +1640,7 @@ export type AttendanceRecordSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AttendanceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deputyId" | "sessionId" | "registeredAt" | "clientRequestId" | "clientIp" | "gpsLatitude" | "gpsLongitude" | "gpsAccuracyMeters" | "validationPolicyId" | "validationDetailsJson" | "evidencePayloadJson" | "evidenceHash" | "signature" | "txHash" | "blockNumber" | "contractAddress" | "status" | "failureReason" | "createdAt" | "updatedAt", ExtArgs["result"]["attendanceRecord"]>
+export type AttendanceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deputyId" | "sessionId" | "registeredAt" | "clientRequestId" | "clientIp" | "gpsLatitude" | "gpsLongitude" | "gpsAccuracyMeters" | "validationPolicyId" | "validationDetailsJson" | "evidencePayloadJson" | "evidenceHash" | "txHash" | "blockNumber" | "contractAddress" | "status" | "failureReason" | "createdAt" | "updatedAt", ExtArgs["result"]["attendanceRecord"]>
 export type AttendanceRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
   session?: boolean | Prisma.ParliamentarySessionDefaultArgs<ExtArgs>
@@ -1730,7 +1681,6 @@ export type $AttendanceRecordPayload<ExtArgs extends runtime.Types.Extensions.In
     validationDetailsJson: runtime.JsonValue | null
     evidencePayloadJson: runtime.JsonValue | null
     evidenceHash: string | null
-    signature: string | null
     txHash: string | null
     blockNumber: bigint | null
     contractAddress: string | null
@@ -2178,7 +2128,6 @@ export interface AttendanceRecordFieldRefs {
   readonly validationDetailsJson: Prisma.FieldRef<"AttendanceRecord", 'Json'>
   readonly evidencePayloadJson: Prisma.FieldRef<"AttendanceRecord", 'Json'>
   readonly evidenceHash: Prisma.FieldRef<"AttendanceRecord", 'String'>
-  readonly signature: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly txHash: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly blockNumber: Prisma.FieldRef<"AttendanceRecord", 'BigInt'>
   readonly contractAddress: Prisma.FieldRef<"AttendanceRecord", 'String'>

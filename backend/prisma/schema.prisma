@@ -32,9 +32,6 @@ enum SessionType {
 enum AttendanceStatus {
   PENDING
   VALIDATED
-  HASHED
-  SIGNED
-  READY_FOR_CHAIN
   SUBMITTED
   CONFIRMED
   REJECTED
@@ -131,7 +128,6 @@ model AttendanceRecord {
   validationDetailsJson Json?
   evidencePayloadJson   Json?
   evidenceHash          String?
-  signature             String?
   txHash                String?
   blockNumber           BigInt?
   contractAddress       String?

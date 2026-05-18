@@ -1056,7 +1056,6 @@ export const AttendanceRecordScalarFieldEnum = {
   validationDetailsJson: 'validationDetailsJson',
   evidencePayloadJson: 'evidencePayloadJson',
   evidenceHash: 'evidenceHash',
-  signature: 'signature',
   txHash: 'txHash',
   blockNumber: 'blockNumber',
   contractAddress: 'contractAddress',
