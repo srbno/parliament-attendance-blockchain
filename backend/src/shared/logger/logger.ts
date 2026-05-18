@@ -1,7 +1,7 @@
 type LogFields = Record<string, unknown>;
 
 function redact(fields: LogFields): LogFields {
-  const blocked = new Set(['password', 'passwordHash', 'authorization', 'token', 'jwt', 'APP_PRIVATE_KEY']);
+  const blocked = new Set(['password', 'passwordHash', 'authorization', 'token', 'jwt']);
   return Object.fromEntries(
     Object.entries(fields).filter(([key]) => !blocked.has(key) && !key.toLowerCase().includes('authorization'))
   );

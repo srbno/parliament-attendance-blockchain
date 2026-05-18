@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 process.env.DATABASE_URL = 'postgresql://attendance:attendance@localhost:5432/attendance';
 process.env.JWT_SECRET = '12345678901234567890123456789012';
-process.env.APP_PRIVATE_KEY = '0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 process.env.MAX_GPS_ACCURACY_METERS = '100';
 process.env.HASH_ALGORITHM = 'keccak256';
 process.env.BLOCKCHAIN_MODE = 'mock';
@@ -29,7 +28,6 @@ vi.mock('../../src/db/prisma.js', () => ({ prisma: mocks.prisma }));
 const { AttendanceService } = await import('../../src/modules/attendance/attendance.service.js');
 const { EvidenceService } = await import('../../src/modules/evidence/evidence.service.js');
 const { HashService } = await import('../../src/modules/evidence/hash.service.js');
-const { SignerService } = await import('../../src/modules/evidence/signer.service.js');
 
 const now = new Date('2026-05-03T13:20:00.000Z');
 const tokenUser = { sub: '10', role: 'DEPUTY' as const, deputyId: '25' };
@@ -81,7 +79,6 @@ function setupValidPrisma() {
     registeredAt: now,
     validationPolicyId: 'POLICY_V1',
     evidenceHash: data.evidenceHash,
-    signature: data.signature,
     txHash: data.txHash,
     blockNumber: null,
     contractAddress: null,
@@ -101,7 +98,7 @@ beforeEach(() => {
 });
 
 describe('AttendanceService', () => {
-  it('validates, signs, submits the proof to blockchain, and returns SUBMITTED', async () => {
+  it('validates, hashes evidence, submits the proof to blockchain, and returns SUBMITTED', async () => {
     const blockchain = {
       registerAttendanceProof: vi.fn().mockResolvedValue({
         submitted: true,
@@ -120,12 +117,13 @@ describe('AttendanceService', () => {
       include: { location: true }
     });
     expect(response).not.toHaveProperty('validationResultHash');
+    expect(response).not.toHaveProperty('signature');
     expect(response.evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
-    expect(response.signature).toMatch(/^0x[0-9a-f]{128}$/);
     expect(blockchain.registerAttendanceProof).toHaveBeenCalledOnce();
-    expect(blockchain.registerAttendanceProof).toHaveBeenCalledWith(
-      expect.not.objectContaining({ validationResultHash: expect.anything() })
-    );
+    expect(blockchain.registerAttendanceProof).toHaveBeenCalledWith({
+      recordId: '1001',
+      evidenceHash: expect.stringMatching(/^0x[0-9a-f]{64}$/)
+    });
     expect(mocks.prisma.attendanceRecord.update).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
@@ -175,10 +173,7 @@ describe('AttendanceService', () => {
   });
 
   it('verifies local evidence and reports tampering', async () => {
-    const evidence = new EvidenceService(
-      new HashService(),
-      new SignerService('0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef')
-    );
+    const evidence = new EvidenceService(new HashService());
     const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
     const evidencePayload = evidence.buildEvidencePayload({
       recordId: '1001',
@@ -189,21 +184,19 @@ describe('AttendanceService', () => {
       validationResult: validationDetails
     });
     const evidenceHash = evidence.hashEvidencePayload(evidencePayload);
-    const signature = evidence.signEvidenceHash(evidenceHash);
     mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
       id: 1001,
       status: 'SUBMITTED',
       validationDetailsJson: validationDetails,
       evidencePayloadJson: { tampered: true },
-      evidenceHash,
-      signature
+      evidenceHash
     });
 
     const result = await new AttendanceService().verify('1001');
 
     expect(result).not.toHaveProperty('validationResultHashMatches');
+    expect(result).not.toHaveProperty('signatureValid');
     expect(result.evidenceHashMatches).toBe(false);
-    expect(result.signatureValid).toBe(true);
     expect(result.overallResult).toBe('LOCAL_VERIFICATION_FAILED');
   });
 });

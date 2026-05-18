@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { canonicalize } from '../../src/modules/evidence/canonical-json.js';
 import { HashService } from '../../src/modules/evidence/hash.service.js';
-import { SignerService } from '../../src/modules/evidence/signer.service.js';
-
-const privateKey = '0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 
 describe('evidence primitives', () => {
   it('canonicalizes objects with deterministic recursive key ordering', () => {
@@ -23,16 +20,5 @@ describe('evidence primitives', () => {
     expect(hashA).toMatch(/^0x[0-9a-f]{64}$/);
     expect(hashA).toBe(hashB);
     expect(hashService.algorithm).toBe('keccak256');
-  });
-
-  it('signs an evidence hash and verifies it with the configured application key', () => {
-    const signer = new SignerService(privateKey);
-    const hash = new HashService().hashCanonical({ recordId: '1001', status: 'SUBMITTED' });
-
-    const signature = signer.signHash(hash);
-
-    expect(signature).toMatch(/^0x[0-9a-f]{128}$/);
-    expect(signer.verifyHash(hash, signature)).toBe(true);
-    expect(signer.verifyHash(new HashService().hashCanonical({ recordId: '1002' }), signature)).toBe(false);
   });
 });

@@ -1,6 +1,5 @@
 import { env } from '../../config/env.js';
 import { HashService } from './hash.service.js';
-import { SignerService } from './signer.service.js';
 import type { CanonicalJsonValue } from './canonical-json.js';
 
 export type EvidenceJsonValue =
@@ -12,10 +11,7 @@ export type EvidenceJsonValue =
   | { [key: string]: EvidenceJsonValue | undefined };
 
 export class EvidenceService {
-  constructor(
-    private readonly hashService = new HashService(),
-    private readonly signerService = new SignerService(env.APP_PRIVATE_KEY)
-  ) {}
+  constructor(private readonly hashService = new HashService()) {}
 
   buildEvidencePayload(input: {
     recordId: string;
@@ -40,13 +36,5 @@ export class EvidenceService {
 
   hashEvidencePayload(payload: CanonicalJsonValue): string {
     return this.hashService.hashCanonical(payload);
-  }
-
-  signEvidenceHash(evidenceHash: string): string {
-    return this.signerService.signHash(evidenceHash);
-  }
-
-  verifySignature(evidenceHash: string, signature: string): boolean {
-    return this.signerService.verifyHash(evidenceHash, signature);
   }
 }

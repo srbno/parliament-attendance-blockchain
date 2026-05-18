@@ -13,7 +13,6 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN_SECONDS: z.coerce.number().int().positive().default(3600),
-  APP_PRIVATE_KEY: z.string().regex(/^0x[0-9a-fA-F]{64}$/),
   MAX_GPS_ACCURACY_METERS: z.coerce.number().positive().default(100),
   DEFAULT_CHECKIN_RADIUS_METERS: z.coerce.number().positive().default(100),
   HASH_ALGORITHM: z.literal('keccak256').default('keccak256'),
