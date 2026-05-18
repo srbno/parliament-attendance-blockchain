@@ -162,16 +162,31 @@ export class AttendanceService {
       : null;
     const evidenceHashMatches = Boolean(record.evidenceHash) && recalculatedEvidenceHash === record.evidenceHash;
     const databaseHashMatches = evidenceHashMatches;
-    const locallyValid = databaseHashMatches && record.status === 'SUBMITTED';
+
+    const onChainRecord = record.txHash ? await this.blockchainService.getOnChainHashForTx(record.txHash) : null;
+    const blockchainRecordFound = onChainRecord !== null;
+    const blockchainHashMatches =
+      blockchainRecordFound && recalculatedEvidenceHash !== null && onChainRecord!.hash === recalculatedEvidenceHash;
+
+    let overallResult: 'CHAIN_VALID' | 'CHAIN_VERIFICATION_FAILED' | 'LOCAL_VERIFICATION_FAILED';
+    if (!databaseHashMatches || record.status !== 'SUBMITTED') {
+      overallResult = 'LOCAL_VERIFICATION_FAILED';
+    } else if (blockchainRecordFound && blockchainHashMatches) {
+      overallResult = 'CHAIN_VALID';
+    } else {
+      overallResult = 'CHAIN_VERIFICATION_FAILED';
+    }
 
     return {
       recordId: record.id.toString(),
       databaseStatus: record.status,
       databaseHashMatches,
       evidenceHashMatches,
-      blockchainRecordFound: false,
-      blockchainCheckAvailable: false,
-      overallResult: locallyValid ? 'LOCALLY_VALID_SUBMITTED' : 'LOCAL_VERIFICATION_FAILED'
+      blockchainCheckAvailable: true,
+      blockchainRecordFound,
+      blockchainHashMatches,
+      onChainHash: onChainRecord?.hash ?? null,
+      overallResult
     };
   }
 

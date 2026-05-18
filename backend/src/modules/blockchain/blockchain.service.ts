@@ -3,6 +3,11 @@ export type RegisterAttendanceProofInput = {
   evidenceHash: string;
 };
 
+export type OnChainAttendanceRecord = {
+  recordId: string;
+  hash: string;
+};
+
 export interface BlockchainService {
   registerAttendanceProof(input: RegisterAttendanceProofInput): Promise<{
     submitted: boolean;
@@ -10,4 +15,5 @@ export interface BlockchainService {
     blockNumber: number | null;
     reason?: string;
   }>;
+  getOnChainHashForTx(txHash: string): Promise<OnChainAttendanceRecord | null>;
 }

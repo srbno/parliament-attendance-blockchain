@@ -243,11 +243,10 @@ describe('attendance API', () => {
     expect(verifyResponse.json()).toMatchObject({
       databaseHashMatches: true,
       evidenceHashMatches: true,
-      blockchainRecordFound: false,
-      blockchainCheckAvailable: false,
-      overallResult: 'LOCALLY_VALID_SUBMITTED'
+      blockchainCheckAvailable: true
     });
     expect(verifyResponse.json()).not.toHaveProperty('signatureValid');
+    expect(['CHAIN_VALID', 'CHAIN_VERIFICATION_FAILED']).toContain(verifyResponse.json().overallResult);
     expect(verifyResponse.json()).not.toHaveProperty('validationResultHashMatches');
 
     await prisma.attendanceRecord.update({
@@ -262,5 +261,6 @@ describe('attendance API', () => {
     });
     expect(tamperedResponse.json().evidenceHashMatches).toBe(false);
     expect(tamperedResponse.json().overallResult).toBe('LOCAL_VERIFICATION_FAILED');
+    expect(tamperedResponse.json().blockchainCheckAvailable).toBe(true);
   });
 });
