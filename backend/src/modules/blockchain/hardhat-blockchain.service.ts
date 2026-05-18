@@ -2,7 +2,6 @@ import type { BlockchainService, RegisterAttendanceProofInput } from './blockcha
 import { env } from '../../config/env.js';
 import { logger } from '../../shared/logger/logger.js';
 import { Contract, JsonRpcProvider, Wallet } from 'ethers';
-import { HashService } from "../evidence/hash.service.js";
 
 const attendanceRegistryAbi = [
   'function addRecord(uint256 _id, bytes32 _hash) external',
@@ -12,8 +11,7 @@ const attendanceRegistryAbi = [
 export class HardhatBlockchainService implements BlockchainService {
   constructor(
     private readonly provider = new JsonRpcProvider(env.BLOCKCHAIN_RPC_URL),
-    private readonly signer = new Wallet(env.BLOCKCHAIN_PRIVATE_KEY, provider),
-    private readonly hashService = new HashService()
+    private readonly signer = new Wallet(env.BLOCKCHAIN_PRIVATE_KEY, provider)
   ) {}
 
   async registerAttendanceProof(input: RegisterAttendanceProofInput) {
@@ -25,10 +23,7 @@ export class HardhatBlockchainService implements BlockchainService {
       rpcUrl: env.BLOCKCHAIN_RPC_URL
     });
 
-    const contentHash = this.hashService.hashCanonical({
-      proof: input
-    });
-    const tx = await contract.addRecord(BigInt(input.recordId), contentHash);
+    const tx = await contract.addRecord(BigInt(input.recordId), input.evidenceHash);
     const receipt = await tx.wait();
 
     logger.info('attendance_blockchain_submission_confirmed', {

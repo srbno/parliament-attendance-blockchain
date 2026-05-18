@@ -1,11 +1,6 @@
 export type RegisterAttendanceProofInput = {
   recordId: string;
-  deputyId: string;
-  sessionId: string;
-  registeredAt: string;
-  validationPolicyId: string;
   evidenceHash: string;
-  signature: string;
 };
 
 export interface BlockchainService {

@@ -123,11 +123,7 @@ export class AttendanceService {
       dataRequiredToValidateAttendance.validationPolicy.id,
       validationResult
     );
-    const blockchainSubmission = await this.submitAttendanceProofToBlockchain(
-      pendingRecord,
-      dataRequiredToValidateAttendance.validationPolicy.id,
-      signedEvidence
-    );
+    const blockchainSubmission = await this.submitAttendanceProofToBlockchain(pendingRecord, signedEvidence);
     const submittedRecord = await this.markAttendanceProofSubmitted(
       pendingRecord.id,
       signedEvidence,
@@ -344,17 +340,11 @@ export class AttendanceService {
 
   private async submitAttendanceProofToBlockchain(
     record: CreatedAttendanceRecord,
-    validationPolicyId: string,
     signedEvidence: SignedAttendanceEvidence
   ): Promise<BlockchainSubmissionResult> {
     return this.blockchainService.registerAttendanceProof({
       recordId: record.id.toString(),
-      deputyId: record.deputyId.toString(),
-      sessionId: record.sessionId.toString(),
-      registeredAt: record.registeredAt.toISOString(),
-      validationPolicyId,
-      evidenceHash: signedEvidence.evidenceHash,
-      signature: signedEvidence.signature
+      evidenceHash: signedEvidence.evidenceHash
     });
   }
 
