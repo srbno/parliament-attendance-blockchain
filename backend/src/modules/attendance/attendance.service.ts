@@ -13,7 +13,7 @@ import { logger } from '../../shared/logger/logger.js';
 import type { JwtUser } from '../auth/auth.types.js';
 import type { SubmitAttendanceInput } from './attendance.schemas.js';
 
-const activeAttendanceStatuses = ['PENDING', 'VALIDATED', 'SUBMITTED', 'CONFIRMED'];
+const activeAttendanceStatuses = ['PENDING', 'SUBMITTED'];
 
 type AttendanceUserWithDeputy = Prisma.UserGetPayload<{ include: { deputy: true } }>;
 type ParliamentarySessionWithLocation = Prisma.ParliamentarySessionGetPayload<{ include: { location: true } }>;
@@ -22,7 +22,7 @@ type BlockchainSubmissionResult = Awaited<ReturnType<BlockchainService['register
 type CreatedAttendanceRecord = Pick<AttendanceRecord, 'id' | 'deputyId' | 'sessionId' | 'registeredAt'>;
 type SubmittedAttendanceRecord = Pick<
   AttendanceRecord,
-  'id' | 'deputyId' | 'sessionId' | 'registeredAt' | 'validationPolicyId' | 'evidenceHash' | 'status'
+  'id' | 'deputyId' | 'sessionId' | 'registeredAt' | 'validationPolicyId' | 'status'
 >;
 type AttendanceEvidence = {
   evidencePayload: ReturnType<EvidenceService['buildEvidencePayload']>;
@@ -70,7 +70,6 @@ function serializeAttendance(record: {
   validationPolicyId: string;
   validationDetailsJson: unknown;
   evidencePayloadJson: unknown;
-  evidenceHash: string | null;
   txHash: string | null;
   blockNumber: bigint | null;
   contractAddress: string | null;
@@ -87,7 +86,6 @@ function serializeAttendance(record: {
     validationPolicyId: record.validationPolicyId,
     validationDetails: record.validationDetailsJson,
     evidencePayload: record.evidencePayloadJson,
-    evidenceHash: record.evidenceHash,
     txHash: record.txHash,
     blockNumber: idToString(record.blockNumber),
     contractAddress: record.contractAddress,
@@ -106,6 +104,7 @@ export class AttendanceService {
 
   async submit(input: SubmitAttendanceInput, tokenUser: JwtUser, requestIp: string) {
     const dataRequiredToValidateAttendance = await this.getDataRequiredToValidateAttendance(input, tokenUser, requestIp);
+    
     const validationResult = this.validateAttendanceSubmission(input, dataRequiredToValidateAttendance);
 
     await this.rejectInvalidAttendanceSubmission(validationResult, input, tokenUser);
@@ -115,12 +114,15 @@ export class AttendanceService {
       dataRequiredToValidateAttendance,
       validationResult
     );
+    
     const evidence = this.createAttendanceEvidence(
       pendingRecord,
       dataRequiredToValidateAttendance.validationPolicy.id,
       validationResult
     );
+
     const blockchainSubmission = await this.submitAttendanceProofToBlockchain(pendingRecord, evidence);
+    
     const submittedRecord = await this.markAttendanceProofSubmitted(
       pendingRecord.id,
       evidence,
@@ -157,36 +159,23 @@ export class AttendanceService {
     const record = await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseIntId(id) } });
     logger.info('attendance_verify_requested', { recordId: record.id.toString() });
 
-    const recalculatedEvidenceHash = record.evidencePayloadJson
+    const recalculatedHash = record.evidencePayloadJson
       ? this.evidenceService.hashEvidencePayload(record.evidencePayloadJson as never)
       : null;
-    const evidenceHashMatches = Boolean(record.evidenceHash) && recalculatedEvidenceHash === record.evidenceHash;
-    const databaseHashMatches = evidenceHashMatches;
 
     const onChainRecord = record.txHash ? await this.blockchainService.getOnChainHashForTx(record.txHash) : null;
     const blockchainRecordFound = onChainRecord !== null;
     const blockchainHashMatches =
-      blockchainRecordFound && recalculatedEvidenceHash !== null && onChainRecord!.hash === recalculatedEvidenceHash;
-
-    let overallResult: 'CHAIN_VALID' | 'CHAIN_VERIFICATION_FAILED' | 'LOCAL_VERIFICATION_FAILED';
-    if (!databaseHashMatches || record.status !== 'SUBMITTED') {
-      overallResult = 'LOCAL_VERIFICATION_FAILED';
-    } else if (blockchainRecordFound && blockchainHashMatches) {
-      overallResult = 'CHAIN_VALID';
-    } else {
-      overallResult = 'CHAIN_VERIFICATION_FAILED';
-    }
+      blockchainRecordFound && recalculatedHash !== null && onChainRecord!.hash === recalculatedHash;
 
     return {
       recordId: record.id.toString(),
       databaseStatus: record.status,
-      databaseHashMatches,
-      evidenceHashMatches,
       blockchainCheckAvailable: true,
       blockchainRecordFound,
       blockchainHashMatches,
       onChainHash: onChainRecord?.hash ?? null,
-      overallResult
+      overallResult: blockchainRecordFound && blockchainHashMatches ? 'CHAIN_VALID' : 'CHAIN_VERIFICATION_FAILED'
     };
   }
 
@@ -363,7 +352,6 @@ export class AttendanceService {
       where: { id: recordId },
       data: {
         evidencePayloadJson: evidence.evidencePayload,
-        evidenceHash: evidence.evidenceHash,
         txHash: blockchainSubmission.txHash,
         blockNumber: blockchainSubmission.blockNumber === null ? null : BigInt(blockchainSubmission.blockNumber),
         status: 'SUBMITTED'
@@ -396,7 +384,6 @@ export class AttendanceService {
       sessionId: record.sessionId.toString(),
       registeredAt: record.registeredAt.toISOString(),
       validationPolicyId: record.validationPolicyId,
-      evidenceHash: record.evidenceHash,
       blockchain
     };
   }
