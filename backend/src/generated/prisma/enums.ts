@@ -42,11 +42,7 @@ export type SessionType = (typeof SessionType)[keyof typeof SessionType]
 
 export const AttendanceStatus = {
   PENDING: 'PENDING',
-  VALIDATED: 'VALIDATED',
-  SUBMITTED: 'SUBMITTED',
-  CONFIRMED: 'CONFIRMED',
-  REJECTED: 'REJECTED',
-  FAILED: 'FAILED'
+  SUBMITTED: 'SUBMITTED'
 } as const
 
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]

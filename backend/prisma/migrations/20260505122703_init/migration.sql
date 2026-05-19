@@ -8,7 +8,7 @@ CREATE TYPE "SessionStatus" AS ENUM ('DRAFT', 'OPEN', 'CLOSED', 'CANCELLED');
 CREATE TYPE "SessionType" AS ENUM ('PLENARY', 'COMMITTEE', 'SUBCOMMITTEE', 'VOTING', 'WORKGROUP', 'OTHER');
 
 -- CreateEnum
-CREATE TYPE "AttendanceStatus" AS ENUM ('PENDING', 'VALIDATED', 'SUBMITTED', 'CONFIRMED', 'REJECTED', 'FAILED');
+CREATE TYPE "AttendanceStatus" AS ENUM ('PENDING', 'SUBMITTED');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -99,7 +99,6 @@ CREATE TABLE "AttendanceRecord" (
     "validationPolicyId" TEXT NOT NULL,
     "validationDetailsJson" JSONB,
     "evidencePayloadJson" JSONB,
-    "evidenceHash" TEXT,
     "txHash" TEXT,
     "blockNumber" BIGINT,
     "contractAddress" TEXT,
