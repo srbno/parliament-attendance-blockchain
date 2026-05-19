@@ -16,7 +16,7 @@ const envSchema = z.object({
   MAX_GPS_ACCURACY_METERS: z.coerce.number().positive().default(100),
   DEFAULT_CHECKIN_RADIUS_METERS: z.coerce.number().positive().default(100),
   HASH_ALGORITHM: z.literal('keccak256').default('keccak256'),
-  BLOCKCHAIN_MODE: z.literal('mock').default('mock'),
+  BLOCKCHAIN_MODE: z.enum(['mock', 'hardhat']).default('mock'),
   BLOCKCHAIN_RPC_URL: z.string().url().default('http://127.0.0.1:8545'),
   BLOCKCHAIN_PRIVATE_KEY: z
     .string()
