@@ -25,21 +25,24 @@ O repositório está organizado por componentes, mas sem workspace `pnpm` na rai
 
 ## Componentes
 
-- `backend/`: API Fastify em TypeScript. Implementa a Fase 1: autenticação, gestão de deputados/sessões/localizações, validação de assiduidade, geração de hashes, assinatura interna e mock blockchain.
-- `blockchain/`: espaço reservado para a Fase 2. Deverá conter o smart contract, scripts de deploy e testes Foundry quando a integração Ethereum local for implementada.
+- `backend/`: API Fastify em TypeScript. Implementa autenticação, gestão de deputados/sessões/localizações, validação de assiduidade, geração de evidência criptográfica, submissão à blockchain Hardhat local e verificação on-chain via `txHash`.
+- `blockchain/`: smart contract `AttendanceRegistry` em Solidity, configuração Hardhat e script de deploy.
 - `docs/`: documentação auxiliar do projeto.
 
-## Fase Atual
+## Estado Atual
 
-A Fase 1 está implementada no backend. Nesta fase, a aplicação termina registos aceites em `SUBMITTED` usando `HardhatBlockchainService` para simular a submissão da prova à blockchain.
+O projeto integra backend e blockchain local:
 
-Ainda não está implementado:
+- Smart contract `AttendanceRegistry` em `blockchain/contracts/`.
+- Hardhat configurado em `blockchain/`.
+- Backend submete `evidenceHash` ao contrato via `addRecord(recordId, evidenceHash)` e guarda `txHash`.
+- Verificação on-chain: o backend recupera os dados da transação pelo `txHash` e compara o hash on-chain com o hash recalculado a partir do payload armazenado.
 
-- smart contract;
-- Foundry, Forge ou Anvil;
-- submissão real para Ethereum;
-- consulta on-chain;
-- `viem`.
+Ainda fora do âmbito:
+
+- submissão a uma rede Ethereum pública;
+- confirmação automática de bloco (estado `CONFIRMED`);
+- testes de contrato Foundry.
 
 ## Execução Do Backend
 
@@ -61,7 +64,7 @@ Criar o ficheiro de ambiente:
 cp .env.example .env
 ```
 
-Editar `.env` e substituir `JWT_SECRET` e `APP_PRIVATE_KEY` por valores reais gerados fora do Git.
+Editar `.env` e substituir `JWT_SECRET` e `EVIDENCE_HASH_SEED` por valores reais gerados fora do Git.
 
 Subir PostgreSQL:
 
