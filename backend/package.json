@@ -14,26 +14,11 @@
     "test": "vitest run tests/unit",
     "test:integration": "RUN_INTEGRATION_TESTS=1 vitest run tests/integration",
     "test:coverage": "vitest run --coverage tests/unit",
-    "prisma": "prisma migrate dev --name init",
+    // "prisma": "prisma migrate dev --name init",
     "seed": "tsx prisma/seed.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@prisma/engines",
-      "argon2",
-      "esbuild",
-      "prisma"
-    ],
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@types/react",
-        "react",
-        "react-dom"
-      ]
-    }
   },
   "dependencies": {
     "@fastify/jwt": "10.0.0",
