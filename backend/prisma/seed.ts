@@ -19,7 +19,7 @@ const password = 'ChangeMe123!';
 const passwordHash = await argon2.hash(password);
 const now = new Date();
 const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
 const deputy = await prisma.deputy.upsert({
   where: { publicIdentifier: 'DEP-25' },
@@ -102,9 +102,9 @@ await prisma.parliamentarySession.upsert({
     sessionType: 'PLENARY',
     locationId: location.id,
     scheduledStart: yesterday,
-    scheduledEnd: tomorrow,
+    scheduledEnd: nextWeek,
     checkinStart: yesterday,
-    checkinEnd: tomorrow,
+    checkinEnd: nextWeek,
     status: 'OPEN',
     allowMultipleCheckins: false
   },
@@ -113,9 +113,9 @@ await prisma.parliamentarySession.upsert({
     sessionType: 'PLENARY',
     locationId: location.id,
     scheduledStart: yesterday,
-    scheduledEnd: tomorrow,
+    scheduledEnd: nextWeek,
     checkinStart: yesterday,
-    checkinEnd: tomorrow,
+    checkinEnd: nextWeek,
     status: 'OPEN',
     allowMultipleCheckins: false
   }
