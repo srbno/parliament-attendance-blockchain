@@ -3,3 +3,11 @@ docs
 .claude
 CLAUDE.md
 .rtk
+
+# Dev automation
+logs/*.log
+.pids/
+.DS_Store
+
+# Python venv
+.venv/
