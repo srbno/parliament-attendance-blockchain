@@ -21,17 +21,18 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@fastify/cors": "^11.2.0",
     "@fastify/jwt": "10.0.0",
     "@noble/hashes": "2.2.0",
     "@noble/secp256k1": "3.1.0",
     "@prisma/adapter-pg": "7.8.0",
     "@prisma/client": "7.8.0",
     "argon2": "0.44.0",
-    "fastify": "5.8.5",
-    "pg": "8.20.0",
-    "zod": "4.4.2",
     "ethers": "^6.16.0",
-    "hardhat": "^3.4.4"
+    "fastify": "5.8.5",
+    "hardhat": "^3.4.4",
+    "pg": "8.20.0",
+    "zod": "4.4.2"
   },
   "devDependencies": {
     "@types/node": "25.6.0",

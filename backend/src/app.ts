@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import cors from '@fastify/cors';
 import { authPlugin } from './plugins/auth.plugin.js';
 import { errorHandlerPlugin } from './plugins/error-handler.plugin.js';
 import { authRoutes } from './modules/auth/auth.routes.js';
@@ -13,6 +14,7 @@ export async function buildApp() {
     trustProxy: false
   });
 
+  await app.register(cors, { origin: true });
   await errorHandlerPlugin(app);
   await authPlugin(app);
   await app.register(authRoutes);
