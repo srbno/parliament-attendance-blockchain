@@ -11,3 +11,6 @@ logs/*.log
 
 # Python venv
 .venv/
+
+# Scripts auxiliares
+scripts/
