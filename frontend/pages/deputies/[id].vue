@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="flex items-center gap-2 mb-6">
-      <UButton
-        variant="ghost"
-        icon="i-heroicons-arrow-left"
-        to="/deputies"
-        size="sm"
-      >
+      <UButton variant="ghost" icon="i-heroicons-arrow-left" to="/deputies" size="sm">
         Deputados
       </UButton>
     </div>
@@ -46,11 +41,18 @@
 
         <UCard>
           <UTable
-            :rows="records ?? []"
+            :rows="enrichedRecords"
             :columns="recordColumns"
-            :loading="recordsPending"
+            :loading="recordsPending || sessionsPending"
             @select="onSelectRecord"
           >
+            <template #sessionTitle-data="{ row }">
+              <div>
+                <div class="font-medium">{{ row.sessionTitle }}</div>
+                <div class="text-xs text-gray-400 font-mono">ID {{ row.sessionId }}</div>
+              </div>
+            </template>
+
             <template #status-data="{ row }">
               <UBadge :color="statusColor(row.status)" variant="soft">
                 {{ row.status }}
@@ -90,6 +92,7 @@ const deputyId = route.params.id as string
 
 const { fetchOne } = useDeputies()
 const { fetchByDeputy } = useAttendance()
+const { fetchAll: fetchAllSessions } = useSessions()
 
 const { data: deputy, error: deputyError } = await useAsyncData(
   `deputy-${deputyId}`,
@@ -101,16 +104,34 @@ const { data: records, pending: recordsPending } = await useAsyncData(
   () => fetchByDeputy(deputyId),
 )
 
+const { data: sessions, pending: sessionsPending } = await useAsyncData(
+  'sessions-lookup',
+  fetchAllSessions,
+)
+
+const sessionMap = computed(() => {
+  const map = new Map<string, string>()
+  for (const s of sessions.value ?? []) {
+    map.set(String(s.id), s.title)
+  }
+  return map
+})
+
+const enrichedRecords = computed(() =>
+  (records.value ?? []).map(r => ({
+    ...r,
+    sessionTitle: sessionMap.value.get(r.sessionId) ?? `Sessão ${r.sessionId}`,
+  })),
+)
+
 const recordColumns = [
-  { key: 'sessionId', label: 'Sessão' },
+  { key: 'sessionTitle', label: 'Sessão' },
   { key: 'registeredAt', label: 'Data de Registo' },
   { key: 'status', label: 'Estado' },
   { key: 'txHash', label: 'Tx Hash' },
 ]
 
-const onSelectRecord = (row: AttendanceRecord) => {
-  navigateTo(`/attendance/${row.recordId}`)
-}
+const onSelectRecord = (row: AttendanceRecord) => navigateTo(`/attendance/${row.recordId}`)
 
 const statusColor = (status: string) =>
   status === 'SUBMITTED' ? 'green' : 'yellow'

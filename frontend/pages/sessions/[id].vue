@@ -53,11 +53,18 @@
 
         <UCard>
           <UTable
-            :rows="records ?? []"
+            :rows="enrichedRecords"
             :columns="recordColumns"
-            :loading="recordsPending"
+            :loading="recordsPending || deputiesPending"
             @select="onSelectRecord"
           >
+            <template #deputyName-data="{ row }">
+              <div>
+                <div class="font-medium">{{ row.deputyName }}</div>
+                <div class="text-xs text-gray-400 font-mono">ID {{ row.deputyId }}</div>
+              </div>
+            </template>
+
             <template #status-data="{ row }">
               <UBadge :color="row.status === 'SUBMITTED' ? 'green' : 'yellow'" variant="soft">
                 {{ row.status }}
@@ -97,6 +104,7 @@ const sessionId = route.params.id as string
 
 const { fetchOne } = useSessions()
 const { fetchBySession } = useAttendance()
+const { fetchAll: fetchAllDeputies } = useDeputies()
 
 const { data: session, error: sessionError } = await useAsyncData(
   `session-${sessionId}`,
@@ -108,8 +116,28 @@ const { data: records, pending: recordsPending } = await useAsyncData(
   () => fetchBySession(sessionId),
 )
 
+const { data: deputies, pending: deputiesPending } = await useAsyncData(
+  'deputies-lookup',
+  fetchAllDeputies,
+)
+
+const deputyMap = computed(() => {
+  const map = new Map<string, string>()
+  for (const d of deputies.value ?? []) {
+    map.set(String(d.id), d.name)
+  }
+  return map
+})
+
+const enrichedRecords = computed(() =>
+  (records.value ?? []).map(r => ({
+    ...r,
+    deputyName: deputyMap.value.get(r.deputyId) ?? `Deputado ${r.deputyId}`,
+  })),
+)
+
 const recordColumns = [
-  { key: 'deputyId', label: 'Deputado ID' },
+  { key: 'deputyName', label: 'Deputado' },
   { key: 'registeredAt', label: 'Data de Registo' },
   { key: 'status', label: 'Estado' },
   { key: 'txHash', label: 'Tx Hash' },
