@@ -17,9 +17,7 @@ export default defineEventHandler(async (event) => {
     })
   } catch (err: unknown) {
     const e = err as { status?: number; data?: { error?: unknown } }
-    throw createError({
-      statusCode: e?.status ?? 400,
-      data: { error: e?.data?.error ?? { code: 'SUBMIT_FAILED', message: 'Submission failed.' } },
-    })
+    setResponseStatus(event, e?.status ?? 400)
+    return { error: e?.data?.error ?? { code: 'SUBMIT_FAILED', message: 'Submission failed.' } }
   }
 })
