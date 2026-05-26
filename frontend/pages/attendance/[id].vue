@@ -1,23 +1,8 @@
 <template>
   <div>
     <div class="flex items-center gap-2 mb-6">
-      <UButton
-        v-if="record?.sessionId"
-        variant="ghost"
-        icon="i-heroicons-arrow-left"
-        :to="`/sessions/${record.sessionId}`"
-        size="sm"
-      >
-        Sessão
-      </UButton>
-      <UButton
-        v-if="record?.deputyId"
-        variant="ghost"
-        icon="i-heroicons-arrow-left"
-        :to="`/deputies/${record.deputyId}`"
-        size="sm"
-      >
-        Deputado
+      <UButton variant="ghost" icon="i-heroicons-arrow-left" size="sm" @click="router.back()">
+        Voltar
       </UButton>
     </div>
 
@@ -168,6 +153,7 @@
 import type { VerifyResult } from '~/composables/useAttendance'
 
 const route = useRoute()
+const router = useRouter()
 const recordId = route.params.id as string
 
 const { fetchRecord, verifyRecord } = useAttendance()
