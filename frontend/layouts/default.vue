@@ -8,8 +8,8 @@
             <span class="font-semibold text-lg">Parlamento — Auditoria</span>
           </div>
           <nav class="flex items-center gap-1">
-            <UButton variant="ghost" to="/sessions" size="sm">Sessões</UButton>
-            <UButton variant="ghost" to="/deputies" size="sm">Deputados</UButton>
+            <UButton :variant="isActive('/sessions') ? 'soft' : 'ghost'" to="/sessions" size="sm">Sessões</UButton>
+            <UButton :variant="isActive('/deputies') ? 'soft' : 'ghost'" to="/deputies" size="sm">Deputados</UButton>
           </nav>
         </div>
         <UButton variant="ghost" icon="i-heroicons-arrow-right-on-rectangle" @click="logout">
@@ -25,4 +25,6 @@
 
 <script setup lang="ts">
 const { logout } = useAuth()
+const route = useRoute()
+const isActive = (path: string) => route.path.startsWith(path)
 </script>
