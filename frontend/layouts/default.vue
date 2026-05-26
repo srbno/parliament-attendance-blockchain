@@ -8,8 +8,16 @@
             <span class="font-semibold text-lg">Parlamento — Auditoria</span>
           </div>
           <nav class="flex items-center gap-1">
-            <UButton :variant="isActive('/sessions') ? 'soft' : 'ghost'" to="/sessions" size="sm">Sessões</UButton>
-            <UButton :variant="isActive('/deputies') ? 'soft' : 'ghost'" to="/deputies" size="sm">Deputados</UButton>
+            <UButton
+              :variant="isActive('/sessions') ? 'solid' : 'ghost'"
+              to="/sessions"
+              size="sm"
+            >Sessões</UButton>
+            <UButton
+              :variant="isActive('/deputies') ? 'solid' : 'ghost'"
+              to="/deputies"
+              size="sm"
+            >Deputados</UButton>
           </nav>
         </div>
         <UButton variant="ghost" icon="i-heroicons-arrow-right-on-rectangle" @click="logout">
