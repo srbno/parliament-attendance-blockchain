@@ -1,5 +1,6 @@
 <script setup lang="ts">
-await navigateTo('/deputies', { replace: true })
+const { role } = useAuth()
+await navigateTo(role.value === 'DEPUTY' ? '/deputy/submit' : '/sessions', { replace: true })
 </script>
 
 <template>
