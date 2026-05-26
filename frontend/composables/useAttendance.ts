@@ -47,6 +47,13 @@ export const useAttendance = () => {
     })
   }
 
+  const fetchBySession = async (sessionId: string | number): Promise<AttendanceRecord[]> => {
+    return $fetch(`/attendance/session/${sessionId}`, {
+      baseURL: config.public.apiBase,
+      headers: getHeaders(),
+    })
+  }
+
   const verifyRecord = async (id: string | number): Promise<VerifyResult> => {
     return $fetch(`/attendance/${id}/verify`, {
       baseURL: config.public.apiBase,
@@ -54,5 +61,5 @@ export const useAttendance = () => {
     })
   }
 
-  return { fetchByDeputy, fetchRecord, verifyRecord }
+  return { fetchByDeputy, fetchBySession, fetchRecord, verifyRecord }
 }
