@@ -2,118 +2,147 @@
 
 Projeto desenvolvido no âmbito da cadeira de **Blockchain** do **Mestrado em Engenharia Informática do ISCTE**.
 
-O repositório está organizado por componentes, mas sem workspace `pnpm` na raiz nesta fase. O backend é executado de forma autónoma a partir da pasta `backend/`; a pasta `blockchain/` fica reservada para a implementação da Fase 2.
-
 ## Estrutura
 
 ```text
 .
-├── README.md
-├── docs/
-├── backend/
-│   ├── package.json
-│   ├── pnpm-lock.yaml
-│   ├── docker-compose.yml
-│   ├── src/
-│   ├── prisma/
-│   ├── tests/
-│   ├── bruno/
-│   └── README.md
-└── blockchain/
-    └── README.md
+├── Makefile
+├── backend/          # API Fastify (TypeScript)
+├── blockchain/       # Smart contract (Solidity + Hardhat)
+├── frontend/         # Aplicação de auditoria (Nuxt 3)
+└── docs/
 ```
 
 ## Componentes
 
-- `backend/`: API Fastify em TypeScript. Implementa autenticação, gestão de deputados/sessões/localizações, validação de assiduidade, geração de evidência criptográfica, submissão à blockchain Hardhat local e verificação on-chain via `txHash`.
-- `blockchain/`: smart contract `AttendanceRegistry` em Solidity, configuração Hardhat e script de deploy.
-- `docs/`: documentação auxiliar do projeto.
+- **backend/** — API Fastify em TypeScript. Autenticação JWT, gestão de deputados/sessões/localizações, validação de assiduidade por política, geração de evidência criptográfica (Keccak-256), submissão à blockchain Hardhat e verificação on-chain via `txHash`.
+- **blockchain/** — Smart contract `AttendanceRegistry` em Solidity, configuração Hardhat e script de deploy.
+- **frontend/** — Aplicação de auditoria em Nuxt 3 para o papel AUDITOR. Permite consultar sessões, deputados e registos de presença, e verificar a integridade dos registos na blockchain.
 
-## Estado Atual
+---
 
-O projeto integra backend e blockchain local:
+## Pré-requisitos
 
-- Smart contract `AttendanceRegistry` em `blockchain/contracts/`.
-- Hardhat configurado em `blockchain/`.
-- Backend submete `evidenceHash` ao contrato via `addRecord(recordId, evidenceHash)` e guarda `txHash`.
-- Verificação on-chain: o backend recupera os dados da transação pelo `txHash` e compara o hash on-chain com o hash recalculado a partir do payload armazenado.
+- Node.js 24+
+- pnpm 11+
+- Docker + Docker Compose
+- `pg_isready` disponível dentro do container PostgreSQL (incluído na imagem `postgres:18-alpine`)
 
-Ainda fora do âmbito:
+---
 
-- submissão a uma rede Ethereum pública;
-- confirmação automática de bloco (estado `CONFIRMED`);
-- testes de contrato Foundry.
+## Primeiro arranque (instalação completa)
 
-## Execução Do Backend
+Seguir estes passos pela ordem indicada.
 
-Entrar na pasta do backend:
+### 1. Instalar dependências
 
 ```bash
-cd backend
+make setup
 ```
 
-Instalar dependências:
+Instala as dependências do backend, blockchain e frontend.
+
+### 2. Configurar variáveis de ambiente
 
 ```bash
-pnpm install
+cp backend/.env.example backend/.env
 ```
 
-Criar o ficheiro de ambiente:
+Editar `backend/.env` e preencher os valores obrigatórios:
+
+| Variável | Descrição |
+|---|---|
+| `JWT_SECRET` | Segredo para assinar tokens JWT (gerar com `openssl rand -hex 32`) |
+| `EVIDENCE_HASH_SEED` | Seed de 64 hex chars para o hash de evidência (gerar com `openssl rand -hex 32`) |
+| `BLOCKCHAIN_MODE` | `mock` para testes locais sem Hardhat; `hardhat` para blockchain real |
+
+Os restantes valores por omissão funcionam para desenvolvimento local.
+
+### 3. Aplicar migrações da base de dados
+
+> **Obrigatório na primeira vez.** Cria as tabelas no PostgreSQL.
 
 ```bash
-cp .env.example .env
+docker compose -f backend/docker-compose.yml up -d
+cd backend && pnpm prisma migrate dev
 ```
 
-Editar `.env` e substituir `JWT_SECRET` e `EVIDENCE_HASH_SEED` por valores reais gerados fora do Git.
-
-Subir PostgreSQL:
+### 4. Popular dados de demonstração
 
 ```bash
-docker compose up -d postgres
+make seed
 ```
 
-Aplicar migrações e popular dados iniciais:
+Cria os utilizadores de demo:
+
+| Username | Password | Papel |
+|---|---|---|
+| `admin` | `ChangeMe123!` | ADMIN |
+| `auditor` | `ChangeMe123!` | AUDITOR |
+| `deputy` | `ChangeMe123!` | DEPUTY |
+
+### 5. Arrancar todos os serviços
 
 ```bash
-pnpm prisma migrate dev
-pnpm seed
+make dev
 ```
 
-Executar a API:
+Inicia PostgreSQL, Hardhat, backend e frontend em background.
+
+| Serviço | URL |
+|---|---|
+| Frontend (auditoria) | http://localhost:3000 |
+| Backend (API) | http://localhost:3001 |
+| Hardhat (blockchain local) | http://localhost:8545 |
+| PostgreSQL | localhost:5432 |
+
+---
+
+## Arranque rápido (após primeira instalação)
 
 ```bash
-pnpm dev
+make dev
 ```
 
-URL local por omissão:
+---
 
-```text
-http://127.0.0.1:3000
+## Comandos Makefile
+
+```bash
+make dev      # Inicia todos os serviços
+make stop     # Para todos os serviços
+make status   # Mostra estado de cada serviço
+make logs     # Segue logs de todos os serviços em tempo real
+make seed     # Popula a base de dados com dados de demo
+make setup    # Instala todas as dependências
+make db       # Inicia apenas o PostgreSQL
 ```
+
+Logs individuais em `logs/backend.log`, `logs/frontend.log`, `logs/hardhat.log`.
+
+---
 
 ## Testes
 
 A partir de `backend/`:
 
 ```bash
-pnpm test
-pnpm test:coverage
-pnpm test:integration
+pnpm test                                      # Testes unitários
+pnpm test:coverage                             # Cobertura
+RUN_INTEGRATION_TESTS=1 pnpm test:integration  # Requer PostgreSQL a correr
 ```
 
-Os testes de integração exigem PostgreSQL a correr e a base de dados migrada.
+## Testes Manuais (Bruno)
 
-## Testes Manuais
+A coleção Bruno está em `backend/bruno/`. Abrir no Bruno, escolher o ambiente `Local` e executar primeiro um pedido de login para obter o token.
 
-A coleção Bruno está em:
+---
 
-```text
-backend/bruno/
-```
+## Modos de Blockchain
 
-Abrir essa pasta no Bruno, escolher o ambiente `Local` e executar primeiro um dos pedidos de login.
+| Modo | Descrição |
+|---|---|
+| `BLOCKCHAIN_MODE=mock` | Gera `txHash` local sem RPC. Verificação funciona apenas enquanto o backend não reiniciar. |
+| `BLOCKCHAIN_MODE=hardhat` | Submete transações reais ao nó Hardhat local. Verificação on-chain persiste. |
 
-## Documentação
-
-- Backend: `backend/README.md`
-- Blockchain futura: `blockchain/README.md`
+Para usar o modo `hardhat`, o nó e o contrato têm de estar a correr (`make dev` já inclui o Hardhat).
