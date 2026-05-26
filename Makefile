@@ -2,7 +2,7 @@ ROOT := $(shell pwd)
 PIDS := $(ROOT)/.pids
 LOGS := $(ROOT)/logs
 
-.PHONY: dev stop setup seed db status logs
+.PHONY: dev stop setup seed migrate db status logs
 
 ## Start all services for local development
 dev: db
@@ -55,6 +55,12 @@ setup:
 	@echo "[setup] Installing frontend deps..."
 	@cd frontend && pnpm install
 	@echo "[setup] Done. Copy backend/.env.example to backend/.env and fill in secrets."
+
+## Apply Prisma migrations (run once when the database is first created)
+migrate: db
+	@echo "[migrate] Applying Prisma migrations..."
+	@cd backend && pnpm prisma migrate deploy
+	@echo "[migrate] Done."
 
 ## Seed the database with demo data
 seed:

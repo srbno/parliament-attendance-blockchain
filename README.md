@@ -60,11 +60,10 @@ Os restantes valores por omissão funcionam para desenvolvimento local.
 
 ### 3. Aplicar migrações da base de dados
 
-> **Obrigatório na primeira vez.** Cria as tabelas no PostgreSQL.
+> **Obrigatório apenas na primeira vez** (ou quando o banco de dados for recriado). Cria as tabelas no PostgreSQL.
 
 ```bash
-docker compose -f backend/docker-compose.yml up -d
-cd backend && pnpm prisma migrate dev
+make migrate
 ```
 
 ### 4. Popular dados de demonstração
@@ -113,6 +112,7 @@ make dev      # Inicia todos os serviços
 make stop     # Para todos os serviços
 make status   # Mostra estado de cada serviço
 make logs     # Segue logs de todos os serviços em tempo real
+make migrate  # Aplica migrações Prisma (apenas na primeira vez ou ao recriar o banco)
 make seed     # Popula a base de dados com dados de demo
 make setup    # Instala todas as dependências
 make db       # Inicia apenas o PostgreSQL
