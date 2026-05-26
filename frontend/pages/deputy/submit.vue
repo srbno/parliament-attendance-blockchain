@@ -158,8 +158,6 @@
 </template>
 
 <script setup lang="ts">
-import type { SubmitAttendanceResult } from '~/composables/useAttendance'
-
 type Step = 'session' | 'camera' | 'verifying' | 'confirmed' | 'submitting' | 'success' | 'error'
 
 interface EdgeVerificationResult {
@@ -169,8 +167,14 @@ interface EdgeVerificationResult {
   message: string
 }
 
+interface SubmitAttendanceResult {
+  recordId: string
+  status: 'SUBMITTED'
+  blockchain: { submitted: boolean; txHash: string; blockNumber: number | null }
+}
+
 const { fetchAll } = useSessions()
-const { submitAttendance } = useAttendance()
+const { authHeaders } = useAuth()
 
 const { data: sessions } = await useAsyncData('sessions-submit', fetchAll)
 
@@ -258,10 +262,11 @@ const submit = async () => {
   stopCamera()
   step.value = 'submitting'
   try {
-    const result = await submitAttendance({
-      sessionId: String(selectedSession.value!.id),
-      gps: verifyResult.value!.gps,
-      clientRequestId: crypto.randomUUID(),
+    // Browser → Nitro (mock edge layer) → Fastify backend
+    const result = await $fetch<SubmitAttendanceResult>('/api/submit-attendance', {
+      method: 'POST',
+      headers: authHeaders.value,
+      body: { sessionId: String(selectedSession.value!.id) },
     })
     submitResult.value = result
     step.value = 'success'

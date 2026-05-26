@@ -25,19 +25,6 @@ export interface VerifyResult {
   overallResult: 'CHAIN_VALID' | 'CHAIN_VERIFICATION_FAILED'
 }
 
-export interface SubmitAttendanceResult {
-  recordId: string
-  status: 'SUBMITTED'
-  deputyId: string
-  sessionId: string
-  registeredAt: string
-  validationPolicyId: string
-  blockchain: {
-    submitted: boolean
-    txHash: string
-    blockNumber: number | null
-  }
-}
 
 export const useAttendance = () => {
   const config = useRuntimeConfig()
@@ -75,18 +62,5 @@ export const useAttendance = () => {
     })
   }
 
-  const submitAttendance = async (body: {
-    sessionId: string
-    gps: { latitude: number; longitude: number; accuracyMeters: number }
-    clientRequestId: string
-  }): Promise<SubmitAttendanceResult> => {
-    return $fetch('/attendance/submit', {
-      baseURL: config.public.apiBase,
-      method: 'POST',
-      headers: getHeaders(),
-      body,
-    })
-  }
-
-  return { fetchByDeputy, fetchBySession, fetchRecord, verifyRecord, submitAttendance }
+  return { fetchByDeputy, fetchBySession, fetchRecord, verifyRecord }
 }
