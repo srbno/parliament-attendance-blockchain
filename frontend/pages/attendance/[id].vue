@@ -2,6 +2,15 @@
   <div>
     <div class="flex items-center gap-2 mb-6">
       <UButton
+        v-if="record?.sessionId"
+        variant="ghost"
+        icon="i-heroicons-arrow-left"
+        :to="`/sessions/${record.sessionId}`"
+        size="sm"
+      >
+        Sessão
+      </UButton>
+      <UButton
         v-if="record?.deputyId"
         variant="ghost"
         icon="i-heroicons-arrow-left"
