@@ -27,12 +27,18 @@
             <dd class="mt-1">{{ formatDate(record.registeredAt) }}</dd>
           </div>
           <div>
-            <dt class="text-gray-500 dark:text-gray-400">ID da Sessão</dt>
-            <dd class="font-mono mt-1">{{ record.sessionId }}</dd>
+            <dt class="text-gray-500 dark:text-gray-400">Sessão</dt>
+            <dd class="mt-1">
+              <span v-if="session" class="font-medium">{{ session.title }}</span>
+              <span class="font-mono text-xs text-gray-400 ml-1">#{{ record.sessionId }}</span>
+            </dd>
           </div>
           <div>
-            <dt class="text-gray-500 dark:text-gray-400">ID do Deputado</dt>
-            <dd class="font-mono mt-1">{{ record.deputyId }}</dd>
+            <dt class="text-gray-500 dark:text-gray-400">Deputado</dt>
+            <dd class="mt-1">
+              <span v-if="deputy" class="font-medium">{{ deputy.name }}</span>
+              <span class="font-mono text-xs text-gray-400 ml-1">#{{ record.deputyId }}</span>
+            </dd>
           </div>
           <div v-if="record.failureReason" class="col-span-2">
             <dt class="text-gray-500 dark:text-gray-400">Motivo de Falha</dt>
@@ -157,10 +163,22 @@ const router = useRouter()
 const recordId = route.params.id as string
 
 const { fetchRecord, verifyRecord } = useAttendance()
+const { fetchOne: fetchDeputy } = useDeputies()
+const { fetchOne: fetchSession } = useSessions()
 
 const { data: record, error: recordError } = await useAsyncData(
   `attendance-${recordId}`,
   () => fetchRecord(recordId),
+)
+
+const { data: deputy } = await useAsyncData(
+  `attendance-deputy-${record.value?.deputyId}`,
+  () => record.value?.deputyId ? fetchDeputy(record.value.deputyId) : Promise.resolve(null),
+)
+
+const { data: session } = await useAsyncData(
+  `attendance-session-${record.value?.sessionId}`,
+  () => record.value?.sessionId ? fetchSession(record.value.sessionId) : Promise.resolve(null),
 )
 
 const verifyResult = ref<VerifyResult | null>(null)
