@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex items-center gap-2 mb-6">
-      <UButton variant="ghost" icon="i-heroicons-arrow-left" to="/deputies" size="sm">
-        Deputados
+      <UButton variant="ghost" icon="i-heroicons-chevron-left" size="sm" @click="router.back()">
+        Voltar
       </UButton>
     </div>
 
@@ -88,6 +88,7 @@
 import type { AttendanceRecord } from '~/composables/useAttendance'
 
 const route = useRoute()
+const router = useRouter()
 const deputyId = route.params.id as string
 
 const { fetchOne } = useDeputies()

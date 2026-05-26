@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center gap-2 mb-6">
-      <UButton variant="ghost" icon="i-heroicons-arrow-left" size="sm" @click="router.back()">
+      <UButton variant="ghost" icon="i-heroicons-chevron-left" size="sm" @click="router.back()">
         Voltar
       </UButton>
     </div>
