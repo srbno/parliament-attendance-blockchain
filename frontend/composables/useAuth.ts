@@ -18,6 +18,10 @@ export const useAuth = () => {
     default: () => null,
     maxAge: 60 * 60 * 8,
   })
+  const username = useCookie<string | null>('auth-username', {
+    default: () => null,
+    maxAge: 60 * 60 * 8,
+  })
 
   const claims = computed(() => token.value ? decodeJwt(token.value) : null)
   const isAuthenticated = computed(() => !!token.value)
@@ -28,19 +32,21 @@ export const useAuth = () => {
     Authorization: token.value ? `Bearer ${token.value}` : '',
   }))
 
-  const login = async (username: string, password: string) => {
+  const login = async (user: string, password: string) => {
     const data = await $fetch<{ accessToken: string }>('/auth/login', {
       baseURL: config.public.apiBase,
       method: 'POST',
-      body: { username, password },
+      body: { username: user, password },
     })
     token.value = data.accessToken
+    username.value = user
   }
 
   const logout = () => {
     token.value = null
+    username.value = null
     return navigateTo('/login')
   }
 
-  return { token, isAuthenticated, authHeaders, role, deputyId, login, logout }
+  return { token, username, isAuthenticated, authHeaders, role, deputyId, login, logout }
 }
