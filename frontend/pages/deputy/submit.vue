@@ -271,7 +271,8 @@ const submit = async () => {
     submitResult.value = result
     step.value = 'success'
   } catch (err: unknown) {
-    const code = (err as { data?: { message?: string } })?.data?.message ?? ''
+    const e = err as { data?: { error?: { code?: string }; message?: string } }
+    const code = e?.data?.error?.code ?? e?.data?.message ?? ''
     errorMessage.value = errorLabels[code] ?? 'Erro ao submeter presença. Tente novamente.'
     step.value = 'error'
   }
