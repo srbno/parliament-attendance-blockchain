@@ -26,7 +26,6 @@ Projeto desenvolvido no âmbito da cadeira de **Blockchain** do **Mestrado em En
 - Node.js 24+
 - pnpm 11+
 - Docker + Docker Compose
-- `pg_isready` disponível dentro do container PostgreSQL (incluído na imagem `postgres:18-alpine`)
 
 ---
 
