@@ -21,6 +21,11 @@ body:json {
   }
 }
 
+vars:pre-request {
+  baseUrl: http://localhost:3000
+  deputyUsername: deputy
+  demoPassword: ChangeMe123!
+}
 
 script:post-response {
   const body = res.getBody();

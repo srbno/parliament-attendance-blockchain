@@ -1,3 +1,6 @@
+import { navigateTo, useCookie, useRuntimeConfig } from "nuxt/app";
+import { computed } from "vue";
+
 interface JwtClaims {
   sub: string
   role: 'ADMIN' | 'DEPUTY' | 'AUDITOR'
@@ -34,7 +37,7 @@ export const useAuth = () => {
 
   const login = async (user: string, password: string) => {
     const data = await $fetch<{ accessToken: string }>('/auth/login', {
-      baseURL: config.public.apiBase,
+      baseURL: config.public.apiBase as string,
       method: 'POST',
       body: { username: user, password },
     })
