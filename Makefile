@@ -6,6 +6,7 @@ LOGS := $(ROOT)/logs
 
 ## Start all services for local development
 dev: db
+	@mkdir -p $(PIDS) $(LOGS)
 	@echo "[hardhat] Starting Hardhat node..."
 	@cd blockchain && npx hardhat node >> $(LOGS)/hardhat.log 2>&1 & echo $$! > $(PIDS)/hardhat.pid
 	@echo "[backend] Starting Fastify backend..."
