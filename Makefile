@@ -48,6 +48,9 @@ stop:
 	@pkill -f "nuxt dev" 2>/dev/null || true
 	@pkill -f "tsx watch" 2>/dev/null || true
 	@pkill -f "hardhat node" 2>/dev/null || true
+	@lsof -ti:3001 | xargs kill -9 2>/dev/null || true
+	@lsof -ti:3000 | xargs kill -9 2>/dev/null || true
+	@lsof -ti:8545 | xargs kill -9 2>/dev/null || true
 	@docker compose -f backend/docker-compose.yml stop
 	@echo "[stop] Done."
 
