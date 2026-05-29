@@ -15,7 +15,7 @@ if (!databaseUrl) {
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: databaseUrl }) });
 
-const password = 'ChangeMe123!';
+const password = 'asdf';
 const passwordHash = await argon2.hash(password);
 
 const now = new Date();
@@ -148,44 +148,44 @@ const sessionsData = [
     id: 1,
     title: 'Plenária — Debate sobre o Orçamento do Estado 2026',
     sessionType: 'PLENARY' as const,
-    scheduledStart: d(-30), scheduledEnd: d(-29),
-    checkinStart: d(-30), checkinEnd: d(-29),
-    status: 'CLOSED' as const,
+    scheduledStart: d(-30), scheduledEnd: d(30),
+    checkinStart: d(-30), checkinEnd: d(30),
+    status: 'OPEN' as const,
     allowMultipleCheckins: false,
   },
   {
     id: 2,
     title: 'Plenária — Votação Final Global do OE 2026',
     sessionType: 'VOTING' as const,
-    scheduledStart: d(-25), scheduledEnd: d(-25),
-    checkinStart: d(-25), checkinEnd: d(-25),
-    status: 'CLOSED' as const,
+    scheduledStart: d(-25), scheduledEnd: d(30),
+    checkinStart: d(-25), checkinEnd: d(30),
+    status: 'OPEN' as const,
     allowMultipleCheckins: false,
   },
   {
     id: 3,
     title: 'Comissão de Saúde — Audição Pública sobre o SNS',
     sessionType: 'COMMITTEE' as const,
-    scheduledStart: d(-15), scheduledEnd: d(-15),
-    checkinStart: d(-15), checkinEnd: d(-15),
-    status: 'CLOSED' as const,
+    scheduledStart: d(-15), scheduledEnd: d(30),
+    checkinStart: d(-15), checkinEnd: d(30),
+    status: 'OPEN' as const,
     allowMultipleCheckins: false,
   },
   {
     id: 4,
     title: 'Plenária — Debate sobre Política de Habitação',
     sessionType: 'PLENARY' as const,
-    scheduledStart: d(-7), scheduledEnd: d(-6),
-    checkinStart: d(-7), checkinEnd: d(-6),
-    status: 'CLOSED' as const,
+    scheduledStart: d(-7), scheduledEnd: d(30),
+    checkinStart: d(-7), checkinEnd: d(30),
+    status: 'OPEN' as const,
     allowMultipleCheckins: false,
   },
   {
     id: 5,
     title: 'Plenária — Questões ao Governo (Sessão Quinzenal)',
     sessionType: 'PLENARY' as const,
-    scheduledStart: d(-1), scheduledEnd: d(7),
-    checkinStart: d(-1), checkinEnd: d(7),
+    scheduledStart: d(-1), scheduledEnd: d(30),
+    checkinStart: d(-1), checkinEnd: d(30),
     status: 'OPEN' as const,
     allowMultipleCheckins: false,
   },
@@ -193,9 +193,9 @@ const sessionsData = [
     id: 6,
     title: 'Comissão de Educação — Análise do Plano de Recuperação Escolar',
     sessionType: 'COMMITTEE' as const,
-    scheduledStart: d(3), scheduledEnd: d(3),
-    checkinStart: d(3), checkinEnd: d(3),
-    status: 'DRAFT' as const,
+    scheduledStart: d(3), scheduledEnd: d(30),
+    checkinStart: d(3), checkinEnd: d(30),
+    status: 'OPEN' as const,
     allowMultipleCheckins: false,
   },
 ];
