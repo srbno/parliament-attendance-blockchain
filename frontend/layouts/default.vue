@@ -5,24 +5,42 @@
         <div class="flex items-center gap-6">
           <div class="flex items-center gap-2">
             <UIcon name="i-heroicons-building-library" class="w-6 h-6 text-primary-500" />
-            <span class="font-semibold text-lg">Parlamento — Auditoria</span>
+            <span class="font-semibold text-lg">Parlamento</span>
           </div>
           <nav class="flex items-center gap-1">
-            <UButton
-              :variant="isActive('/sessions') ? 'solid' : 'ghost'"
-              to="/sessions"
-              size="sm"
-            >Sessões</UButton>
-            <UButton
-              :variant="isActive('/deputies') ? 'solid' : 'ghost'"
-              to="/deputies"
-              size="sm"
-            >Deputados</UButton>
+            <template v-if="role === 'DEPUTY'">
+              <UButton
+                :variant="isActive('/deputy/submit') ? 'solid' : 'ghost'"
+                to="/deputy/submit"
+                size="sm"
+              >Submeter Presença</UButton>
+              <UButton
+                :variant="isActive('/deputy/records') ? 'solid' : 'ghost'"
+                to="/deputy/records"
+                size="sm"
+              >Os Meus Registos</UButton>
+            </template>
+            <template v-else>
+              <UButton
+                :variant="isActive('/sessions') ? 'solid' : 'ghost'"
+                to="/sessions"
+                size="sm"
+              >Sessões</UButton>
+              <UButton
+                :variant="isActive('/deputies') ? 'solid' : 'ghost'"
+                to="/deputies"
+                size="sm"
+              >Deputados</UButton>
+            </template>
           </nav>
         </div>
-        <UButton variant="ghost" icon="i-heroicons-arrow-right-on-rectangle" @click="logout">
-          Sair
-        </UButton>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <p class="text-sm font-medium leading-none">Olá, {{ username }}</p>
+            <p class="text-xs text-gray-400 mt-1 leading-none">{{ roleLabel }}</p>
+          </div>
+          <UButton variant="ghost" icon="i-heroicons-arrow-right-on-rectangle" @click="logout" />
+        </div>
       </header>
       <main>
         <slot />
@@ -32,7 +50,14 @@
 </template>
 
 <script setup lang="ts">
-const { logout } = useAuth()
+const { logout, role, username } = useAuth()
 const route = useRoute()
 const isActive = (path: string) => route.path.startsWith(path)
+
+const roleLabel = computed(() => {
+  if (role.value === 'DEPUTY') return 'Deputado'
+  if (role.value === 'AUDITOR') return 'Auditor'
+  if (role.value === 'ADMIN') return 'Administrador'
+  return ''
+})
 </script>

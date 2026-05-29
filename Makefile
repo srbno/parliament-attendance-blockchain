@@ -35,6 +35,7 @@ stop:
 	@for svc in hardhat backend frontend; do \
 		if [ -f $(PIDS)/$$svc.pid ]; then \
 			pid=$$(cat $(PIDS)/$$svc.pid); \
+			pkill -TERM -P $$pid 2>/dev/null; \
 			if kill -0 $$pid 2>/dev/null; then \
 				kill $$pid && echo "[stop] Stopped $$svc (pid $$pid)"; \
 			else \
@@ -43,6 +44,9 @@ stop:
 			rm -f $(PIDS)/$$svc.pid; \
 		fi; \
 	done
+	@pkill -f "nuxt dev" 2>/dev/null || true
+	@pkill -f "tsx watch" 2>/dev/null || true
+	@pkill -f "hardhat node" 2>/dev/null || true
 	@docker compose -f backend/docker-compose.yml stop
 	@echo "[stop] Done."
 

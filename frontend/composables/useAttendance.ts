@@ -1,3 +1,6 @@
+import { useRuntimeConfig } from "nuxt/app";
+import { useAuth } from "./useAuth";
+
 export interface AttendanceRecord {
   recordId: string
   deputyId: string
@@ -25,41 +28,42 @@ export interface VerifyResult {
   overallResult: 'CHAIN_VALID' | 'CHAIN_VERIFICATION_FAILED'
 }
 
+
 export const useAttendance = () => {
   const config = useRuntimeConfig()
-  const { token } = useAuth()
+  const {token} = useAuth()
 
   const getHeaders = () => ({
     Authorization: `Bearer ${token.value ?? ''}`,
   })
 
-  const fetchByDeputy = async (deputyId: string | number): Promise<AttendanceRecord[]> => {
+  const fetchByDeputy = (deputyId: string | number): Promise<AttendanceRecord[]> => {
     return $fetch(`/attendance/deputy/${deputyId}`, {
-      baseURL: config.public.apiBase,
+      baseURL: config.public.apiBase as string,
       headers: getHeaders(),
     })
   }
 
-  const fetchRecord = async (id: string | number): Promise<AttendanceRecord> => {
+  const fetchRecord = (id: string | number): Promise<AttendanceRecord> => {
     return $fetch(`/attendance/${id}`, {
-      baseURL: config.public.apiBase,
+      baseURL: config.public.apiBase as string,
       headers: getHeaders(),
     })
   }
 
-  const fetchBySession = async (sessionId: string | number): Promise<AttendanceRecord[]> => {
+  const fetchBySession = (sessionId: string | number): Promise<AttendanceRecord[]> => {
     return $fetch(`/attendance/session/${sessionId}`, {
-      baseURL: config.public.apiBase,
+      baseURL: config.public.apiBase as string,
       headers: getHeaders(),
     })
   }
 
-  const verifyRecord = async (id: string | number): Promise<VerifyResult> => {
+  const verifyRecord = (id: string | number): Promise<VerifyResult> => {
     return $fetch(`/attendance/${id}/verify`, {
-      baseURL: config.public.apiBase,
+      baseURL: config.public.apiBase as string,
       headers: getHeaders(),
     })
   }
 
-  return { fetchByDeputy, fetchBySession, fetchRecord, verifyRecord }
+  return {fetchByDeputy, fetchBySession, fetchRecord, verifyRecord}
 }
