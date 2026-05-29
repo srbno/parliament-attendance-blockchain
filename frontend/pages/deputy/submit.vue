@@ -48,7 +48,11 @@
       <div class="flex flex-col items-center gap-4">
         <!-- Live camera feed -->
         <div v-if="step === 'camera' || step === 'verifying' || step === 'confirmed'" class="relative rounded-lg overflow-hidden bg-black aspect-video w-[55%]">
-          <video ref="videoEl" autoplay playsinline muted class="w-full h-full object-cover" />
+          <video ref="videoEl" autoplay playsinline muted class="w-full h-full object-cover" :class="{ 'opacity-0': !videoReady }" @canplay="videoReady = true" />
+          <div v-if="!videoReady" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center gap-2">
+            <UIcon name="i-heroicons-camera" class="w-10 h-10 text-gray-500" />
+            <p class="text-gray-400 text-xs">A iniciar câmara...</p>
+          </div>
           <div v-if="step === 'verifying'" class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-3">
             <UIcon name="i-heroicons-arrow-path" class="w-10 h-10 text-white animate-spin" />
             <p class="text-white text-sm font-medium">Verificando identidade...</p>
@@ -207,6 +211,7 @@ const sessionColumns = [
 ]
 
 const step = ref<Step>('session')
+const videoReady = ref(false)
 const selectedSession = ref<(typeof sessions.value extends Array<infer T> ? T : never) | null>(null)
 const videoEl = ref<HTMLVideoElement | null>(null)
 const stream = ref<MediaStream | null>(null)
@@ -234,6 +239,7 @@ const selectSession = async (session: typeof selectedSession.value) => {
 }
 
 const startCamera = async () => {
+  videoReady.value = false
   try {
     stream.value = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
     if (videoEl.value) videoEl.value.srcObject = stream.value
