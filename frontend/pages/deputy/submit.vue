@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 max-w-2xl mx-auto">
+  <div class="flex flex-col gap-6 w-[80vw] mx-auto">
 
     <!-- Step 1: Session selection -->
     <UCard v-if="step === 'session'">
@@ -8,12 +8,12 @@
         <p class="text-sm text-gray-500 mt-1">Selecione a sessão em que pretende registar presença</p>
       </template>
 
-      <div v-if="availableSessions.length === 0" class="py-8 text-center text-sm text-gray-500">
-        Não há sessões com check-in disponível neste momento.
+      <div v-if="sortedSessions.length === 0" class="py-8 text-center text-sm text-gray-500">
+        Não há sessões abertas neste momento.
       </div>
       <UTable
         v-else
-        :rows="availableSessions"
+        :rows="sortedSessions"
         :columns="sessionColumns"
         @select="selectSession"
       >
@@ -22,6 +22,11 @@
         </template>
         <template #checkinEnd-data="{ row }">
           {{ formatDate(row.checkinEnd) }}
+        </template>
+        <template #estado-data="{ row }">
+          <UBadge v-if="attendedSessionIds.has(row.id)" color="green" variant="soft" size="xs" icon="i-heroicons-check-circle">
+            Submetido
+          </UBadge>
         </template>
       </UTable>
     </UCard>
@@ -40,9 +45,9 @@
         </div>
       </template>
 
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col items-center gap-4">
         <!-- Live camera feed -->
-        <div v-if="step === 'camera' || step === 'verifying' || step === 'confirmed'" class="relative rounded-lg overflow-hidden bg-black aspect-video">
+        <div v-if="step === 'camera' || step === 'verifying' || step === 'confirmed'" class="relative rounded-lg overflow-hidden bg-black aspect-video w-[55%]">
           <video ref="videoEl" autoplay playsinline muted class="w-full h-full object-cover" />
           <div v-if="step === 'verifying'" class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-3">
             <UIcon name="i-heroicons-arrow-path" class="w-10 h-10 text-white animate-spin" />
@@ -174,23 +179,31 @@ interface SubmitAttendanceResult {
 }
 
 const { fetchAll } = useSessions()
-const { authHeaders } = useAuth()
+const { fetchByDeputy } = useAttendance()
+const { authHeaders, deputyId } = useAuth()
 
-const { data: sessions } = await useAsyncData('sessions-submit', fetchAll)
+const [{ data: sessions }, { data: myAttendance }] = await Promise.all([
+  useAsyncData('sessions-submit', fetchAll),
+  useAsyncData('my-attendance', () => deputyId.value ? fetchByDeputy(deputyId.value) : Promise.resolve([])),
+])
 
-const now = new Date()
-const availableSessions = computed(() =>
-  (sessions.value ?? []).filter(s =>
-    s.status === 'OPEN' &&
-    new Date(s.checkinStart) <= now &&
-    new Date(s.checkinEnd) >= now,
-  ),
+const attendedSessionIds = computed(() =>
+  new Set((myAttendance.value ?? []).map(r => r.sessionId))
 )
+
+const sortedSessions = computed(() => {
+  const open = (sessions.value ?? []).filter(s => s.status === 'OPEN')
+  return [
+    ...open.filter(s => !attendedSessionIds.value.has(s.id)),
+    ...open.filter(s => attendedSessionIds.value.has(s.id)),
+  ]
+})
 
 const sessionColumns = [
   { key: 'title', label: 'Sessão' },
   { key: 'sessionType', label: 'Tipo' },
   { key: 'checkinEnd', label: 'Check-in até' },
+  { key: 'estado', label: 'Estado' },
 ]
 
 const step = ref<Step>('session')
@@ -213,6 +226,7 @@ const errorLabels: Record<string, string> = {
 }
 
 const selectSession = async (session: typeof selectedSession.value) => {
+  if (!session || attendedSessionIds.value.has(session.id)) return
   selectedSession.value = session
   step.value = 'camera'
   await nextTick()
