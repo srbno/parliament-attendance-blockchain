@@ -1,0 +1,15 @@
+{
+  "onlyBuiltDependencies": [
+    "@prisma/engines",
+    "argon2",
+    "esbuild",
+    "prisma"
+  ],
+  "peerDependencyRules": {
+    "ignoreMissing": [
+      "@types/react",
+      "react",
+      "react-dom"
+    ]
+  }
+}

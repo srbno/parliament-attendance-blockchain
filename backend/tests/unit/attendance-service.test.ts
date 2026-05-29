@@ -2,10 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 process.env.DATABASE_URL = 'postgresql://attendance:attendance@localhost:5432/attendance';
 process.env.JWT_SECRET = '12345678901234567890123456789012';
-process.env.APP_PRIVATE_KEY = '0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 process.env.MAX_GPS_ACCURACY_METERS = '100';
 process.env.HASH_ALGORITHM = 'keccak256';
 process.env.BLOCKCHAIN_MODE = 'mock';
+process.env.EVIDENCE_HASH_SEED = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 
 const mocks = vi.hoisted(() => ({
   prisma: {
@@ -29,7 +29,6 @@ vi.mock('../../src/db/prisma.js', () => ({ prisma: mocks.prisma }));
 const { AttendanceService } = await import('../../src/modules/attendance/attendance.service.js');
 const { EvidenceService } = await import('../../src/modules/evidence/evidence.service.js');
 const { HashService } = await import('../../src/modules/evidence/hash.service.js');
-const { SignerService } = await import('../../src/modules/evidence/signer.service.js');
 
 const now = new Date('2026-05-03T13:20:00.000Z');
 const tokenUser = { sub: '10', role: 'DEPUTY' as const, deputyId: '25' };
@@ -80,8 +79,6 @@ function setupValidPrisma() {
     sessionId: 431,
     registeredAt: now,
     validationPolicyId: 'POLICY_V1',
-    evidenceHash: data.evidenceHash,
-    signature: data.signature,
     txHash: data.txHash,
     blockNumber: null,
     contractAddress: null,
@@ -101,13 +98,14 @@ beforeEach(() => {
 });
 
 describe('AttendanceService', () => {
-  it('validates, signs, submits the proof to blockchain, and returns SUBMITTED', async () => {
+  it('validates, hashes evidence, submits the proof to blockchain, and returns SUBMITTED', async () => {
     const blockchain = {
       registerAttendanceProof: vi.fn().mockResolvedValue({
         submitted: true,
         txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         blockNumber: null
-      })
+      }),
+      getOnChainHashForTx: vi.fn().mockResolvedValue(null)
     };
     const service = new AttendanceService(blockchain);
 
@@ -120,12 +118,13 @@ describe('AttendanceService', () => {
       include: { location: true }
     });
     expect(response).not.toHaveProperty('validationResultHash');
-    expect(response.evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
-    expect(response.signature).toMatch(/^0x[0-9a-f]{128}$/);
+    expect(response).not.toHaveProperty('signature');
+    expect(response).not.toHaveProperty('evidenceHash');
     expect(blockchain.registerAttendanceProof).toHaveBeenCalledOnce();
-    expect(blockchain.registerAttendanceProof).toHaveBeenCalledWith(
-      expect.not.objectContaining({ validationResultHash: expect.anything() })
-    );
+    expect(blockchain.registerAttendanceProof).toHaveBeenCalledWith({
+      recordId: '1001',
+      evidenceHash: expect.stringMatching(/^0x[0-9a-f]{64}$/)
+    });
     expect(mocks.prisma.attendanceRecord.update).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
@@ -161,7 +160,7 @@ describe('AttendanceService', () => {
         allowedIpRanges: ['10.0.0.0/8']
       }
     });
-    const blockchain = { registerAttendanceProof: vi.fn() };
+    const blockchain = { registerAttendanceProof: vi.fn(), getOnChainHashForTx: vi.fn() };
     const service = new AttendanceService(blockchain);
 
     await expect(service.submit(submitInput, tokenUser, '127.0.0.1')).rejects.toMatchObject({
@@ -174,11 +173,8 @@ describe('AttendanceService', () => {
     );
   });
 
-  it('verifies local evidence and reports tampering', async () => {
-    const evidence = new EvidenceService(
-      new HashService(),
-      new SignerService('0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef')
-    );
+  it('reports CHAIN_VALID when recalculated hash matches on-chain hash', async () => {
+    const evidence = new EvidenceService(new HashService());
     const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
     const evidencePayload = evidence.buildEvidencePayload({
       recordId: '1001',
@@ -189,21 +185,90 @@ describe('AttendanceService', () => {
       validationResult: validationDetails
     });
     const evidenceHash = evidence.hashEvidencePayload(evidencePayload);
-    const signature = evidence.signEvidenceHash(evidenceHash);
+    mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
+      id: 1001,
+      status: 'SUBMITTED',
+      validationDetailsJson: validationDetails,
+      evidencePayloadJson: evidencePayload,
+      txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    });
+    const blockchain = {
+      registerAttendanceProof: vi.fn(),
+      getOnChainHashForTx: vi.fn().mockResolvedValue({ recordId: '1001', hash: evidenceHash })
+    };
+
+    const result = await new AttendanceService(blockchain).verify('1001');
+
+    expect(blockchain.getOnChainHashForTx).toHaveBeenCalledWith(
+      '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    );
+    expect(result).not.toHaveProperty('evidenceHashMatches');
+    expect(result).not.toHaveProperty('databaseHashMatches');
+    expect(result.blockchainCheckAvailable).toBe(true);
+    expect(result.blockchainRecordFound).toBe(true);
+    expect(result.blockchainHashMatches).toBe(true);
+    expect(result.overallResult).toBe('CHAIN_VALID');
+    expect(result).not.toHaveProperty('signatureValid');
+  });
+
+  it('reports CHAIN_VERIFICATION_FAILED when on-chain hash diverges from recalculated hash', async () => {
+    const evidence = new EvidenceService(new HashService());
+    const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
+    const evidencePayload = evidence.buildEvidencePayload({
+      recordId: '1001',
+      deputyId: '25',
+      sessionId: '431',
+      registeredAt: now.toISOString(),
+      validationPolicyId: 'POLICY_V1',
+      validationResult: validationDetails
+    });
+    mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
+      id: 1001,
+      status: 'SUBMITTED',
+      validationDetailsJson: validationDetails,
+      evidencePayloadJson: evidencePayload,
+      txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    });
+    const blockchain = {
+      registerAttendanceProof: vi.fn(),
+      getOnChainHashForTx: vi
+        .fn()
+        .mockResolvedValue({ recordId: '1001', hash: '0xdeadbeef'.padEnd(66, '0') })
+    };
+
+    const result = await new AttendanceService(blockchain).verify('1001');
+
+    expect(result.blockchainHashMatches).toBe(false);
+    expect(result.overallResult).toBe('CHAIN_VERIFICATION_FAILED');
+  });
+
+  it('reports CHAIN_VERIFICATION_FAILED when DB payload is tampered', async () => {
+    const evidence = new EvidenceService(new HashService());
+    const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
+    const evidencePayload = evidence.buildEvidencePayload({
+      recordId: '1001',
+      deputyId: '25',
+      sessionId: '431',
+      registeredAt: now.toISOString(),
+      validationPolicyId: 'POLICY_V1',
+      validationResult: validationDetails
+    });
+    const originalHash = evidence.hashEvidencePayload(evidencePayload);
     mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
       id: 1001,
       status: 'SUBMITTED',
       validationDetailsJson: validationDetails,
       evidencePayloadJson: { tampered: true },
-      evidenceHash,
-      signature
+      txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     });
+    const blockchain = {
+      registerAttendanceProof: vi.fn(),
+      getOnChainHashForTx: vi.fn().mockResolvedValue({ recordId: '1001', hash: originalHash })
+    };
 
-    const result = await new AttendanceService().verify('1001');
+    const result = await new AttendanceService(blockchain).verify('1001');
 
-    expect(result).not.toHaveProperty('validationResultHashMatches');
-    expect(result.evidenceHashMatches).toBe(false);
-    expect(result.signatureValid).toBe(true);
-    expect(result.overallResult).toBe('LOCAL_VERIFICATION_FAILED');
+    expect(result.blockchainHashMatches).toBe(false);
+    expect(result.overallResult).toBe('CHAIN_VERIFICATION_FAILED');
   });
 });

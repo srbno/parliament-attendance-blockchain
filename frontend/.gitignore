@@ -1,0 +1,12 @@
+# Nuxt build output
+.nuxt/
+.output/
+.nitro/
+
+# Node
+node_modules/
+.pnpm-store/
+
+# Misc
+.DS_Store
+*.log

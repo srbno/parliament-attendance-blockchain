@@ -2,13 +2,13 @@
 
 Backend API desenvolvido no âmbito da cadeira de **Blockchain** do **Mestrado em Engenharia Informática do ISCTE**.
 
-O projeto implementa a **Fase 1** de uma prova de conceito para registo de assiduidade parlamentar com validação contextual, geração de evidência criptográfica determinística, assinatura interna da aplicação e preparação para integração futura com blockchain.
+O projeto implementa uma prova de conceito para registo de assiduidade parlamentar com validação contextual, geração de evidência criptográfica determinística e integração com blockchain Hardhat local.
 
-Nesta fase, **não há submissão real para Ethereum**. A integração blockchain está isolada atrás de uma interface e é representada por um serviço mock.
+A integração blockchain está isolada atrás de uma interface `BlockchainService`, permitindo substituir o adaptador Hardhat por um adaptador Ethereum sem alterar a lógica de validação ou geração de evidência.
 
-## Âmbito Da Fase 1
+## Âmbito
 
-Esta fase inclui:
+Inclui:
 
 - API HTTP com Fastify, TypeScript e validação Zod.
 - Autenticação por `username` e `password`, com JWT.
@@ -22,23 +22,20 @@ Esta fase inclui:
 - Validação da janela temporal de check-in.
 - Prevenção de duplicados e replay através de `clientRequestId`.
 - Geração de JSON canónico determinístico.
-- Geração de `evidenceHash` com Keccak-256 sobre a evidência completa.
-- Assinatura de `evidenceHash` com chave privada interna da aplicação.
-- Verificação local de hashes e assinatura.
+- Geração de `evidenceHash` com Keccak-256 sobre o payload de evidência completo (incluindo seed).
+- Submissão do `evidenceHash` ao smart contract `AttendanceRegistry` via Hardhat local.
+- Verificação on-chain: recuperação do hash registado pelo `txHash` e comparação com o hash recalculado.
 - Auditoria de eventos relevantes.
-- `HardhatBlockchainService`, que simula a submissão da prova à blockchain através da interface da aplicação.
 
 O fluxo de assiduidade aceite termina com estado `SUBMITTED`, não `CONFIRMED`.
 
-## Fora Do Âmbito Da Fase 1
+## Fora Do Âmbito
 
-Não está implementado nesta fase:
+Não está implementado:
 
-- Smart contract.
-- Foundry, Forge ou Anvil.
-- Submissão real de transações Ethereum.
-- Consulta real à blockchain.
-- `viem`.
+- Submissão a uma rede Ethereum pública.
+- Confirmação automática de bloco (estado `CONFIRMED`).
+- Testes de contrato Foundry.
 - Carteiras ou chaves privadas individuais dos deputados.
 - Swagger/OpenAPI.
 - Microserviços, CQRS, event sourcing, Redis ou message brokers.
@@ -52,12 +49,12 @@ Route
   -> validação de request
   -> service
   -> validation engine
-  -> evidence/hash/signing service
+  -> evidence/hash service
   -> repository/database
   -> blockchain service abstraction
 ```
 
-A lógica de assiduidade não depende de uma implementação concreta de blockchain. A interface `BlockchainService` permite substituir o mock por um adaptador Ethereum numa fase posterior sem alterar a validação, a geração de evidência ou a assinatura.
+A lógica de assiduidade não depende de uma implementação concreta de blockchain. A interface `BlockchainService` permite substituir o adaptador Hardhat por um adaptador Ethereum sem alterar a validação ou a geração de evidência.
 
 ## Stack Técnica
 
@@ -71,7 +68,7 @@ A lógica de assiduidade não depende de uma implementação concreta de blockch
 - `@fastify/jwt`
 - Argon2
 - Vitest
-- Keccak-256 e secp256k1 através de pacotes `@noble`
+- Keccak-256 através do pacote `@noble/hashes`
 
 ## Pré-Requisitos
 
@@ -96,9 +93,11 @@ cp .env.example .env
 Antes de correr a aplicação, substituir no `.env`:
 
 - `JWT_SECRET`
-- `APP_PRIVATE_KEY`
+- `EVIDENCE_HASH_SEED` — gerar com `openssl rand -hex 32`
 
-Os valores de `JWT_SECRET` e `APP_PRIVATE_KEY` no `.env.example` são placeholders intencionalmente inválidos. Devem ser substituídos por segredos gerados fora do Git antes de iniciar a aplicação.
+Os valores no `.env.example` são placeholders intencionalmente inválidos. Devem ser substituídos por segredos gerados fora do Git antes de iniciar a aplicação.
+
+**Nota:** `EVIDENCE_HASH_SEED` é tratado como imutável durante o ciclo de vida do sistema. Alterar este valor após registos existentes invalida a verificação on-chain de todos os registos anteriores.
 
 ## Base De Dados
 
@@ -241,38 +240,37 @@ curl -s http://127.0.0.1:3000/attendance/1/verify \
   -H "authorization: Bearer $TOKEN"
 ```
 
-Na Fase 1, a verificação confirma apenas a consistência local entre base de dados, payload canónico, hashes e assinatura. Não declara validade on-chain.
+A verificação recalcula o `evidenceHash` a partir do payload armazenado e compara com o hash recuperado on-chain via `txHash`. Devolve `overallResult` com um dos valores: `CHAIN_VALID`, `CHAIN_VERIFICATION_FAILED` ou `LOCAL_VERIFICATION_FAILED`.
 
-## Mock Blockchain
+## Integração Blockchain
 
-O serviço `HardhatBlockchainService` devolve sempre:
+O serviço `HardhatBlockchainService` envia transações reais ao nó Hardhat local. A interface `BlockchainService` expõe dois métodos:
 
-```json
-{
-  "submitted": true,
-  "txHash": "0x...",
-  "blockNumber": null
-}
+- `registerAttendanceProof({ recordId, evidenceHash })` — submete `addRecord(recordId, evidenceHash)` ao contrato e devolve `{ submitted, txHash, blockNumber }`.
+- `getOnChainHashForTx(txHash)` — recupera a transação pelo hash, descodifica o calldata de `addRecord` e devolve `{ recordId, hash }`.
+
+Para usar a integração local:
+
+1. Iniciar o nó Hardhat na pasta `blockchain/`:
+
+```bash
+cd blockchain
+npx hardhat node
 ```
 
-Isto é intencional. A Fase 1 exercita o mesmo contrato que será usado por um adaptador Ethereum real, mas ainda não envia transações reais.
+2. Fazer deploy do contrato (em separado):
 
-## Notas Para A Fase 2
+```bash
+npx hardhat run scripts/deploy.js --network localhost
+```
 
-Na Fase 2, o mock deverá ser substituído por um adaptador Ethereum que implemente a mesma interface `BlockchainService`.
+3. Definir `BLOCKCHAIN_CONTRACT_ADDRESS` no `.env` com o endereço devolvido pelo deploy.
 
-O fluxo previsto é:
+Em modo `BLOCKCHAIN_MODE=mock` (padrão para testes), as transações não são enviadas e `txHash` é um valor gerado localmente.
 
-1. Substituir o mock por um adaptador Ethereum.
-2. Submeter a prova ao smart contract `AttendanceRegistry`.
-3. Guardar `txHash` e manter o estado `SUBMITTED`.
-4. Aguardar o recibo da transação.
-5. Mudar o estado para `CONFIRMED` em caso de sucesso.
-6. Guardar `blockNumber`.
-7. Em caso de falha, mudar para `FAILED` e guardar `failureReason`.
-8. Expandir o endpoint de verificação para consultar também a blockchain.
+## Evolução Futura
 
-A validação, geração de evidência, hashing e assinatura não devem precisar de ser reescritas.
+Para migrar para uma rede Ethereum pública, implementar um novo adaptador que implemente `BlockchainService` e apontar para o nó pretendido. A validação, geração de evidência e hashing não precisam de ser alterados.
 
 ## Segurança E Gestão De Dependências
 
@@ -309,19 +307,18 @@ Segredos devem vir sempre de variáveis de ambiente:
 
 - `DATABASE_URL`
 - `JWT_SECRET`
-- `APP_PRIVATE_KEY`
+- `EVIDENCE_HASH_SEED`
 
 O repositório deve conter apenas `.env.example`. Não devem ser commitados:
 
 - `.env`;
-- chaves privadas reais;
 - JWT secrets;
 - tokens;
 - passwords;
 - headers `Authorization`;
 - credenciais de produção.
 
-`APP_PRIVATE_KEY` é usada apenas pelo `SignerService`. Não é enviada ao cliente nem guardada na base de dados.
+`EVIDENCE_HASH_SEED` é incluído no payload canónico antes do hash. Não é enviado ao cliente nem guardado na base de dados.
 
 ## Logs E Erros
 
@@ -349,7 +346,6 @@ Foram evitadas dependências desnecessárias. Em particular:
 - não há TypeORM ou Sequelize;
 - não há Redis;
 - não há message broker;
-- não há biblioteca geográfica externa;
-- não há biblioteca blockchain na Fase 1.
+- não há biblioteca geográfica externa.
 
-O cálculo de distância usa Haversine implementado localmente. A validação de CIDR IPv4 também é implementada localmente.
+O cálculo de distância usa Haversine implementado localmente. A validação de CIDR IPv4 também é implementada localmente. A integração blockchain usa `ethers` (já dependência transitiva do Hardhat).

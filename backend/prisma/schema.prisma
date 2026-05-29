@@ -31,14 +31,7 @@ enum SessionType {
 
 enum AttendanceStatus {
   PENDING
-  VALIDATED
-  HASHED
-  SIGNED
-  READY_FOR_CHAIN
   SUBMITTED
-  CONFIRMED
-  REJECTED
-  FAILED
 }
 
 model User {
@@ -130,8 +123,6 @@ model AttendanceRecord {
   validationPolicy      ValidationPolicy @relation(fields: [validationPolicyId], references: [id])
   validationDetailsJson Json?
   evidencePayloadJson   Json?
-  evidenceHash          String?
-  signature             String?
   txHash                String?
   blockNumber           BigInt?
   contractAddress       String?

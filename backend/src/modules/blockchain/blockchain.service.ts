@@ -1,11 +1,11 @@
 export type RegisterAttendanceProofInput = {
   recordId: string;
-  deputyId: string;
-  sessionId: string;
-  registeredAt: string;
-  validationPolicyId: string;
   evidenceHash: string;
-  signature: string;
+};
+
+export type OnChainAttendanceRecord = {
+  recordId: string;
+  hash: string;
 };
 
 export interface BlockchainService {
@@ -15,4 +15,5 @@ export interface BlockchainService {
     blockNumber: number | null;
     reason?: string;
   }>;
+  getOnChainHashForTx(txHash: string): Promise<OnChainAttendanceRecord | null>;
 }

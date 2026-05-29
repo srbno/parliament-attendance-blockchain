@@ -1,19 +1,23 @@
-import type { BlockchainService, RegisterAttendanceProofInput } from './blockchain.service.js';
+import type {
+  BlockchainService,
+  OnChainAttendanceRecord,
+  RegisterAttendanceProofInput
+} from './blockchain.service.js';
 import { env } from '../../config/env.js';
 import { logger } from '../../shared/logger/logger.js';
-import { Contract, JsonRpcProvider, Wallet } from 'ethers';
-import { HashService } from "../evidence/hash.service.js";
+import { Contract, Interface, JsonRpcProvider, Wallet } from 'ethers';
 
 const attendanceRegistryAbi = [
   'function addRecord(uint256 _id, bytes32 _hash) external',
   'function getTotalRecords() external view returns (uint256)'
 ] as const;
 
+const attendanceRegistryInterface = new Interface(attendanceRegistryAbi);
+
 export class HardhatBlockchainService implements BlockchainService {
   constructor(
     private readonly provider = new JsonRpcProvider(env.BLOCKCHAIN_RPC_URL),
-    private readonly signer = new Wallet(env.BLOCKCHAIN_PRIVATE_KEY, provider),
-    private readonly hashService = new HashService()
+    private readonly signer = new Wallet(env.BLOCKCHAIN_PRIVATE_KEY, provider)
   ) {}
 
   async registerAttendanceProof(input: RegisterAttendanceProofInput) {
@@ -25,10 +29,7 @@ export class HardhatBlockchainService implements BlockchainService {
       rpcUrl: env.BLOCKCHAIN_RPC_URL
     });
 
-    const contentHash = this.hashService.hashCanonical({
-      proof: input
-    });
-    const tx = await contract.addRecord(BigInt(input.recordId), contentHash);
+    const tx = await contract.addRecord(BigInt(input.recordId), input.evidenceHash);
     const receipt = await tx.wait();
 
     logger.info('attendance_blockchain_submission_confirmed', {
@@ -43,5 +44,21 @@ export class HardhatBlockchainService implements BlockchainService {
       blockNumber: receipt?.blockNumber ?? null,
       ...(receipt?.status === 1 ? {} : { reason: 'Transaction was mined but reverted.' })
     };
+  }
+
+  async getOnChainHashForTx(txHash: string): Promise<OnChainAttendanceRecord | null> {
+    const tx = await this.provider.getTransaction(txHash);
+    if (!tx || !tx.data) return null;
+
+    const receipt = await this.provider.getTransactionReceipt(txHash);
+    if (!receipt || receipt.status !== 1) return null;
+
+    try {
+      const decoded = attendanceRegistryInterface.decodeFunctionData('addRecord', tx.data);
+      const [id, hash] = decoded;
+      return { recordId: BigInt(id).toString(), hash: hash as string };
+    } catch {
+      return null;
+    }
   }
 }

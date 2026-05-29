@@ -2,8 +2,13 @@ import { env } from '../../config/env.js';
 import { prisma } from '../../db/prisma.js';
 import type { AttendanceRecord, Prisma } from '../../generated/prisma/client.js';
 import { EvidenceService } from '../evidence/evidence.service.js';
-import { HardhatBlockchainService } from '../blockchain/hardhat-blockchain.service';
+import { HardhatBlockchainService } from '../blockchain/hardhat-blockchain.service.js';
+import { MockBlockchainService } from '../blockchain/mock-blockchain.service.js';
 import type { BlockchainService } from '../blockchain/blockchain.service.js';
+
+function createBlockchainService(): BlockchainService {
+  return env.BLOCKCHAIN_MODE === 'mock' ? new MockBlockchainService() : new HardhatBlockchainService();
+}
 import { runPolicyV1 } from '../validation/policies/policy-v1.js';
 import type { PolicyV1Result } from '../validation/validation-engine.js';
 import { AppError } from '../../shared/errors/app-error.js';
@@ -13,7 +18,7 @@ import { logger } from '../../shared/logger/logger.js';
 import type { JwtUser } from '../auth/auth.types.js';
 import type { SubmitAttendanceInput } from './attendance.schemas.js';
 
-const activeAttendanceStatuses = ['PENDING', 'VALIDATED', 'HASHED', 'SIGNED', 'READY_FOR_CHAIN', 'SUBMITTED', 'CONFIRMED'];
+const activeAttendanceStatuses = ['PENDING', 'SUBMITTED'];
 
 type AttendanceUserWithDeputy = Prisma.UserGetPayload<{ include: { deputy: true } }>;
 type ParliamentarySessionWithLocation = Prisma.ParliamentarySessionGetPayload<{ include: { location: true } }>;
@@ -22,12 +27,11 @@ type BlockchainSubmissionResult = Awaited<ReturnType<BlockchainService['register
 type CreatedAttendanceRecord = Pick<AttendanceRecord, 'id' | 'deputyId' | 'sessionId' | 'registeredAt'>;
 type SubmittedAttendanceRecord = Pick<
   AttendanceRecord,
-  'id' | 'deputyId' | 'sessionId' | 'registeredAt' | 'validationPolicyId' | 'evidenceHash' | 'signature' | 'status'
+  'id' | 'deputyId' | 'sessionId' | 'registeredAt' | 'validationPolicyId' | 'status'
 >;
-type SignedAttendanceEvidence = {
+type AttendanceEvidence = {
   evidencePayload: ReturnType<EvidenceService['buildEvidencePayload']>;
   evidenceHash: string;
-  signature: string;
 };
 type DataRequiredToValidateAttendance = {
   now: Date;
@@ -71,8 +75,6 @@ function serializeAttendance(record: {
   validationPolicyId: string;
   validationDetailsJson: unknown;
   evidencePayloadJson: unknown;
-  evidenceHash: string | null;
-  signature: string | null;
   txHash: string | null;
   blockNumber: bigint | null;
   contractAddress: string | null;
@@ -89,8 +91,6 @@ function serializeAttendance(record: {
     validationPolicyId: record.validationPolicyId,
     validationDetails: record.validationDetailsJson,
     evidencePayload: record.evidencePayloadJson,
-    evidenceHash: record.evidenceHash,
-    signature: record.signature,
     txHash: record.txHash,
     blockNumber: idToString(record.blockNumber),
     contractAddress: record.contractAddress,
@@ -103,12 +103,13 @@ function serializeAttendance(record: {
 
 export class AttendanceService {
   constructor(
-    private readonly blockchainService: BlockchainService = new HardhatBlockchainService(),
+    private readonly blockchainService: BlockchainService = createBlockchainService(),
     private readonly evidenceService = new EvidenceService()
   ) {}
 
   async submit(input: SubmitAttendanceInput, tokenUser: JwtUser, requestIp: string) {
     const dataRequiredToValidateAttendance = await this.getDataRequiredToValidateAttendance(input, tokenUser, requestIp);
+    
     const validationResult = this.validateAttendanceSubmission(input, dataRequiredToValidateAttendance);
 
     await this.rejectInvalidAttendanceSubmission(validationResult, input, tokenUser);
@@ -118,19 +119,18 @@ export class AttendanceService {
       dataRequiredToValidateAttendance,
       validationResult
     );
-    const signedEvidence = this.createSignedAttendanceEvidence(
+    
+    const evidence = this.createAttendanceEvidence(
       pendingRecord,
       dataRequiredToValidateAttendance.validationPolicy.id,
       validationResult
     );
-    const blockchainSubmission = await this.submitAttendanceProofToBlockchain(
-      pendingRecord,
-      dataRequiredToValidateAttendance.validationPolicy.id,
-      signedEvidence
-    );
+
+    const blockchainSubmission = await this.submitAttendanceProofToBlockchain(pendingRecord, evidence);
+    
     const submittedRecord = await this.markAttendanceProofSubmitted(
       pendingRecord.id,
-      signedEvidence,
+      evidence,
       blockchainSubmission
     );
 
@@ -164,25 +164,23 @@ export class AttendanceService {
     const record = await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseIntId(id) } });
     logger.info('attendance_verify_requested', { recordId: record.id.toString() });
 
-    const recalculatedEvidenceHash = record.evidencePayloadJson
+    const recalculatedHash = record.evidencePayloadJson
       ? this.evidenceService.hashEvidencePayload(record.evidencePayloadJson as never)
       : null;
-    const evidenceHashMatches = Boolean(record.evidenceHash) && recalculatedEvidenceHash === record.evidenceHash;
-    const signatureValid =
-      Boolean(record.evidenceHash && record.signature) &&
-      this.evidenceService.verifySignature(record.evidenceHash!, record.signature!);
-    const databaseHashMatches = evidenceHashMatches;
-    const locallyValid = databaseHashMatches && signatureValid && record.status === 'SUBMITTED';
+
+    const onChainRecord = record.txHash ? await this.blockchainService.getOnChainHashForTx(record.txHash) : null;
+    const blockchainRecordFound = onChainRecord !== null;
+    const blockchainHashMatches =
+      blockchainRecordFound && recalculatedHash !== null && onChainRecord!.hash === recalculatedHash;
 
     return {
       recordId: record.id.toString(),
       databaseStatus: record.status,
-      databaseHashMatches,
-      evidenceHashMatches,
-      signatureValid,
-      blockchainRecordFound: false,
-      blockchainCheckAvailable: false,
-      overallResult: locallyValid ? 'LOCALLY_VALID_SUBMITTED' : 'LOCAL_VERIFICATION_FAILED'
+      blockchainCheckAvailable: true,
+      blockchainRecordFound,
+      blockchainHashMatches,
+      onChainHash: onChainRecord?.hash ?? null,
+      overallResult: blockchainRecordFound && blockchainHashMatches ? 'CHAIN_VALID' : 'CHAIN_VERIFICATION_FAILED'
     };
   }
 
@@ -321,11 +319,11 @@ export class AttendanceService {
     });
   }
 
-  private createSignedAttendanceEvidence(
+  private createAttendanceEvidence(
     record: CreatedAttendanceRecord,
     validationPolicyId: string,
     validationResult: PolicyV1Result
-  ): SignedAttendanceEvidence {
+  ): AttendanceEvidence {
     const evidencePayload = this.evidenceService.buildEvidencePayload({
       recordId: record.id.toString(),
       deputyId: record.deputyId.toString(),
@@ -335,40 +333,30 @@ export class AttendanceService {
       validationResult
     });
     const evidenceHash = this.evidenceService.hashEvidencePayload(evidencePayload);
-    const signature = this.evidenceService.signEvidenceHash(evidenceHash);
     logger.info('attendance_evidence_generated', { recordId: record.id.toString() });
-    logger.info('attendance_signed', { recordId: record.id.toString() });
 
-    return { evidencePayload, evidenceHash, signature };
+    return { evidencePayload, evidenceHash };
   }
 
   private async submitAttendanceProofToBlockchain(
     record: CreatedAttendanceRecord,
-    validationPolicyId: string,
-    signedEvidence: SignedAttendanceEvidence
+    evidence: AttendanceEvidence
   ): Promise<BlockchainSubmissionResult> {
     return this.blockchainService.registerAttendanceProof({
       recordId: record.id.toString(),
-      deputyId: record.deputyId.toString(),
-      sessionId: record.sessionId.toString(),
-      registeredAt: record.registeredAt.toISOString(),
-      validationPolicyId,
-      evidenceHash: signedEvidence.evidenceHash,
-      signature: signedEvidence.signature
+      evidenceHash: evidence.evidenceHash
     });
   }
 
   private async markAttendanceProofSubmitted(
     recordId: number,
-    signedEvidence: SignedAttendanceEvidence,
+    evidence: AttendanceEvidence,
     blockchainSubmission: BlockchainSubmissionResult
   ): Promise<SubmittedAttendanceRecord> {
     return prisma.attendanceRecord.update({
       where: { id: recordId },
       data: {
-        evidencePayloadJson: signedEvidence.evidencePayload,
-        evidenceHash: signedEvidence.evidenceHash,
-        signature: signedEvidence.signature,
+        evidencePayloadJson: evidence.evidencePayload,
         txHash: blockchainSubmission.txHash,
         blockNumber: blockchainSubmission.blockNumber === null ? null : BigInt(blockchainSubmission.blockNumber),
         status: 'SUBMITTED'
@@ -401,8 +389,6 @@ export class AttendanceService {
       sessionId: record.sessionId.toString(),
       registeredAt: record.registeredAt.toISOString(),
       validationPolicyId: record.validationPolicyId,
-      evidenceHash: record.evidenceHash,
-      signature: record.signature,
       blockchain
     };
   }

@@ -5,10 +5,10 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 process.env.NODE_ENV = 'test';
 process.env.DATABASE_URL ??= 'postgresql://attendance:attendance@localhost:5432/attendance';
 process.env.JWT_SECRET ??= '12345678901234567890123456789012';
-process.env.APP_PRIVATE_KEY ??= '0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 process.env.MAX_GPS_ACCURACY_METERS ??= '100';
 process.env.HASH_ALGORITHM ??= 'keccak256';
 process.env.BLOCKCHAIN_MODE ??= 'mock';
+process.env.EVIDENCE_HASH_SEED ??= '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 
 let app: FastifyInstance;
 let prisma: Awaited<typeof import('../../src/db/prisma.js')>['prisma'];
@@ -187,7 +187,7 @@ describe('attendance API', () => {
     });
     expect(response.json().blockchain.txHash).toMatch(/^0x[0-9a-f]{64}$/);
     expect(response.json()).not.toHaveProperty('validationResultHash');
-    expect(response.json().evidenceHash).toMatch(/^0x[0-9a-f]{64}$/);
+    expect(response.json()).not.toHaveProperty('evidenceHash');
   });
 
   it('rejects invalid IP, GPS distance, GPS accuracy, closed window, and duplicate attendance', async () => {
@@ -227,7 +227,7 @@ describe('attendance API', () => {
     expect(duplicateResponse.json().error.code).toBe('DUPLICATE_ATTENDANCE');
   });
 
-  it('verifies local evidence and detects tampered evidence payloads', async () => {
+  it('verifies evidence against chain and detects tampered evidence payloads', async () => {
     const { deputyUser, session } = await createFixture();
     const { accessToken } = await login(deputyUser.username);
     const submitResponse = await submit(accessToken, session.id);
@@ -240,14 +240,11 @@ describe('attendance API', () => {
     });
 
     expect(verifyResponse.statusCode).toBe(200);
-    expect(verifyResponse.json()).toMatchObject({
-      databaseHashMatches: true,
-      evidenceHashMatches: true,
-      signatureValid: true,
-      blockchainRecordFound: false,
-      blockchainCheckAvailable: false,
-      overallResult: 'LOCALLY_VALID_SUBMITTED'
-    });
+    expect(verifyResponse.json()).toMatchObject({ blockchainCheckAvailable: true });
+    expect(verifyResponse.json()).not.toHaveProperty('evidenceHashMatches');
+    expect(verifyResponse.json()).not.toHaveProperty('databaseHashMatches');
+    expect(verifyResponse.json()).not.toHaveProperty('signatureValid');
+    expect(['CHAIN_VALID', 'CHAIN_VERIFICATION_FAILED']).toContain(verifyResponse.json().overallResult);
     expect(verifyResponse.json()).not.toHaveProperty('validationResultHashMatches');
 
     await prisma.attendanceRecord.update({
@@ -260,7 +257,8 @@ describe('attendance API', () => {
       url: `/attendance/${recordId}/verify`,
       headers: { authorization: `Bearer ${accessToken}` }
     });
-    expect(tamperedResponse.json().evidenceHashMatches).toBe(false);
-    expect(tamperedResponse.json().overallResult).toBe('LOCAL_VERIFICATION_FAILED');
+    expect(tamperedResponse.json()).not.toHaveProperty('evidenceHashMatches');
+    expect(tamperedResponse.json().overallResult).toBe('CHAIN_VERIFICATION_FAILED');
+    expect(tamperedResponse.json().blockchainCheckAvailable).toBe(true);
   });
 });

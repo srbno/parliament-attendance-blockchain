@@ -1,80 +1,106 @@
 # Blockchain
 
-Esta pasta está reservada para a **Fase 2** do projeto.
+Esta pasta contém o smart contract `AttendanceRegistry`, a configuração Hardhat e o script de deploy.
 
-Na Fase 2, deverá conter a implementação local Ethereum, incluindo:
+## Estrutura
 
-- smart contract `AttendanceRegistry`;
-- configuração Foundry;
-- scripts de deploy;
-- testes de contrato;
-- documentação de execução com Anvil/Forge.
-
-O backend já está preparado para esta evolução através da interface `BlockchainService`. A implementação futura deverá substituir o `HardhatBlockchainService` por um adaptador Ethereum sem alterar a lógica principal de validação, geração de evidência, hashing ou assinatura.
-
-
-## BlockChain Architecture Overview
-
-The intent of our project is to store attendance records in a way that allows us to check if the data has been somehow tampered with in our internal records.
-
-Therefore, we don't want to store internal data directly into the blockchain, since - even in a private chain there's still a risk of data leakeage.
-
-However, we still want to find a way to prove that our internal data hasn't been tampered with.
-One way to achieve this, we need to store only a representation of the internal data that can be retrieved later to validate original records.
-
-A common approach to achieve this is through hashing, where an algorithm transforms the existing data into a deterministic value.
-
-### Hashing Strategy
-The structure to be stored in the database should be the one that follows:
-
+```text
+blockchain/
+├── contracts/
+│   └── AttendanceRegistry.sol
+├── scripts/
+│   └── deploy.js
+├── hardhat.config.ts
+└── package.json
 ```
+
+## Smart Contract
+
+`AttendanceRegistry` regista pares `(recordId, evidenceHash)` imutáveis na blockchain.
+
+```solidity
+function addRecord(uint256 _id, bytes32 _hash) external
+function getRecord(uint256 index) external view returns (Record memory)
+function getTotalRecords() external view returns (uint256)
+```
+
+O contrato não armazena dados pessoais. Apenas o `evidenceHash` (comprometimento criptográfico do payload de evidência) é registado on-chain.
+
+## Execução Local
+
+Iniciar nó Hardhat:
+
+```bash
+cd blockchain
+npm install
+npx hardhat node
+```
+
+Deploy do contrato (em janela separada):
+
+```bash
+npx hardhat run scripts/deploy.js --network localhost
+```
+
+Copiar o endereço devolvido para `BLOCKCHAIN_CONTRACT_ADDRESS` no `.env` do backend.
+
+## Integração Com O Backend
+
+O backend usa `HardhatBlockchainService` para comunicar com o contrato:
+
+- **Submit:** chama `addRecord(recordId, evidenceHash)` e guarda o `txHash` resultante.
+- **Verify:** recupera a transação pelo `txHash`, descodifica o calldata de `addRecord` com `ethers.Interface` e compara o hash on-chain com o hash recalculado a partir do payload armazenado.
+
+### Payload de Evidência
+
+O `evidenceHash` enviado ao contrato é `keccak256` do payload canónico (chaves ordenadas, JSON determinístico):
+
+```json
+{
+  "recordId": "...",
+  "deputyId": "...",
+  "sessionId": "...",
+  "registeredAt": "...",
+  "validationPolicyId": "POLICY_V1",
+  "validationResult": { ... },
+  "seed": "<EVIDENCE_HASH_SEED>"
+}
+```
+
+O campo `seed` é carregado da variável de ambiente `EVIDENCE_HASH_SEED` e nunca é guardado na base de dados. Torna o hash on-chain computacionalmente imprevisível para quem não conheça o seed, evitando inferência de presença por força bruta sobre os campos públicos.
+
+**Aviso:** alterar `EVIDENCE_HASH_SEED` invalida a verificação on-chain de todos os registos existentes, porque o hash recalculado divergirá do hash armazenado no contrato.
+
+### Interface Do Serviço Blockchain
+
+```typescript
 export type RegisterAttendanceProofInput = {
   recordId: string;
-  deputyId: string;
-  sessionId: string;
-  registeredAt: string;
-  validationPolicyId: string;
   evidenceHash: string;
-  signature: string;
 };
+
+export interface BlockchainService {
+  registerAttendanceProof(input: RegisterAttendanceProofInput): Promise<{
+    submitted: boolean;
+    txHash: string | null;
+    blockNumber: number | null;
+  }>;
+  getOnChainHashForTx(txHash: string): Promise<{ recordId: string; hash: string } | null>;
+}
 ```
 
-- recordId
-    - blockchain unique record of the attendance
-- deputyId
-    - Internal identifier of the congressman
-- sessionId
-    - Internal identifier of the session
-- registeredAt
-    - Date of the registration
-- validationPolicyId
-    - Internal identifier of the validation policy
-- evidenceHash
-    - There is an exhaustive attendance check performed in the code before the attendance record gets stored in the database and then in the chain, so this field is the result of the validation performed, meant to assert that the aforementioned code was indeed executed and had its result value stored in this parameter
-    - The value of this has is based off in the following structure:
-        - recordId: record.id.toString(),
-        - deputyId: record.deputyId.toString(),
-        - sessionId: record.sessionId.toString(),
-        - registeredAt: record.registeredAt.toISOString(),
-        - validationPolicyId,
-        - validationResult
-- signature
-    - Signature used for signing the evidenceHash
+## Estratégia de Hashing
 
-### Hashing Algorithm
-The strategy for hashing combines canonicalization + Keccak-256 hashing
+**Canonicalização + Keccak-256:**
 
-**Canonicalization**
-- Sort the keys of the object by key name
-- Convert the object to a JSON string
-  This computes the cryptographic hash.
+1. Ordenar as chaves do payload por nome.
+2. Serializar para JSON determinístico.
+3. Calcular `keccak256` sobre os bytes UTF-8 resultantes.
 
-**Keccak-256 is:**
-- Ethereum’s native hash algorithm
-- close to SHA-3
-- deterministic
-- one-way
-- collision-resistant
+**Keccak-256** é o algoritmo nativo do Ethereum: determinístico, unidirecional e resistente a colisões. A adição do `seed` converte o hash num comprometimento ocultante (*hiding commitment*), impedindo que um observador externo verifique a presença de um deputado por tentativa e erro.
 
-### Improvements to be made in the blockhain record
-Currently, we are storing one attendance record per blockchain record. However, to optimize the gas cost, we could store all records of a session using merkle tree with individual hashes. 
+## Melhorias Possíveis
+
+- Substituir o array `Record[]` por um `mapping(uint256 => bytes32)` para acesso O(1) por `recordId`.
+- Emitir um evento `RecordAdded(uint256 indexed id, bytes32 hash)` para facilitar indexação off-chain.
+- Usar Merkle tree para agregar registos de uma sessão numa única transação e reduzir custos de gas.
