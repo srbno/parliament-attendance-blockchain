@@ -71,7 +71,10 @@ function setupValidPrisma() {
     id: 1001,
     deputyId: 25,
     sessionId: 431,
-    registeredAt: now
+    registeredAt: now,
+    applicationId: 'attendance-backend',
+    applicationVersion: '1.0.0',
+    hashAlgorithm: 'keccak256'
   });
   mocks.prisma.attendanceRecord.update.mockImplementation(async ({ data }: { data: Record<string, unknown> }) => ({
     id: 1001,
@@ -176,20 +179,30 @@ describe('AttendanceService', () => {
   it('reports CHAIN_VALID when recalculated hash matches on-chain hash', async () => {
     const evidence = new EvidenceService(new HashService());
     const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
-    const evidencePayload = evidence.buildEvidencePayload({
+    // hash reconstructed from individual columns — same path verify() uses
+    const evidenceHash = evidence.hashEvidencePayload({
       recordId: '1001',
       deputyId: '25',
       sessionId: '431',
       registeredAt: now.toISOString(),
       validationPolicyId: 'POLICY_V1',
-      validationResult: validationDetails
+      validationResult: validationDetails,
+      applicationId: 'attendance-backend',
+      applicationVersion: '1.0.0',
+      hashAlgorithm: 'keccak256',
     });
-    const evidenceHash = evidence.hashEvidencePayload(evidencePayload);
     mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
       id: 1001,
+      deputyId: 25,
+      sessionId: 431,
+      registeredAt: now,
+      validationPolicyId: 'POLICY_V1',
       status: 'SUBMITTED',
       validationDetailsJson: validationDetails,
-      evidencePayloadJson: evidencePayload,
+      evidencePayloadJson: {},
+      applicationId: 'attendance-backend',
+      applicationVersion: '1.0.0',
+      hashAlgorithm: 'keccak256',
       txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     });
     const blockchain = {
@@ -212,21 +225,19 @@ describe('AttendanceService', () => {
   });
 
   it('reports CHAIN_VERIFICATION_FAILED when on-chain hash diverges from recalculated hash', async () => {
-    const evidence = new EvidenceService(new HashService());
     const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
-    const evidencePayload = evidence.buildEvidencePayload({
-      recordId: '1001',
-      deputyId: '25',
-      sessionId: '431',
-      registeredAt: now.toISOString(),
-      validationPolicyId: 'POLICY_V1',
-      validationResult: validationDetails
-    });
     mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
       id: 1001,
+      deputyId: 25,
+      sessionId: 431,
+      registeredAt: now,
+      validationPolicyId: 'POLICY_V1',
       status: 'SUBMITTED',
       validationDetailsJson: validationDetails,
-      evidencePayloadJson: evidencePayload,
+      evidencePayloadJson: {},
+      applicationId: 'attendance-backend',
+      applicationVersion: '1.0.0',
+      hashAlgorithm: 'keccak256',
       txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     });
     const blockchain = {
@@ -242,23 +253,34 @@ describe('AttendanceService', () => {
     expect(result.overallResult).toBe('CHAIN_VERIFICATION_FAILED');
   });
 
-  it('reports CHAIN_VERIFICATION_FAILED when DB payload is tampered', async () => {
+  it('reports CHAIN_VERIFICATION_FAILED when a DB column is tampered', async () => {
+    // Simulates the attack: attacker changes deputyId column but leaves evidencePayloadJson intact.
+    // verify() hashes from columns — so the tampered deputyId changes the hash → mismatch detected.
     const evidence = new EvidenceService(new HashService());
     const validationDetails = { policy: 'POLICY_V1', policyVersion: 1, result: 'VALID', checkedAt: now.toISOString(), checks: {} };
-    const evidencePayload = evidence.buildEvidencePayload({
+    const originalHash = evidence.hashEvidencePayload({
       recordId: '1001',
-      deputyId: '25',
+      deputyId: '25',       // original deputy
       sessionId: '431',
       registeredAt: now.toISOString(),
       validationPolicyId: 'POLICY_V1',
-      validationResult: validationDetails
+      validationResult: validationDetails,
+      applicationId: 'attendance-backend',
+      applicationVersion: '1.0.0',
+      hashAlgorithm: 'keccak256',
     });
-    const originalHash = evidence.hashEvidencePayload(evidencePayload);
     mocks.prisma.attendanceRecord.findUniqueOrThrow.mockResolvedValue({
       id: 1001,
+      deputyId: 99,          // tampered column — different deputy
+      sessionId: 431,
+      registeredAt: now,
+      validationPolicyId: 'POLICY_V1',
       status: 'SUBMITTED',
       validationDetailsJson: validationDetails,
-      evidencePayloadJson: { tampered: true },
+      evidencePayloadJson: {},  // irrelevant — verify() no longer reads this
+      applicationId: 'attendance-backend',
+      applicationVersion: '1.0.0',
+      hashAlgorithm: 'keccak256',
       txHash: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     });
     const blockchain = {

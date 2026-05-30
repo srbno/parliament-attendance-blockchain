@@ -164,9 +164,20 @@ export class AttendanceService {
     const record = await prisma.attendanceRecord.findUniqueOrThrow({ where: { id: parseIntId(id) } });
     logger.info('attendance_verify_requested', { recordId: record.id.toString() });
 
-    const recalculatedHash = record.evidencePayloadJson
-      ? this.evidenceService.hashEvidencePayload(record.evidencePayloadJson as never)
-      : null;
+    const recalculatedHash =
+      record.applicationId && record.applicationVersion && record.hashAlgorithm
+        ? this.evidenceService.hashEvidencePayload({
+            recordId: record.id.toString(),
+            deputyId: record.deputyId.toString(),
+            sessionId: record.sessionId.toString(),
+            registeredAt: record.registeredAt.toISOString(),
+            validationPolicyId: record.validationPolicyId,
+            validationResult: record.validationDetailsJson,
+            applicationId: record.applicationId,
+            applicationVersion: record.applicationVersion,
+            hashAlgorithm: record.hashAlgorithm,
+          })
+        : null;
 
     const onChainRecord = record.txHash ? await this.blockchainService.getOnChainHashForTx(record.txHash) : null;
     const blockchainRecordFound = onChainRecord !== null;
@@ -314,6 +325,9 @@ export class AttendanceService {
         gpsAccuracyMeters: input.gps.accuracyMeters,
         validationPolicyId: data.validationPolicy.id,
         validationDetailsJson: validationResult,
+        applicationId: env.APPLICATION_ID,
+        applicationVersion: env.APPLICATION_VERSION,
+        hashAlgorithm: this.evidenceService.algorithm,
         status: 'PENDING'
       }
     });

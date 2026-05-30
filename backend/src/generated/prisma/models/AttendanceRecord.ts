@@ -57,6 +57,9 @@ export type AttendanceRecordMinAggregateOutputType = {
   gpsLongitude: number | null
   gpsAccuracyMeters: number | null
   validationPolicyId: string | null
+  applicationId: string | null
+  applicationVersion: string | null
+  hashAlgorithm: string | null
   txHash: string | null
   blockNumber: bigint | null
   contractAddress: string | null
@@ -77,6 +80,9 @@ export type AttendanceRecordMaxAggregateOutputType = {
   gpsLongitude: number | null
   gpsAccuracyMeters: number | null
   validationPolicyId: string | null
+  applicationId: string | null
+  applicationVersion: string | null
+  hashAlgorithm: string | null
   txHash: string | null
   blockNumber: bigint | null
   contractAddress: string | null
@@ -99,6 +105,9 @@ export type AttendanceRecordCountAggregateOutputType = {
   validationPolicyId: number
   validationDetailsJson: number
   evidencePayloadJson: number
+  applicationId: number
+  applicationVersion: number
+  hashAlgorithm: number
   txHash: number
   blockNumber: number
   contractAddress: number
@@ -141,6 +150,9 @@ export type AttendanceRecordMinAggregateInputType = {
   gpsLongitude?: true
   gpsAccuracyMeters?: true
   validationPolicyId?: true
+  applicationId?: true
+  applicationVersion?: true
+  hashAlgorithm?: true
   txHash?: true
   blockNumber?: true
   contractAddress?: true
@@ -161,6 +173,9 @@ export type AttendanceRecordMaxAggregateInputType = {
   gpsLongitude?: true
   gpsAccuracyMeters?: true
   validationPolicyId?: true
+  applicationId?: true
+  applicationVersion?: true
+  hashAlgorithm?: true
   txHash?: true
   blockNumber?: true
   contractAddress?: true
@@ -183,6 +198,9 @@ export type AttendanceRecordCountAggregateInputType = {
   validationPolicyId?: true
   validationDetailsJson?: true
   evidencePayloadJson?: true
+  applicationId?: true
+  applicationVersion?: true
+  hashAlgorithm?: true
   txHash?: true
   blockNumber?: true
   contractAddress?: true
@@ -292,6 +310,9 @@ export type AttendanceRecordGroupByOutputType = {
   validationPolicyId: string
   validationDetailsJson: runtime.JsonValue | null
   evidencePayloadJson: runtime.JsonValue | null
+  applicationId: string | null
+  applicationVersion: string | null
+  hashAlgorithm: string | null
   txHash: string | null
   blockNumber: bigint | null
   contractAddress: string | null
@@ -337,6 +358,9 @@ export type AttendanceRecordWhereInput = {
   validationPolicyId?: Prisma.StringFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
+  applicationId?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
+  applicationVersion?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
+  hashAlgorithm?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -363,6 +387,9 @@ export type AttendanceRecordOrderByWithRelationInput = {
   validationPolicyId?: Prisma.SortOrder
   validationDetailsJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  applicationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  applicationVersion?: Prisma.SortOrderInput | Prisma.SortOrder
+  hashAlgorithm?: Prisma.SortOrderInput | Prisma.SortOrder
   txHash?: Prisma.SortOrderInput | Prisma.SortOrder
   blockNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   contractAddress?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -392,6 +419,9 @@ export type AttendanceRecordWhereUniqueInput = Prisma.AtLeast<{
   validationPolicyId?: Prisma.StringFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
+  applicationId?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
+  applicationVersion?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
+  hashAlgorithm?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -418,6 +448,9 @@ export type AttendanceRecordOrderByWithAggregationInput = {
   validationPolicyId?: Prisma.SortOrder
   validationDetailsJson?: Prisma.SortOrderInput | Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  applicationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  applicationVersion?: Prisma.SortOrderInput | Prisma.SortOrder
+  hashAlgorithm?: Prisma.SortOrderInput | Prisma.SortOrder
   txHash?: Prisma.SortOrderInput | Prisma.SortOrder
   blockNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   contractAddress?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -448,6 +481,9 @@ export type AttendanceRecordScalarWhereWithAggregatesInput = {
   validationPolicyId?: Prisma.StringWithAggregatesFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableWithAggregatesFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableWithAggregatesFilter<"AttendanceRecord">
+  applicationId?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
+  applicationVersion?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
+  hashAlgorithm?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableWithAggregatesFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableWithAggregatesFilter<"AttendanceRecord"> | string | null
@@ -466,6 +502,9 @@ export type AttendanceRecordCreateInput = {
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -492,6 +531,9 @@ export type AttendanceRecordUncheckedCreateInput = {
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -511,6 +553,9 @@ export type AttendanceRecordUpdateInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -537,6 +582,9 @@ export type AttendanceRecordUncheckedUpdateInput = {
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -560,6 +608,9 @@ export type AttendanceRecordCreateManyInput = {
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -578,6 +629,9 @@ export type AttendanceRecordUpdateManyMutationInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -600,6 +654,9 @@ export type AttendanceRecordUncheckedUpdateManyInput = {
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -632,6 +689,9 @@ export type AttendanceRecordCountOrderByAggregateInput = {
   validationPolicyId?: Prisma.SortOrder
   validationDetailsJson?: Prisma.SortOrder
   evidencePayloadJson?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
+  applicationVersion?: Prisma.SortOrder
+  hashAlgorithm?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
   blockNumber?: Prisma.SortOrder
   contractAddress?: Prisma.SortOrder
@@ -662,6 +722,9 @@ export type AttendanceRecordMaxOrderByAggregateInput = {
   gpsLongitude?: Prisma.SortOrder
   gpsAccuracyMeters?: Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
+  applicationVersion?: Prisma.SortOrder
+  hashAlgorithm?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
   blockNumber?: Prisma.SortOrder
   contractAddress?: Prisma.SortOrder
@@ -682,6 +745,9 @@ export type AttendanceRecordMinOrderByAggregateInput = {
   gpsLongitude?: Prisma.SortOrder
   gpsAccuracyMeters?: Prisma.SortOrder
   validationPolicyId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
+  applicationVersion?: Prisma.SortOrder
+  hashAlgorithm?: Prisma.SortOrder
   txHash?: Prisma.SortOrder
   blockNumber?: Prisma.SortOrder
   contractAddress?: Prisma.SortOrder
@@ -881,6 +947,9 @@ export type AttendanceRecordCreateWithoutDeputyInput = {
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -905,6 +974,9 @@ export type AttendanceRecordUncheckedCreateWithoutDeputyInput = {
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -957,6 +1029,9 @@ export type AttendanceRecordScalarWhereInput = {
   validationPolicyId?: Prisma.StringFilter<"AttendanceRecord"> | string
   validationDetailsJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
   evidencePayloadJson?: Prisma.JsonNullableFilter<"AttendanceRecord">
+  applicationId?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
+  applicationVersion?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
+  hashAlgorithm?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   txHash?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
   blockNumber?: Prisma.BigIntNullableFilter<"AttendanceRecord"> | bigint | number | null
   contractAddress?: Prisma.StringNullableFilter<"AttendanceRecord"> | string | null
@@ -975,6 +1050,9 @@ export type AttendanceRecordCreateWithoutSessionInput = {
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -999,6 +1077,9 @@ export type AttendanceRecordUncheckedCreateWithoutSessionInput = {
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1044,6 +1125,9 @@ export type AttendanceRecordCreateWithoutValidationPolicyInput = {
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1068,6 +1152,9 @@ export type AttendanceRecordUncheckedCreateWithoutValidationPolicyInput = {
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1113,6 +1200,9 @@ export type AttendanceRecordCreateWithoutAuditLogsInput = {
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1138,6 +1228,9 @@ export type AttendanceRecordUncheckedCreateWithoutAuditLogsInput = {
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1172,6 +1265,9 @@ export type AttendanceRecordUpdateWithoutAuditLogsInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1197,6 +1293,9 @@ export type AttendanceRecordUncheckedUpdateWithoutAuditLogsInput = {
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1218,6 +1317,9 @@ export type AttendanceRecordCreateManyDeputyInput = {
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1236,6 +1338,9 @@ export type AttendanceRecordUpdateWithoutDeputyInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1260,6 +1365,9 @@ export type AttendanceRecordUncheckedUpdateWithoutDeputyInput = {
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1282,6 +1390,9 @@ export type AttendanceRecordUncheckedUpdateManyWithoutDeputyInput = {
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1303,6 +1414,9 @@ export type AttendanceRecordCreateManySessionInput = {
   validationPolicyId: string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1321,6 +1435,9 @@ export type AttendanceRecordUpdateWithoutSessionInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1345,6 +1462,9 @@ export type AttendanceRecordUncheckedUpdateWithoutSessionInput = {
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1367,6 +1487,9 @@ export type AttendanceRecordUncheckedUpdateManyWithoutSessionInput = {
   validationPolicyId?: Prisma.StringFieldUpdateOperationsInput | string
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1388,6 +1511,9 @@ export type AttendanceRecordCreateManyValidationPolicyInput = {
   gpsAccuracyMeters?: number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: string | null
+  applicationVersion?: string | null
+  hashAlgorithm?: string | null
   txHash?: string | null
   blockNumber?: bigint | number | null
   contractAddress?: string | null
@@ -1406,6 +1532,9 @@ export type AttendanceRecordUpdateWithoutValidationPolicyInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1430,6 +1559,9 @@ export type AttendanceRecordUncheckedUpdateWithoutValidationPolicyInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1452,6 +1584,9 @@ export type AttendanceRecordUncheckedUpdateManyWithoutValidationPolicyInput = {
   gpsAccuracyMeters?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   validationDetailsJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   evidencePayloadJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  applicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashAlgorithm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   txHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockNumber?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   contractAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1505,6 +1640,9 @@ export type AttendanceRecordSelect<ExtArgs extends runtime.Types.Extensions.Inte
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
+  applicationId?: boolean
+  applicationVersion?: boolean
+  hashAlgorithm?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1532,6 +1670,9 @@ export type AttendanceRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
+  applicationId?: boolean
+  applicationVersion?: boolean
+  hashAlgorithm?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1557,6 +1698,9 @@ export type AttendanceRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
+  applicationId?: boolean
+  applicationVersion?: boolean
+  hashAlgorithm?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1582,6 +1726,9 @@ export type AttendanceRecordSelectScalar = {
   validationPolicyId?: boolean
   validationDetailsJson?: boolean
   evidencePayloadJson?: boolean
+  applicationId?: boolean
+  applicationVersion?: boolean
+  hashAlgorithm?: boolean
   txHash?: boolean
   blockNumber?: boolean
   contractAddress?: boolean
@@ -1591,7 +1738,7 @@ export type AttendanceRecordSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AttendanceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deputyId" | "sessionId" | "registeredAt" | "clientRequestId" | "clientIp" | "gpsLatitude" | "gpsLongitude" | "gpsAccuracyMeters" | "validationPolicyId" | "validationDetailsJson" | "evidencePayloadJson" | "txHash" | "blockNumber" | "contractAddress" | "status" | "failureReason" | "createdAt" | "updatedAt", ExtArgs["result"]["attendanceRecord"]>
+export type AttendanceRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deputyId" | "sessionId" | "registeredAt" | "clientRequestId" | "clientIp" | "gpsLatitude" | "gpsLongitude" | "gpsAccuracyMeters" | "validationPolicyId" | "validationDetailsJson" | "evidencePayloadJson" | "applicationId" | "applicationVersion" | "hashAlgorithm" | "txHash" | "blockNumber" | "contractAddress" | "status" | "failureReason" | "createdAt" | "updatedAt", ExtArgs["result"]["attendanceRecord"]>
 export type AttendanceRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
   session?: boolean | Prisma.ParliamentarySessionDefaultArgs<ExtArgs>
@@ -1631,6 +1778,9 @@ export type $AttendanceRecordPayload<ExtArgs extends runtime.Types.Extensions.In
     validationPolicyId: string
     validationDetailsJson: runtime.JsonValue | null
     evidencePayloadJson: runtime.JsonValue | null
+    applicationId: string | null
+    applicationVersion: string | null
+    hashAlgorithm: string | null
     txHash: string | null
     blockNumber: bigint | null
     contractAddress: string | null
@@ -2077,6 +2227,9 @@ export interface AttendanceRecordFieldRefs {
   readonly validationPolicyId: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly validationDetailsJson: Prisma.FieldRef<"AttendanceRecord", 'Json'>
   readonly evidencePayloadJson: Prisma.FieldRef<"AttendanceRecord", 'Json'>
+  readonly applicationId: Prisma.FieldRef<"AttendanceRecord", 'String'>
+  readonly applicationVersion: Prisma.FieldRef<"AttendanceRecord", 'String'>
+  readonly hashAlgorithm: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly txHash: Prisma.FieldRef<"AttendanceRecord", 'String'>
   readonly blockNumber: Prisma.FieldRef<"AttendanceRecord", 'BigInt'>
   readonly contractAddress: Prisma.FieldRef<"AttendanceRecord", 'String'>
