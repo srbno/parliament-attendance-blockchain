@@ -1,5 +1,4 @@
-#Docs
-docs
+docs/
 .claude
 CLAUDE.md
 .rtk
@@ -14,3 +13,4 @@ logs/*.log
 
 # Scripts auxiliares
 scripts/
+

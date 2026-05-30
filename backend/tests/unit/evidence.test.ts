@@ -45,13 +45,13 @@ describe('evidence primitives', () => {
 });
 
 describe('EvidenceService seed', () => {
-  it('mixes the configured seed into the canonical payload', () => {
+  it('does not expose the seed in the stored payload', () => {
     const seed = 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789';
     const evidence = new EvidenceService(new HashService(), seed);
 
     const payload = evidence.buildEvidencePayload(sampleEvidenceInput);
 
-    expect(payload.seed).toBe(seed);
+    expect((payload as Record<string, unknown>).seed).toBeUndefined();
   });
 
   it('produces a stable hash when the same input and seed are reused', () => {

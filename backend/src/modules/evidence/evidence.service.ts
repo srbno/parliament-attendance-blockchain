@@ -1,6 +1,6 @@
 import { env } from '../../config/env.js';
 import { HashService } from './hash.service.js';
-import type { CanonicalJsonValue } from './canonical-json.js';
+import { canonicalize, type CanonicalJsonValue } from './canonical-json.js';
 
 export type EvidenceJsonValue =
   | string
@@ -33,12 +33,12 @@ export class EvidenceService {
       validationResult: input.validationResult,
       applicationId: env.APPLICATION_ID,
       applicationVersion: env.APPLICATION_VERSION,
-      hashAlgorithm: this.hashService.algorithm,
-      seed: this.seed
+      hashAlgorithm: this.hashService.algorithm
     };
   }
 
   hashEvidencePayload(payload: CanonicalJsonValue): string {
-    return this.hashService.hashCanonical(payload);
+    // seed prefixed to canonical JSON before hashing — never stored in DB
+    return this.hashService.hashString(this.seed + canonicalize(payload));
   }
 }
