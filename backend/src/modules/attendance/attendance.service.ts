@@ -30,7 +30,6 @@ type SubmittedAttendanceRecord = Pick<
   'id' | 'deputyId' | 'sessionId' | 'registeredAt' | 'validationPolicyId' | 'status'
 >;
 type AttendanceEvidence = {
-  evidencePayload: ReturnType<EvidenceService['buildEvidencePayload']>;
   evidenceHash: string;
 };
 type DataRequiredToValidateAttendance = {
@@ -74,7 +73,6 @@ function serializeAttendance(record: {
   registeredAt: Date;
   validationPolicyId: string;
   validationDetailsJson: unknown;
-  evidencePayloadJson: unknown;
   txHash: string | null;
   blockNumber: bigint | null;
   contractAddress: string | null;
@@ -90,7 +88,6 @@ function serializeAttendance(record: {
     registeredAt: record.registeredAt.toISOString(),
     validationPolicyId: record.validationPolicyId,
     validationDetails: record.validationDetailsJson,
-    evidencePayload: record.evidencePayloadJson,
     txHash: record.txHash,
     blockNumber: idToString(record.blockNumber),
     contractAddress: record.contractAddress,
@@ -130,7 +127,6 @@ export class AttendanceService {
     
     const submittedRecord = await this.markAttendanceProofSubmitted(
       pendingRecord.id,
-      evidence,
       blockchainSubmission
     );
 
@@ -349,7 +345,7 @@ export class AttendanceService {
     const evidenceHash = this.evidenceService.hashEvidencePayload(evidencePayload);
     logger.info('attendance_evidence_generated', { recordId: record.id.toString() });
 
-    return { evidencePayload, evidenceHash };
+    return { evidenceHash };
   }
 
   private async submitAttendanceProofToBlockchain(
@@ -364,13 +360,11 @@ export class AttendanceService {
 
   private async markAttendanceProofSubmitted(
     recordId: number,
-    evidence: AttendanceEvidence,
     blockchainSubmission: BlockchainSubmissionResult
   ): Promise<SubmittedAttendanceRecord> {
     return prisma.attendanceRecord.update({
       where: { id: recordId },
       data: {
-        evidencePayloadJson: evidence.evidencePayload,
         txHash: blockchainSubmission.txHash,
         blockNumber: blockchainSubmission.blockNumber === null ? null : BigInt(blockchainSubmission.blockNumber),
         status: 'SUBMITTED'
