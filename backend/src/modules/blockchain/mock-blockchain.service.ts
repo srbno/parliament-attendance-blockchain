@@ -10,7 +10,7 @@ export class MockBlockchainService implements BlockchainService {
     return { submitted: true, txHash, blockNumber: null };
   }
 
-  async getOnChainHashForTx(txHash: string): Promise<OnChainAttendanceRecord | null> {
+  async getSubmittedRecordFromTx(txHash: string): Promise<OnChainAttendanceRecord | null> {
     return this.records.get(txHash) ?? null;
   }
 }

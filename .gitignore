@@ -14,3 +14,4 @@ logs/*.log
 # Scripts auxiliares
 scripts/
 
+.idea

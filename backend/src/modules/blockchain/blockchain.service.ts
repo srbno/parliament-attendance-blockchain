@@ -15,5 +15,5 @@ export interface BlockchainService {
     blockNumber: number | null;
     reason?: string;
   }>;
-  getOnChainHashForTx(txHash: string): Promise<OnChainAttendanceRecord | null>;
+  getSubmittedRecordFromTx(txHash: string): Promise<OnChainAttendanceRecord | null>;
 }

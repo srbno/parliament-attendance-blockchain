@@ -46,7 +46,7 @@ export class HardhatBlockchainService implements BlockchainService {
     };
   }
 
-  async getOnChainHashForTx(txHash: string): Promise<OnChainAttendanceRecord | null> {
+  async getSubmittedRecordFromTx(txHash: string): Promise<OnChainAttendanceRecord | null> {
     const tx = await this.provider.getTransaction(txHash);
     if (!tx || !tx.data) return null;
 

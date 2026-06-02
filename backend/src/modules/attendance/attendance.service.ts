@@ -175,7 +175,7 @@ export class AttendanceService {
           })
         : null;
 
-    const onChainRecord = record.txHash ? await this.blockchainService.getOnChainHashForTx(record.txHash) : null;
+    const onChainRecord = record.txHash ? await this.blockchainService.getSubmittedRecordFromTx(record.txHash) : null;
     const blockchainRecordFound = onChainRecord !== null;
     const blockchainHashMatches =
       blockchainRecordFound && recalculatedHash !== null && onChainRecord!.hash === recalculatedHash;
