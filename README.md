@@ -49,11 +49,11 @@ cp backend/.env.example backend/.env
 
 Editar `backend/.env` e preencher os valores obrigatórios:
 
-| Variável | Descrição |
-|---|---|
-| `JWT_SECRET` | Segredo para assinar tokens JWT (gerar com `openssl rand -hex 32`) |
+| Variável             | Descrição                                                                        |
+| -------------------- | -------------------------------------------------------------------------------- |
+| `JWT_SECRET`         | Segredo para assinar tokens JWT (gerar com `openssl rand -hex 32`)               |
 | `EVIDENCE_HASH_SEED` | Seed de 64 hex chars para o hash de evidência (gerar com `openssl rand -hex 32`) |
-| `BLOCKCHAIN_MODE` | `mock` para testes locais sem Hardhat; `hardhat` para blockchain real |
+| `BLOCKCHAIN_MODE`    | `mock` para testes locais sem Hardhat; `hardhat` para blockchain real            |
 
 Os restantes valores por omissão funcionam para desenvolvimento local.
 
@@ -61,6 +61,7 @@ Os restantes valores por omissão funcionam para desenvolvimento local.
 
 > **Obrigatório apenas na primeira vez** (ou quando o banco de dados for recriado). Cria as tabelas no PostgreSQL.
 
+Necessário ter o Docker a correr.
 ```bash
 make migrate
 ```
@@ -73,11 +74,11 @@ make seed
 
 Cria os utilizadores de demo:
 
-| Username | Password | Papel |
-|---|---|---|
-| `admin` | `ChangeMe123!` | ADMIN |
-| `auditor` | `ChangeMe123!` | AUDITOR |
-| `deputy` | `ChangeMe123!` | DEPUTY |
+| Username  | Password | Papel   |
+| --------- | -------- | ------- |
+| `admin`   | `asdf`   | ADMIN   |
+| `auditor` | `asdf`   | AUDITOR |
+| `deputy`  | `asdf`   | DEPUTY  |
 
 ### 5. Arrancar todos os serviços
 
@@ -87,12 +88,12 @@ make dev
 
 Inicia PostgreSQL, Hardhat, backend e frontend em background.
 
-| Serviço | URL |
-|---|---|
-| Frontend (auditoria) | http://localhost:3000 |
-| Backend (API) | http://localhost:3001 |
+| Serviço                    | URL                   |
+| -------------------------- | --------------------- |
+| Frontend (auditoria)       | http://localhost:3000 |
+| Backend (API)              | http://localhost:3001 |
 | Hardhat (blockchain local) | http://localhost:8545 |
-| PostgreSQL | localhost:5432 |
+| PostgreSQL                 | localhost:5432        |
 
 ---
 
@@ -139,9 +140,9 @@ A coleção Bruno está em `backend/bruno/`. Abrir no Bruno, escolher o ambiente
 
 ## Modos de Blockchain
 
-| Modo | Descrição |
-|---|---|
-| `BLOCKCHAIN_MODE=mock` | Gera `txHash` local sem RPC. Verificação funciona apenas enquanto o backend não reiniciar. |
-| `BLOCKCHAIN_MODE=hardhat` | Submete transações reais ao nó Hardhat local. Verificação on-chain persiste. |
+| Modo                      | Descrição                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------ |
+| `BLOCKCHAIN_MODE=mock`    | Gera `txHash` local sem RPC. Verificação funciona apenas enquanto o backend não reiniciar. |
+| `BLOCKCHAIN_MODE=hardhat` | Submete transações reais ao nó Hardhat local. Verificação on-chain persiste.               |
 
 Para usar o modo `hardhat`, o nó e o contrato têm de estar a correr (`make dev` já inclui o Hardhat).

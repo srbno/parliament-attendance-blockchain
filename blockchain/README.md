@@ -49,11 +49,11 @@ Copiar o endereço devolvido para `BLOCKCHAIN_CONTRACT_ADDRESS` no `.env` do bac
 O backend usa `HardhatBlockchainService` para comunicar com o contrato:
 
 - **Submit:** chama `addRecord(recordId, evidenceHash)` e guarda o `txHash` resultante.
-- **Verify:** recupera a transação pelo `txHash`, descodifica o calldata de `addRecord` com `ethers.Interface` e compara o hash on-chain com o hash recalculado a partir do payload armazenado.
+- **Verify:** `getSubmittedRecordFromTx(txHash)` recupera a transação, descodifica o calldata de `addRecord` com `ethers.Interface` e devolve `{ recordId, hash }`. O backend reconstrói o payload a partir das colunas do banco, recalcula o hash e compara com o hash devolvido.
 
 ### Payload de Evidência
 
-O `evidenceHash` enviado ao contrato é `keccak256` do payload canónico (chaves ordenadas, JSON determinístico):
+O `evidenceHash` enviado ao contrato é `keccak256` de `EVIDENCE_HASH_SEED + canonicalize(payload)`, onde o payload é:
 
 ```json
 {
@@ -63,11 +63,13 @@ O `evidenceHash` enviado ao contrato é `keccak256` do payload canónico (chaves
   "registeredAt": "...",
   "validationPolicyId": "POLICY_V1",
   "validationResult": { ... },
-  "seed": "<EVIDENCE_HASH_SEED>"
+  "applicationId": "...",
+  "applicationVersion": "...",
+  "hashAlgorithm": "keccak256"
 }
 ```
 
-O campo `seed` é carregado da variável de ambiente `EVIDENCE_HASH_SEED` e nunca é guardado na base de dados. Torna o hash on-chain computacionalmente imprevisível para quem não conheça o seed, evitando inferência de presença por força bruta sobre os campos públicos.
+`EVIDENCE_HASH_SEED` é carregado da variável de ambiente e nunca guardado na base de dados. É prefixado como string ao JSON canónico antes do hash, tornando o resultado computacionalmente imprevisível para quem não conheça o seed.
 
 **Aviso:** alterar `EVIDENCE_HASH_SEED` invalida a verificação on-chain de todos os registos existentes, porque o hash recalculado divergirá do hash armazenado no contrato.
 
@@ -79,13 +81,19 @@ export type RegisterAttendanceProofInput = {
   evidenceHash: string;
 };
 
+export type OnChainAttendanceRecord = {
+  recordId: string;
+  hash: string;
+};
+
 export interface BlockchainService {
   registerAttendanceProof(input: RegisterAttendanceProofInput): Promise<{
     submitted: boolean;
     txHash: string | null;
     blockNumber: number | null;
+    reason?: string;
   }>;
-  getOnChainHashForTx(txHash: string): Promise<{ recordId: string; hash: string } | null>;
+  getSubmittedRecordFromTx(txHash: string): Promise<OnChainAttendanceRecord | null>;
 }
 ```
 

@@ -73,7 +73,7 @@ A lógica de assiduidade não depende de uma implementação concreta de blockch
 ## Pré-Requisitos
 
 - Node.js 24 LTS
-- pnpm 10
+- pnpm 11
 - Docker com o daemon ativo, para PostgreSQL local
 
 ## Configuração Inicial
@@ -132,7 +132,7 @@ O seed cria:
 Password local dos utilizadores de demonstração:
 
 ```text
-ChangeMe123!
+asdf
 ```
 
 Esta password é apenas para desenvolvimento local.
@@ -148,7 +148,7 @@ pnpm dev
 URL local por omissão:
 
 ```text
-http://127.0.0.1:3000
+http://127.0.0.1:3001
 ```
 
 Compilar:
@@ -193,7 +193,7 @@ Para usar:
 2. Escolher `Open Collection`.
 3. Selecionar a pasta `bruno`.
 4. Escolher o ambiente `Local`.
-5. Garantir que a API está a correr em `http://127.0.0.1:3000`.
+5. Garantir que a API está a correr em `http://127.0.0.1:3001`.
 
 Fluxo recomendado:
 
@@ -211,7 +211,7 @@ Nota: `clientRequestId` é usado para proteção contra replay. Para repetir `At
 Login:
 
 ```bash
-curl -s http://127.0.0.1:3000/auth/login \
+curl -s http://127.0.0.1:3001/auth/login \
   -H 'content-type: application/json' \
   -d '{"username":"deputy","password":"ChangeMe123!"}'
 ```
@@ -219,7 +219,7 @@ curl -s http://127.0.0.1:3000/auth/login \
 Submeter assiduidade:
 
 ```bash
-curl -s http://127.0.0.1:3000/attendance/submit \
+curl -s http://127.0.0.1:3001/attendance/submit \
   -H 'content-type: application/json' \
   -H "authorization: Bearer $TOKEN" \
   -d '{
@@ -236,18 +236,18 @@ curl -s http://127.0.0.1:3000/attendance/submit \
 Verificar evidência local:
 
 ```bash
-curl -s http://127.0.0.1:3000/attendance/1/verify \
+curl -s http://127.0.0.1:3001/attendance/1/verify \
   -H "authorization: Bearer $TOKEN"
 ```
 
-A verificação recalcula o `evidenceHash` a partir do payload armazenado e compara com o hash recuperado on-chain via `txHash`. Devolve `overallResult` com um dos valores: `CHAIN_VALID`, `CHAIN_VERIFICATION_FAILED` ou `LOCAL_VERIFICATION_FAILED`.
+A verificação reconstrói o payload de evidência a partir das colunas da base de dados, recalcula o `evidenceHash` e compara com o hash recuperado on-chain via `txHash`. Devolve `overallResult` com um dos valores: `CHAIN_VALID` ou `CHAIN_VERIFICATION_FAILED`.
 
 ## Integração Blockchain
 
 O serviço `HardhatBlockchainService` envia transações reais ao nó Hardhat local. A interface `BlockchainService` expõe dois métodos:
 
-- `registerAttendanceProof({ recordId, evidenceHash })` — submete `addRecord(recordId, evidenceHash)` ao contrato e devolve `{ submitted, txHash, blockNumber }`.
-- `getOnChainHashForTx(txHash)` — recupera a transação pelo hash, descodifica o calldata de `addRecord` e devolve `{ recordId, hash }`.
+- `registerAttendanceProof({ recordId, evidenceHash })` — submete `addRecord(recordId, evidenceHash)` ao contrato e devolve `{ submitted, txHash, blockNumber, reason? }`.
+- `getSubmittedRecordFromTx(txHash)` — recupera a transação pelo hash, descodifica o calldata de `addRecord` e devolve `{ recordId, hash }`.
 
 Para usar a integração local:
 
